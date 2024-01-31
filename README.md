@@ -12,7 +12,7 @@
 
  MALET Eloïse: Programmer/Unity Integration/3D Modeler/Technical Artist
 
- GLORIEUX Thomas: Technical Artist/Level Designer
+ GLORIEUX Thomas: Technical Artist/Level Designer/3D Modeler
 
  SIMONET Paul: Character Designer/Texturing
 
