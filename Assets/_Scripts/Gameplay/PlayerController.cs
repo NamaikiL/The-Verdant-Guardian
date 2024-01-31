@@ -179,10 +179,10 @@ namespace _Scripts.Gameplay
         public void ReceiveNewQuest(Quest quest)
         {
             questsList.Add(quest);
-            quest.isActive = true;
+            quest.IsActive = true;
             Quest.OnQuestComplete += RemoveCompletedQuest;
             activeQuest = quest;
-            _uiManager.AddNewQuest(quest.title, quest.description);
+            _uiManager.AddNewQuest(quest.Title, quest.Description);
         }
 
         
@@ -198,7 +198,7 @@ namespace _Scripts.Gameplay
 
             foreach (Quest quest in questsList)
             {
-                foreach (Objectives objective in quest.objectives)
+                foreach (Objectives objective in quest.Objectives)
                 {
                     Debug.Log("Test");
                     if (!objective.isComplete && objective.objectiveType == ObjectiveType.Collect && objective.itemType == itemType)
