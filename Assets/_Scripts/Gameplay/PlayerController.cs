@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace _Scripts.Gameplay
 {
-    [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(Animator))]
+    [RequireComponent(typeof(CharacterController))]
     public class PlayerController : MonoBehaviour
     {
         #region Variables
@@ -80,6 +80,11 @@ namespace _Scripts.Gameplay
 
         #region Custom Methods
 
+        /**
+         * <summary>
+         * Locomotion for the player.
+         * </summary>
+         */
         private void Locomotion()
         {
             if (!_inputs) return;
