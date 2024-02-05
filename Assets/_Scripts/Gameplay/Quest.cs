@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace _Scripts.Gameplay
@@ -10,17 +9,42 @@ namespace _Scripts.Gameplay
     {
         #region Variables
 
+        // EVENT.
         public static event Action<Quest> OnQuestComplete; 
         
-        public bool isActive;
-        public string title;
-        public string description;
-        public List<Objectives> objectives = new List<Objectives>();
+        [Header("Quest Conditions")]
+        [SerializeField] private bool isActive;
+        
+        [Header("Quest Information")]
+        [SerializeField] private string title;
+        [SerializeField] private string description;
+        [SerializeField] private List<Objectives> objectives = new List<Objectives>();
 
         #endregion
 
-        #region Methods
+        #region Properties
 
+        // Conditions
+        public bool IsActive
+        {
+            get => isActive;
+            set => isActive = value;
+        }
+
+        // Information
+        public string Title => title;
+        public string Description => description;
+        public List<Objectives> Objectives => objectives;
+
+        #endregion
+
+        #region Quest Handler
+
+        /**
+         * <summary>
+         * Quest ending handler.
+         * </summary>
+         */
         public void TryToEndQuest()
         {
             Debug.Log("J'ai essayé");

@@ -15,26 +15,71 @@ namespace _Scripts.Gameplay
     {
         #region Variables
 
+        [Header("Objective Conditions")]
         [HideInInspector] public Quest parentQuest;
-        public bool isRequired;
-        public bool isComplete = false;
+        [SerializeField] private bool isRequired;
+        [SerializeField] private bool isComplete;
         
-        public string name;
-        public string description;
-        public ObjectiveType objectiveType;
+        [Header("Objective Information")]
+        [SerializeField] private string objectiveName;
+        [SerializeField] private string description;
+        [SerializeField] private ObjectiveType objectiveType;
 
-        [Header("Collect")] 
-        public int nbToCollect;
-        public int nbCollected;
-        public ItemType itemType;
+        [Header("Collect Type")] 
+        [SerializeField] private int nbToCollect;
+        [SerializeField] private int nbCollected;
+        [SerializeField] private ItemType itemType;
 
-        [Header("Kill")] 
+        [Header("Killing Type")] 
         [SerializeField] private int nbToFight;
+
+        [Header("Escort Type")] 
+        [SerializeField] private Transform escortPoint;
+
+        [Header("Talk Type")] 
+        [SerializeField] private GameObject npcToTalk;
         
         #endregion
 
+        #region Properties
+
+        // Objective Conditions.
+        public bool IsRequired => isRequired;
+        public bool IsComplete => isComplete;
+        
+        // Objective Information.
+        public string ObjectiveName => objectiveName;
+        public string Description => description;
+        public ObjectiveType ActualObjectiveType => objectiveType;
+        
+        // Collect Objective Type.
+        public int NbToCollect => nbToCollect;
+        public int NbCollected
+        {
+            get => nbCollected;
+            set => nbCollected = value;
+        }
+
+        public ItemType ActualItemType => itemType;
+        
+        // Killing Objective Type.
+        public int NbToFight => nbToFight;
+        
+        // Escort Objective Type.
+        public Transform EscortPoint => escortPoint;
+        
+        // Talk Objective Type.
+        public GameObject NpcToTalk => npcToTalk;
+        
+        #endregion
+        
         #region Methods
 
+        /**
+         * <summary>
+         * Complete Objective.
+         * </summary>
+         */
         public void CompleteObjective()
         {
             isComplete = true;

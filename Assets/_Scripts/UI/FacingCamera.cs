@@ -6,6 +6,7 @@ namespace _Scripts.UI
     {
         #region Variables
 
+        // Camera.
         private Camera _camera;
 
         #endregion
@@ -13,20 +14,20 @@ namespace _Scripts.UI
         #region Built-In Methods
 
         /**
-     * <summary>
-     * Start is called before the first frame update
-     * </summary>
-     */
+         * <summary>
+         * Start is called before the first frame update
+         * </summary>
+         */
         void Start()
         {
             _camera = Camera.main;
         }
 
         /**
-     * <summary>
-     * Update is called once per frame.
-     * </summary>
-     */
+         * <summary>
+         * Update is called once per frame.
+         * </summary>
+         */
         void Update()
         {
             transform.LookAt(_camera.transform, Vector3.up);
