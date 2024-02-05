@@ -8,41 +8,41 @@ namespace _Scripts.Gameplay
     public class Quest : ScriptableObject
     {
         #region Variables
+
+        // EVENT.
+        public static event Action<Quest> OnQuestComplete; 
         
-        [Header("Conditions")]
+        [Header("Quest Conditions")]
         [SerializeField] private bool isActive;
         
-        [Header("Main Information")]
+        [Header("Quest Information")]
         [SerializeField] private string title;
         [SerializeField] private string description;
         [SerializeField] private List<Objectives> objectives = new List<Objectives>();
-        
-        // EVENT
-        public static event Action<Quest> OnQuestComplete; 
 
         #endregion
 
         #region Properties
 
-        // CONDITION
+        // Conditions
         public bool IsActive
         {
             get => isActive;
             set => isActive = value;
         }
 
-        // MAIN INFORMATION
+        // Information
         public string Title => title;
         public string Description => description;
         public List<Objectives> Objectives => objectives;
 
         #endregion
-        
-        #region Custom Methods
+
+        #region Quest Handler
 
         /**
          * <summary>
-         * Updated every time a quest objective is updated.
+         * Quest ending handler.
          * </summary>
          */
         public void TryToEndQuest()

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using _Scripts.Managers;
 using UnityEngine;
 
 namespace _Scripts.Gameplay
@@ -9,6 +10,7 @@ namespace _Scripts.Gameplay
     public class PlayerController : MonoBehaviour
     {
         #region Variables
+        
         [Header("Movements")]
         [SerializeField] private float moveSpeed = 7f; 
         [SerializeField] private float turnSmoothSpeed = 0.05f;
@@ -17,24 +19,30 @@ namespace _Scripts.Gameplay
         [SerializeField] private float jumpForce = 10f;
         [SerializeField] private float gravity = 6f;
     
+        // Movements.
         private float _currentVelocity;
         private float _verticalSpeed;
         private bool _canMove = true;
-        private bool _isNpcHere = false;
-
-        public List<Quest> questsList = new List<Quest>();
-        public Quest activeQuest;
-
-        public static event Action<PlayerController> OnInteraction; 
-
         private Vector3 _movement = Vector3.zero;
         private Vector3 _direction = Vector2.zero;
         private Vector3 _moveDirection = Vector3.zero;
         
-        private PlayerInputs _inputs;
-        private CharacterController _characterController;
-        private Camera _camera;
+        // NPC Interaction.
+        private bool _isNpcHere;
+
+        // Quests Handler(Public variables not permanent).
+        public List<Quest> questsList = new List<Quest>();
+        public Quest activeQuest;
+
+        // EVENT.
+        public static event Action<PlayerController> OnInteraction; 
+        
+        // Components.
         private Animator _animator;
+        private Camera _camera;
+        private CharacterController _characterController;
+        
+        private PlayerInputs _playerInputs;
         private UIManager _uiManager;
         
         #endregion
@@ -48,29 +56,34 @@ namespace _Scripts.Gameplay
          */
         void Start()
         {
-            _inputs = PlayerInputs.Instance;
+            // Component by instance.
+            _playerInputs = PlayerInputs.Instance;
             _uiManager = UIManager.Instance;
 
+            // Component in object.
             _characterController = GetComponent<CharacterController>();
             _animator = GetComponent<Animator>();
 
-            _camera = Camera.main;
+            _camera = Camera.main;  // Camera.
         }
 
 
         /**
          * <summary>
-         * Update is called once per frame.
+         * FixedUpdate is called once per fixed frame.
          * </summary>   
          */
         void FixedUpdate()
         {
+            // Player movements.
             Locomotion();
             CalculateVerticalMovement();
+            
+            // Player animations.
             UpdateAnimation();
             
             // EVENT
-            if (_inputs.Interaction)
+            if (_playerInputs.Interaction)
             {
                 OnInteraction?.Invoke(this);
             }
@@ -82,19 +95,20 @@ namespace _Scripts.Gameplay
 
         /**
          * <summary>
-         * Locomotion for the player.
+         * Locomotion of the player.
          * </summary>
          */
         private void Locomotion()
         {
-            if (!_inputs) return;
+            if (!_playerInputs) return;
 
             if (_canMove)
             {
-                _direction.Set(_inputs.Movement.x, 0, _inputs.Movement.y);
+                _direction.Set(_playerInputs.Movement.x, 0, _playerInputs.Movement.y);
 
                 if (_direction.normalized.magnitude >= 0.1f)
                 {
+                    // Angle calculation.
                     float targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg +
                                         _camera.transform.eulerAngles.y;
                     float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _currentVelocity,
@@ -107,44 +121,46 @@ namespace _Scripts.Gameplay
                 else
                 {
                     _moveDirection = Vector3.zero;
-                }
+                }       // In case the player don't move.
             }
-            _movement = _moveDirection.normalized * (moveSpeed * Time.deltaTime);
+            
+            _movement = _moveDirection.normalized * (moveSpeed * Time.deltaTime);       // Movements of the player.
         }
 
 
+        /**
+         * <summary>
+         * Apply a gravity to the player.
+         * </summary>
+         */
         private void CalculateVerticalMovement()
         {
-
             if (_characterController.isGrounded)
             {
-                //Debug.Log("Grounded");
                 _verticalSpeed = -gravity * 0.3f * Time.deltaTime;
 
-                if (_inputs.Jumped && _canMove)
+                if (_playerInputs.Jumped && _canMove)
                 {
-                    //Debug.Log("Je vole");
-                    _verticalSpeed = jumpForce;
+                    _verticalSpeed = jumpForce;     // Jump.
                 }
-
-           
             }
             else
             {
                 _verticalSpeed -= gravity * Time.deltaTime;
-                //Debug.Log("isNotGrounded");
             }
-
             _movement += _verticalSpeed * Vector3.up;
             _characterController.Move(_movement);
-
         }
 
 
+        /**
+         * <summary>
+         * Update the animations.
+         * </summary>
+         */
         private void UpdateAnimation()
         {
-        
-            if(moveSpeed != 0f)
+            if(moveSpeed != 0f)     // In case the player doesn't have a move speed.
                 _animator.SetFloat($"Locomotion", _moveDirection.normalized.magnitude);
 
             if (!_characterController.isGrounded)
@@ -167,6 +183,13 @@ namespace _Scripts.Gameplay
                 
         }
 
+        
+        /**
+         * <summary>
+         * Change the move state of the player.
+         * </summary>
+         * <param name="canMove">Tells if the player can move or not.</param>
+         */
         private void CanMove(bool canMove)
         {
             if (canMove)
@@ -181,37 +204,57 @@ namespace _Scripts.Gameplay
         }
 
 
+        /**
+         * <summary>
+         * Add the player a new quest.
+         * </summary>
+         * <param name="quest">The quest to add.</param>
+         */
         public void ReceiveNewQuest(Quest quest)
         {
-            questsList.Add(quest);
+            questsList.Add(quest);      // Add the quest to the list.
+            
+            // Change active quest.
             quest.IsActive = true;
-            Quest.OnQuestComplete += RemoveCompletedQuest;
             activeQuest = quest;
+            
+            // EVENT.
+            Quest.OnQuestComplete += RemoveCompletedQuest;
+            
+            // UI.
             _uiManager.AddNewQuest(quest.Title, quest.Description);
         }
 
         
-        public void RemoveCompletedQuest(Quest quest)
+        /**
+         * <summary>
+         * Remove the quest from the player.
+         * </summary>
+         * <param name="quest">The quest to remove.</param>
+         */
+        private void RemoveCompletedQuest(Quest quest)
         {
+            // EVENT.
             Quest.OnQuestComplete -= RemoveCompletedQuest;
         }
 
         
+        /**
+         * <summary>
+         * Update the quests with gathering type.
+         * </summary>
+         * <param name="itemType">The item type.</param>
+         */
         public void AddItemToInventory(ItemType itemType)
         {
-            Debug.Log("AddItemToInventory of type:" + itemType.ToString());
-
             foreach (Quest quest in questsList)
             {
                 foreach (Objectives objective in quest.Objectives)
                 {
-                    Debug.Log("Test");
-                    if (!objective.isComplete && objective.objectiveType == ObjectiveType.Collect && objective.itemType == itemType)
+                    if (!objective.IsComplete && objective.ActualObjectiveType == ObjectiveType.Collect && objective.ActualItemType == itemType)
                     {
-                        Debug.Log("Test");
-                        objective.nbCollected++;
-                        Debug.Log(objective.nbCollected + " / " + objective.nbToCollect);
-                        if (objective.nbCollected == objective.nbToCollect)
+                        objective.NbCollected++;
+                        if (objective.NbCollected == objective.NbToCollect)
                         {
                             objective.CompleteObjective();
                         }
