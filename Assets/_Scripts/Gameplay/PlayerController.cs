@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace _Scripts.Gameplay
 {
-    [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(Animator))]
+    [RequireComponent(typeof(CharacterController))]
     public class PlayerController : MonoBehaviour
     {
         #region Variables
