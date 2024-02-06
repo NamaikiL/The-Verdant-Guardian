@@ -1,4 +1,4 @@
-# The-Verdoyant-Guardian
+# The Verdant Guardian
  An RPG made with Unity
 
 # Featured
