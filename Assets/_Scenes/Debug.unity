@@ -1695,40 +1695,29 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 708055374628479020, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
         type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 708055374628479020, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
-        type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.07141823
+      value: 0.071418256
       objectReference: {fileID: 0}
     - target: {fileID: 708055374628479020, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.05427336
-      objectReference: {fileID: 0}
-    - target: {fileID: 897166141803098849, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -4.8173375
+      value: -0.05427338
       objectReference: {fileID: 0}
     - target: {fileID: 2593018477815755810, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
         type: 3}
-      propertyPath: _activeQuest
-      value: 
+      propertyPath: jumpForce
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2593018477815755810, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
         type: 3}
-      propertyPath: _questsList.Array.size
-      value: 0
+      propertyPath: moveSpeed
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2593018477815755810, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
         type: 3}
-      propertyPath: _questsList.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 26a86f4a4cb24a44285f904b3a3d3072,
-        type: 2}
+      propertyPath: turnSmoothSpeed
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 7386197055365572710, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
         type: 3}
       propertyPath: m_Name
