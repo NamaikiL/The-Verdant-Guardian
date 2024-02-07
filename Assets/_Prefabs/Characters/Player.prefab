@@ -507,7 +507,7 @@ CharacterController:
   m_Radius: 0.23
   m_SlopeLimit: 45
   m_StepOffset: 0.3
-  m_SkinWidth: 0.08
+  m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.89, z: 0}
 --- !u!114 &3200342409299436730
@@ -522,6 +522,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c37fb7c10bc51fa44b3aa407e7ce09f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  horizontalLeft: 97
+  horizontalRight: 100
+  verticalUp: 119
+  verticalDown: 115
+  jump: 32
+  attack: 323
+  interaction: 101
 --- !u!114 &2593018477815755810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -534,10 +541,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f00cbffbea51bea4b8512b73ad98129c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 7
-  turnSmoothSpeed: 0.05
-  jumpForce: 10
+  moveSpeed: 4
+  turnSmoothSpeed: 0.2
+  jumpForce: 1
   gravity: 6
+  questsList: []
+  activeQuest: {fileID: 0}
 --- !u!1 &7877371649913606873
 GameObject:
   m_ObjectHideFlags: 3
