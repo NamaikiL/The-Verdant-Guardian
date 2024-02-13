@@ -129,7 +129,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Riplledensity: 50
+    - _Riplledensity: 40.61
     - _RippleSilmness: 8
     - _RippleSpeed: 1
     - _Size: 50
@@ -139,8 +139,10 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
-    - _WaveScale: 0
-    - _WaveSpeed: 0
+    - _WaveAmplitude: 0.05
+    - _WaveFrenqency: 0.7
+    - _WaveScale: 19
+    - _WaveSpeed: 0.06
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
