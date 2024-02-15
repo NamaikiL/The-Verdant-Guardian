@@ -1,10 +1,12 @@
+using _Scripts.Scriptables;
 using UnityEngine;
 
 namespace _Scripts.Gameplay
 {
     public enum ItemType
     {
-        Apple
+        Collectable,
+        Weapon
     }
 
     [RequireComponent(typeof(SphereCollider))]
@@ -14,35 +16,22 @@ namespace _Scripts.Gameplay
 
         [Header("Item Properties")]
         [SerializeField] private ItemType itemType;
+        [SerializeField] private bool isQuestConnected;
+        [SerializeField] protected Items scriptable;
         
         [Header("UI Properties")]
         [SerializeField] private GameObject interactionUI;
 
         #endregion
 
+        #region Properties
+
+        public bool IsQuestConnected => isQuestConnected;
+        public Items Scriptable => scriptable;
+
+        #endregion
+
         #region Built-In Methods
-
-        /**
-         * <summary>
-         * Start is called before the first frame update.
-         * </summary>
-         */
-        void Start()
-        {
-        
-        }
-
-    
-        /**
-         * <summary>
-         * Update is called once per frame.
-         * </summary>
-         */
-        void Update()
-        {
-        
-        }
-    
     
         /**
          * <summary>
@@ -102,8 +91,7 @@ namespace _Scripts.Gameplay
         private void CollectItem(PlayerController playerController)
         {
             // Add items to the player inventory.
-            playerController.AddItemToInventory(itemType);
-            Destroy(gameObject);
+            playerController.AddItemToInventory(this, scriptable, itemType);
         }
 
         #endregion

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace _Scripts.Gameplay
@@ -10,7 +11,7 @@ namespace _Scripts.Gameplay
         Talk
     }
     
-    [CreateAssetMenu(fileName = "New Objectives", menuName = "Objective", order = 1)]
+    [CreateAssetMenu(fileName = "New Objectives", menuName = "RPG/Objective", order = 1)]
     public class Objectives : ScriptableObject
     {
         #region Variables

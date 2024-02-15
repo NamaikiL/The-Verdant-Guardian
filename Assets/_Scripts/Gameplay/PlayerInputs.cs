@@ -1,7 +1,15 @@
+using System.IO;
+using _Scripts.Managers;
 using UnityEngine;
 
 namespace _Scripts.Gameplay
 {
+    class InfoTestJson
+    { 
+        public string donneeSensible;
+        public string positionsDeLaCible;
+    }
+    
     public class PlayerInputs : MonoBehaviour
     {
         #region Variables
@@ -29,6 +37,8 @@ namespace _Scripts.Gameplay
 
         // Singleton.
         private static PlayerInputs _instance;
+
+        private UIManager _uiManager;
         
         #endregion
 
@@ -61,6 +71,12 @@ namespace _Scripts.Gameplay
         }
 
 
+        void Start()
+        {
+            _uiManager = UIManager.Instance;
+        }
+
+
         /**
          * <summary>
          * Update is called once per frame.
@@ -73,12 +89,45 @@ namespace _Scripts.Gameplay
             _jumped = Input.GetKey(jump);
             _attack = Input.GetKey(attack);
             _interaction = Input.GetKeyDown(interaction);
+
+            if (_interaction)
+            {
+                _uiManager.ManageInventory();
+            }
+
+            if (Input.GetKeyDown(KeyCode.J))
+            {
+                SaveToJson();
+            }
+            
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                ReadFromJson();
+            }
         }
 
         #endregion
 
         #region Movements
 
+        [SerializeField] private InfoTestJson _info = new InfoTestJson();
+        void SaveToJson()
+        {
+            _info.donneeSensible = "sgzgzgezgz";
+            _info.positionsDeLaCible = "sgzgzgezgz";
+            string valueToSave = JsonUtility.ToJson(_info);
+            System.IO.File.WriteAllText(Application.persistentDataPath + "/infos.json", valueToSave);
+        }
+
+        void ReadFromJson()
+        {
+            string path = Application.persistentDataPath + "/infos.json";
+            string json = File.ReadAllText(path);
+            Debug.Log(json);
+
+            _info = JsonUtility.FromJson<InfoTestJson>(json);
+        }
+        
         /**
          * <summary>
          * Calculate the Horizontal Movements.

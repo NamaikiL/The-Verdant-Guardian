@@ -1,5 +1,8 @@
+using _Scripts.Gameplay;
+using _Scripts.Scriptables;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace _Scripts.Managers
 {
@@ -11,7 +14,20 @@ namespace _Scripts.Managers
         [Header("Quest UI.")]
         [SerializeField] private Transform panQuestHolder;
         [SerializeField] private GameObject panQuest;
+        
+        [Header("Inventory")]
+        [SerializeField] private GameObject panInventory;
+        [SerializeField] private GameObject btnItem;
+        [SerializeField] private Image imgItem;
+        [SerializeField] private TMP_Text txtName;
+        [SerializeField] private TMP_Text txtPrice;
+        [SerializeField] private Button btnDrop;
 
+        private GameObject _itemCase;
+
+        // Inventory
+        private bool _inventoryShowed;
+        
         // Singleton.
         private static UIManager _instance;
 
@@ -76,6 +92,53 @@ namespace _Scripts.Managers
             quest.transform.GetChild(0).GetComponent<TMP_Text>().text = title;
             quest.transform.GetChild(1).GetComponent<TMP_Text>().text = description;
         }
+
+
+        /**
+         * <summary>
+         * Remove the active quest from the quest holder.
+         * </summary>
+         */
+        public void RemoveQuest()
+        {
+            Destroy(panQuestHolder.transform.GetChild(0).gameObject);
+        }
+
+
+        public void ManageInventory()
+        {
+            if (!_inventoryShowed)
+            {
+                panInventory.SetActive(true);
+            }
+            else
+            {
+                panInventory.SetActive(false);
+            }
+
+            _inventoryShowed = !_inventoryShowed;
+        }
+
+        public void CreateItemInventory(Items item)
+        {
+            _itemCase = Instantiate(btnItem, panInventory.transform.GetChild(0).transform);
+            _itemCase.GetComponent<Image>().sprite = item.ItemImage;
+            _itemCase.GetComponent<Button>().onClick.AddListener(() => ManageItemInfo(item));
+        }
+
+        private void ManageItemInfo(Items item)
+        {
+            imgItem.sprite = item.ItemImage;
+            txtName.text = item.ItemName;
+            txtPrice.text = item.SellCost.ToString();
+            btnDrop.GetComponent<Button>().onClick.AddListener(() => DropItem(item));
+        }
+
+        public void DropItem(Items item)
+        {
+            GameObject.FindWithTag("Player").GetComponent<PlayerController>().RemoveItemFromInventory(item);
+            Destroy(_itemCase);
+        } 
 
         #endregion
 

@@ -4,16 +4,17 @@ using UnityEngine;
 
 namespace _Scripts.Gameplay
 {
-    [CreateAssetMenu(fileName = "New Quest", menuName = "Quest", order = 0)]
+    [CreateAssetMenu(fileName = "New Quest", menuName = "RPG/Quest", order = 0)]
     public class Quest : ScriptableObject
     {
         #region Variables
 
         // EVENT.
-        public static event Action<Quest> OnQuestComplete; 
+        public event Action<Quest> OnQuestComplete; 
         
         [Header("Quest Conditions")]
         [SerializeField] private bool isActive;
+        [SerializeField] private bool isComplete;
         
         [Header("Quest Information")]
         [SerializeField] private string title;
@@ -47,7 +48,25 @@ namespace _Scripts.Gameplay
          */
         public void TryToEndQuest()
         {
-            Debug.Log("J'ai essayé");
+            foreach (Objectives objective in objectives)
+            {
+                if (!objective.IsComplete && objective.IsRequired)
+                {
+                    return;
+                }
+                isComplete = true;
+                isActive = false;
+                OnQuestComplete?.Invoke(this);
+            }
+        }
+        
+        
+        private void OnEnable()
+        {
+            foreach (Objectives objective in objectives)
+            {
+                objective.parentQuest = this;
+            }
         }
 
         #endregion"

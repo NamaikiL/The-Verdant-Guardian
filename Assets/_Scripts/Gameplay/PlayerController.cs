@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using _Scripts.Managers;
+using _Scripts.Scriptables;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace _Scripts.Gameplay
@@ -18,6 +20,9 @@ namespace _Scripts.Gameplay
         [Header("Forces")]
         [SerializeField] private float jumpForce = 10f;
         [SerializeField] private float gravity = 6f;
+
+        [Header("Inventory")] 
+        [SerializeField] private int inventoryCapacity = 30;
     
         // Movements.
         private float _currentVelocity;
@@ -31,9 +36,13 @@ namespace _Scripts.Gameplay
         private bool _isNpcHere;
 
         // Quests Handler(Public variables not permanent).
-        public List<Quest> questsList = new List<Quest>();
-        public Quest activeQuest;
-
+        private List<Quest> _questsList = new List<Quest>();
+        private Quest _activeQuest;
+        
+        // Inventory.
+        private int _currentItemCount;
+        private List<Items> _items = new List<Items>();
+        
         // EVENT.
         public static event Action<PlayerController> OnInteraction; 
         
@@ -212,14 +221,14 @@ namespace _Scripts.Gameplay
          */
         public void ReceiveNewQuest(Quest quest)
         {
-            questsList.Add(quest);      // Add the quest to the list.
+            _questsList.Add(quest);      // Add the quest to the list.
             
             // Change active quest.
             quest.IsActive = true;
-            activeQuest = quest;
+            _activeQuest = quest;
             
             // EVENT.
-            Quest.OnQuestComplete += RemoveCompletedQuest;
+            quest.OnQuestComplete += RemoveCompletedQuest;
             
             // UI.
             _uiManager.AddNewQuest(quest.Title, quest.Description);
@@ -235,7 +244,17 @@ namespace _Scripts.Gameplay
         private void RemoveCompletedQuest(Quest quest)
         {
             // EVENT.
-            Quest.OnQuestComplete -= RemoveCompletedQuest;
+            quest.OnQuestComplete -= RemoveCompletedQuest;
+            _questsList.Remove(quest);
+
+            if (_questsList.Count > 0)
+            {
+                _activeQuest = _questsList[0];
+                _uiManager.AddNewQuest(_questsList[0].Title, _questsList[0].Description);
+            }
+            _uiManager.RemoveQuest();
+            
+            Debug.Log(quest.Title + "Quête terminé");
         }
 
         
@@ -244,22 +263,49 @@ namespace _Scripts.Gameplay
          * Update the quests with gathering type.
          * </summary>
          * <param name="itemType">The item type.</param>
+         * <param name="item">The item.</param>
          */
-        public void AddItemToInventory(ItemType itemType)
+        public void AddItemToInventory(Item item, Items scriptables, ItemType itemType)
         {
-            foreach (Quest quest in questsList)
+            if (_items.Count < inventoryCapacity)
             {
-                foreach (Objectives objective in quest.Objectives)
+                if (item.IsQuestConnected)
                 {
-                    if (!objective.IsComplete && objective.ActualObjectiveType == ObjectiveType.Collect && objective.ActualItemType == itemType)
+                    foreach (Quest quest in _questsList)
                     {
-                        objective.NbCollected++;
-                        if (objective.NbCollected == objective.NbToCollect)
+                        foreach (Objectives objective in quest.Objectives)
                         {
-                            objective.CompleteObjective();
+                            if (!objective.IsComplete && objective.ActualObjectiveType == ObjectiveType.Collect &&
+                                objective.ActualItemType == itemType)
+                            {
+                                objective.NbCollected++;
+                                if (objective.NbCollected == objective.NbToCollect)
+                                {
+                                    objective.CompleteObjective();
+                                }
+
+                                return;
+                            }
                         }
-                        return;
                     }
+                }
+                
+                _uiManager.CreateItemInventory(item.Scriptable);
+                _currentItemCount++;
+                _items.Add(scriptables);
+                Destroy(item.gameObject);
+            }
+        }
+
+
+        public void RemoveItemFromInventory(Items item)
+        {
+            foreach (Items items in _items)
+            {
+                if (items == item)
+                {
+                    _items.Remove(item);
+                    return;
                 }
             }
         }
