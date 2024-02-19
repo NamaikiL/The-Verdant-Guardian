@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using _Scripts.Scriptables;
 using UnityEngine;
 
 namespace _Scripts.Gameplay

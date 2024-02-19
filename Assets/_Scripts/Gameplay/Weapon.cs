@@ -1,6 +1,4 @@
-using System;
 using _Scripts.Scriptables;
-using UnityEngine;
 
 namespace _Scripts.Gameplay
 {
@@ -8,6 +6,7 @@ namespace _Scripts.Gameplay
     {
         #region Variables
         
+        // Weapon Stats.
         private int _damage;
         private float _attackSpeed;
         private float _weight;
@@ -20,7 +19,7 @@ namespace _Scripts.Gameplay
 
         #region Properties
         
-        // STATS
+        // Weapon Stats Properties.
         public int Damage => _damage;
 
         public float AttackSpeed => _attackSpeed;
@@ -37,26 +36,50 @@ namespace _Scripts.Gameplay
 
         #endregion
 
+        #region Built-In Methods
+
+        /**
+         * <summary>
+         * This function is called when the object becomes enabled and active.
+         * </summary>
+         */
         void OnEnable()
         {
-            //_damage = scriptable.Damage;
-            //_attackSpeed = scriptable.AttackSpeed;
-            _weight = scriptable.Weight;
-            _cost = scriptable.Cost;
-            _sellCost = scriptable.SellCost;
-            _rarity = scriptable.Rarity;
+            InitializeWeaponStats(scriptable);
         }
 
-        // Start is called before the first frame update
-        void Start()
+        #endregion
+
+        #region Initialize Methods
+
+        /**
+         * <summary>
+         * Initialize the weapon stats by taking data from Scriptable Object.
+         * </summary>
+         */
+        private void InitializeWeaponStats(Items itemsScriptable)
         {
-        
+            if(itemsScriptable is Weapons weaponScriptable)
+            {
+                _damage = weaponScriptable.Damage;
+                _attackSpeed = weaponScriptable.AttackSpeed;
+                _weight = weaponScriptable.ItemWeight;
+                _cost = weaponScriptable.ItemCost;
+                _sellCost = weaponScriptable.ItemSellCost;
+                _rarity = weaponScriptable.ItemRarity;
+            }
+            else
+            {
+                _damage = 0;
+                _attackSpeed = 0f;
+                _weight = 0f;
+                _cost = 0f;
+                _sellCost = 0f;
+                _rarity = 0f;
+            }
         }
 
-        // Update is called once per frame
-        void Update()
-        {
+        #endregion
         
-        }
     }
 }

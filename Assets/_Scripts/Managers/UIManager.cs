@@ -49,30 +49,9 @@ namespace _Scripts.Managers
          */
         void Awake()
         {
+            // Singleton.
             if (_instance) Destroy(this);
             _instance = this;
-        }
-
-
-        /**
-         * <summary>
-         * Start is called before the first frame update.
-         * </summary>
-         */
-        void Start()
-        {
-        
-        }
-
-    
-        /**
-         * <summary>
-         * Update is called once per frame.
-         * </summary>
-         */
-        void Update()
-        {
-        
         }
 
         #endregion
@@ -104,7 +83,11 @@ namespace _Scripts.Managers
             Destroy(panQuestHolder.transform.GetChild(0).gameObject);
         }
 
-
+        /**
+         * <summary>
+         * Managing the inventory.
+         * </summary>
+         */
         public void ManageInventory()
         {
             if (!_inventoryShowed)
@@ -119,22 +102,42 @@ namespace _Scripts.Managers
             _inventoryShowed = !_inventoryShowed;
         }
 
+        /**
+         * <summary>
+         * Create an item case in the inventory.
+         * </summary>
+         * <param name="item">The actual item.</param>
+         */
         public void CreateItemInventory(Items item)
         {
             _itemCase = Instantiate(btnItem, panInventory.transform.GetChild(0).transform);
             _itemCase.GetComponent<Image>().sprite = item.ItemImage;
-            _itemCase.GetComponent<Button>().onClick.AddListener(() => ManageItemInfo(item));
+            _itemCase.GetComponent<Button>().onClick.AddListener(() => ManageItemInfo(item));       // Add a listener to the button.
         }
 
+        
+        /**
+         * <summary>
+         * Manage the information of the item.
+         * </summary>
+         * <param name="item">The actual item.</param>
+         */
         private void ManageItemInfo(Items item)
         {
             imgItem.sprite = item.ItemImage;
             txtName.text = item.ItemName;
-            txtPrice.text = item.SellCost.ToString();
+            txtPrice.text = item.ItemSellCost.ToString();
             btnDrop.GetComponent<Button>().onClick.AddListener(() => DropItem(item));
         }
 
-        public void DropItem(Items item)
+        
+        /**
+         * <summary>
+         * Drop the item from the player inventory.
+         * </summary>
+         * <param name="item">The actual item.</param>
+         */
+        private void DropItem(Items item)
         {
             GameObject.FindWithTag("Player").GetComponent<PlayerController>().RemoveItemFromInventory(item);
             Destroy(_itemCase);

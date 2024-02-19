@@ -38,6 +38,7 @@ namespace _Scripts.Gameplay
         // Singleton.
         private static PlayerInputs _instance;
 
+        // Components.
         private UIManager _uiManager;
         
         #endregion
@@ -61,18 +62,16 @@ namespace _Scripts.Gameplay
 
         /**
          * <summary>
-         * Start is called before the first frame update.
+         * Unity calls Awake when an enabled script instance is being loaded.
          * </summary>
          */
         void Awake()
         {
+            // Singleton.
             if(_instance) Destroy(gameObject);
             _instance = this;
-        }
-
-
-        void Start()
-        {
+            
+            // Components Initialization.
             _uiManager = UIManager.Instance;
         }
 
@@ -80,6 +79,7 @@ namespace _Scripts.Gameplay
         /**
          * <summary>
          * Update is called once per frame.
+         * TO-DO: Change the save spot and the inventory spot.
          * </summary>
          */
         void Update()
@@ -89,7 +89,8 @@ namespace _Scripts.Gameplay
             _jumped = Input.GetKey(jump);
             _attack = Input.GetKey(attack);
             _interaction = Input.GetKeyDown(interaction);
-
+            
+            // Change that.
             if (_interaction)
             {
                 _uiManager.ManageInventory();
@@ -109,24 +110,6 @@ namespace _Scripts.Gameplay
         #endregion
 
         #region Movements
-
-        [SerializeField] private InfoTestJson _info = new InfoTestJson();
-        void SaveToJson()
-        {
-            _info.donneeSensible = "sgzgzgezgz";
-            _info.positionsDeLaCible = "sgzgzgezgz";
-            string valueToSave = JsonUtility.ToJson(_info);
-            System.IO.File.WriteAllText(Application.persistentDataPath + "/infos.json", valueToSave);
-        }
-
-        void ReadFromJson()
-        {
-            string path = Application.persistentDataPath + "/infos.json";
-            string json = File.ReadAllText(path);
-            Debug.Log(json);
-
-            _info = JsonUtility.FromJson<InfoTestJson>(json);
-        }
         
         /**
          * <summary>
@@ -149,6 +132,41 @@ namespace _Scripts.Gameplay
             if (Input.GetKey(verticalUp)) return _vertical = Mathf.Clamp(_vertical + Time.deltaTime, 0f, 1f);
             if (Input.GetKey(verticalDown)) return _vertical = Mathf.Clamp(_vertical - Time.deltaTime, -1f, 0f);
             return _vertical = 0f;
+        }
+
+        #endregion
+
+        #region Save Temp
+
+        // Test Variable.
+        [SerializeField] private InfoTestJson _info = new InfoTestJson();
+        
+        /**
+         * <summary>
+         * Example of saving file.
+         * </summary>
+         */
+        void SaveToJson()
+        {
+            _info.donneeSensible = "sgzgzgezgz";
+            _info.positionsDeLaCible = "sgzgzgezgz";
+            string valueToSave = JsonUtility.ToJson(_info);
+            System.IO.File.WriteAllText(Application.persistentDataPath + "/infos.json", valueToSave);
+        }
+
+        
+        /**
+         * <summary>
+         * Example of reading file.
+         * </summary>
+         */
+        void ReadFromJson()
+        {
+            string path = Application.persistentDataPath + "/infos.json";
+            string json = File.ReadAllText(path);
+            Debug.Log(json);
+
+            _info = JsonUtility.FromJson<InfoTestJson>(json);
         }
 
         #endregion

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using _Scripts.Managers;
 using _Scripts.Scriptables;
-using JetBrains.Annotations;
 using UnityEngine;
 
 namespace _Scripts.Gameplay
@@ -60,10 +59,10 @@ namespace _Scripts.Gameplay
 
         /**
          * <summary>
-         * Start is called before the first frame update.
+         * Unity calls Awake when an enabled script instance is being loaded.
          * </summary>
          */
-        void Start()
+        void Awake()
         {
             // Component by instance.
             _playerInputs = PlayerInputs.Instance;
@@ -298,6 +297,12 @@ namespace _Scripts.Gameplay
         }
 
 
+        /**
+         * <summary>
+         * Remove an item from the player inventory.
+         * </summary>
+         * <param name="item">The actual item.</param>
+         */
         public void RemoveItemFromInventory(Items item)
         {
             foreach (Items items in _items)

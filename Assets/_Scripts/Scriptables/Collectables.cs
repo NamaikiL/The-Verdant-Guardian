@@ -7,12 +7,14 @@ namespace _Scripts.Scriptables
     {
         #region Variables
 
+        [Header("Collectable Properties")]
         [SerializeField] private string collectableName;
 
         #endregion
 
         #region Properties
 
+        // Collectable Properties.
         public string CollectableName => collectableName;
 
         #endregion

@@ -1,7 +1,7 @@
-using System;
+using _Scripts.Gameplay;
 using UnityEngine;
 
-namespace _Scripts.Gameplay
+namespace _Scripts.Scriptables
 {
     public enum ObjectiveType
     {

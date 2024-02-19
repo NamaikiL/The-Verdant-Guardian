@@ -18,27 +18,32 @@ namespace _Scripts.Scriptables
     {
         #region Variables
 
-        [SerializeField] private float weight;
+        [Header("Item Properties")]
+        // Item Presentation.
         [SerializeField] private string itemName;
-        [SerializeField] private string description;
-        [SerializeField] private float cost;
-        [SerializeField] private float sellCost;
-        [SerializeField] private ItemRarity rarity;
-        [SerializeField] private Sprite image;
-        [SerializeField] private GameObject model;
+        [SerializeField] private string itemDescription;
+        // Item Information
+        [SerializeField] private ItemRarity itemRarity;
+        [SerializeField] private float itemWeight;
+        // Economic variables.
+        [SerializeField] private float itemCost;
+        [SerializeField] private float itemSellCost;
+        // Item Assets
+        [SerializeField] private Sprite itemImage;
+        [SerializeField] private GameObject itemModel;
 
         #endregion
 
         #region Properties
 
-        public float Weight => weight;
-        public float Cost => cost;
-        public float SellCost => sellCost;
-        public ItemRarity Rarity => rarity;
-        public Sprite ItemImage => image;
-        public GameObject Model => model;
+        public float ItemWeight => itemWeight;
+        public float ItemCost => itemCost;
+        public float ItemSellCost => itemSellCost;
+        public ItemRarity ItemRarity => itemRarity;
+        public Sprite ItemImage => itemImage;
+        public GameObject ItemModel => itemModel;
         public string ItemName => itemName;
-        public string Description => description;
+        public string ItemDescription => itemDescription;
 
         #endregion
         

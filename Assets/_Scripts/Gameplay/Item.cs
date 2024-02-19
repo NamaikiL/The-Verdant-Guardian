@@ -3,6 +3,11 @@ using UnityEngine;
 
 namespace _Scripts.Gameplay
 {
+    /**
+     * <summary>
+     * Item types.
+     * </summary>
+     */
     public enum ItemType
     {
         Collectable,
@@ -14,9 +19,11 @@ namespace _Scripts.Gameplay
     {
         #region Variables
 
+        [Header("Quest Parameters")]
+        [SerializeField] private bool isQuestConnected;
+        
         [Header("Item Properties")]
         [SerializeField] private ItemType itemType;
-        [SerializeField] private bool isQuestConnected;
         [SerializeField] protected Items scriptable;
         
         [Header("UI Properties")]
@@ -25,8 +32,11 @@ namespace _Scripts.Gameplay
         #endregion
 
         #region Properties
-
+        
+        // Quest Parameters.
         public bool IsQuestConnected => isQuestConnected;
+        
+        // Item Properties.
         public Items Scriptable => scriptable;
 
         #endregion
