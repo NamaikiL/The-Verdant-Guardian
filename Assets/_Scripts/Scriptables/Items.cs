@@ -3,6 +3,11 @@ using UnityEngine;
 
 namespace _Scripts.Scriptables
 {
+    /**
+     * <summary>
+     * Rarity of the item.
+     * </summary>
+     */
     [Serializable]
     public enum ItemRarity
     {
@@ -14,15 +19,20 @@ namespace _Scripts.Scriptables
         Mythic
     }
     
+    
+    /**
+     * <summary>
+     * Handler of the item and its different type in the game.
+     * </summary>
+     */
     public class Items : ScriptableObject
     {
         #region Variables
 
         [Header("Item Properties")]
-        // Item Presentation.
+        // Item Information.
         [SerializeField] private string itemName;
         [SerializeField] private string itemDescription;
-        // Item Information
         [SerializeField] private ItemRarity itemRarity;
         [SerializeField] private float itemWeight;
         // Economic variables.
@@ -36,15 +46,20 @@ namespace _Scripts.Scriptables
 
         #region Properties
 
-        public float ItemWeight => itemWeight;
-        public float ItemCost => itemCost;
-        public float ItemSellCost => itemSellCost;
-        public ItemRarity ItemRarity => itemRarity;
-        public Sprite ItemImage => itemImage;
-        public GameObject ItemModel => itemModel;
+        // Item Information Properties
         public string ItemName => itemName;
         public string ItemDescription => itemDescription;
-
+        public ItemRarity ItemRarity => itemRarity;
+        public float ItemWeight => itemWeight;
+        
+        // Item Economic Properties.
+        public float ItemCost => itemCost;
+        public float ItemSellCost => itemSellCost;
+        
+        // Item Assets Properties.
+        public Sprite ItemImage => itemImage;
+        public GameObject ItemModel => itemModel;
+        
         #endregion
         
     }

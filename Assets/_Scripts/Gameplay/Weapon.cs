@@ -2,37 +2,42 @@ using _Scripts.Scriptables;
 
 namespace _Scripts.Gameplay
 {
+    /**
+     * <summary>
+     * The management of a weapon.
+     * </summary>
+     */
     public class Weapon : Item
     {
         #region Variables
         
         // Weapon Stats.
-        private int _damage;
-        private float _attackSpeed;
-        private float _weight;
-        private float _cost;
-        private float _sellCost;
-        private float _durability;
-        private ItemRarity _rarity;
+        private int _weaponDamage;
+        private float _weaponAttackSpeed;
+        private float _weaponWeight;
+        private float _weaponCost;
+        private float _weaponSellCost;
+        private float _weaponDurability;
+        private ItemRarity _weaponRarity;
 
         #endregion
 
         #region Properties
         
         // Weapon Stats Properties.
-        public int Damage => _damage;
+        public int WeaponDamage => _weaponDamage;
 
-        public float AttackSpeed => _attackSpeed;
+        public float WeaponAttackSpeed => _weaponAttackSpeed;
         
-        public float Weight => _weight;
+        public float WeaponWeight => _weaponWeight;
         
-        public float Cost => _cost;
+        public float WeaponCost => _weaponCost;
         
-        public float SellCost => _sellCost;
+        public float WeaponSellCost => _weaponSellCost;
         
-        public float Durability => _durability;
+        public float WeaponDurability => _weaponDurability;
         
-        public ItemRarity Rarity => _rarity;
+        public ItemRarity WeaponRarity => _weaponRarity;
 
         #endregion
 
@@ -40,12 +45,12 @@ namespace _Scripts.Gameplay
 
         /**
          * <summary>
-         * This function is called when the object becomes enabled and active.
+         * Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
          * </summary>
          */
-        void OnEnable()
+        void Start()
         {
-            InitializeWeaponStats(scriptable);
+            InitializeWeaponStats(ItemScriptable);      // Initialize the weapon Stats
         }
 
         #endregion
@@ -60,22 +65,24 @@ namespace _Scripts.Gameplay
         private void InitializeWeaponStats(Items itemsScriptable)
         {
             if(itemsScriptable is Weapons weaponScriptable)
-            {
-                _damage = weaponScriptable.Damage;
-                _attackSpeed = weaponScriptable.AttackSpeed;
-                _weight = weaponScriptable.ItemWeight;
-                _cost = weaponScriptable.ItemCost;
-                _sellCost = weaponScriptable.ItemSellCost;
-                _rarity = weaponScriptable.ItemRarity;
+            {   // If the scriptable data is a weapon scriptable.
+                _weaponDamage = weaponScriptable.Damage;
+                _weaponAttackSpeed = weaponScriptable.AttackSpeed;
+                _weaponWeight = weaponScriptable.ItemWeight;
+                _weaponCost = weaponScriptable.ItemCost;
+                _weaponSellCost = weaponScriptable.ItemSellCost;
+                _weaponDurability = weaponScriptable.Durability;
+                _weaponRarity = weaponScriptable.ItemRarity;
             }
             else
             {
-                _damage = 0;
-                _attackSpeed = 0f;
-                _weight = 0f;
-                _cost = 0f;
-                _sellCost = 0f;
-                _rarity = 0f;
+                _weaponDamage = 0;
+                _weaponAttackSpeed = 0f;
+                _weaponWeight = 0f;
+                _weaponCost = 0f;
+                _weaponSellCost = 0f;
+                _weaponDurability = 0f;
+                _weaponRarity = 0f;
             }
         }
 

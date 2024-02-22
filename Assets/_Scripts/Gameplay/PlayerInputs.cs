@@ -1,15 +1,14 @@
-using System.IO;
 using _Scripts.Managers;
 using UnityEngine;
 
 namespace _Scripts.Gameplay
 {
-    class InfoTestJson
-    { 
-        public string donneeSensible;
-        public string positionsDeLaCible;
-    }
     
+    /**
+     * <summary>
+     * Inputs management.
+     * </summary>
+     */
     public class PlayerInputs : MonoBehaviour
     {
         #region Variables
@@ -35,11 +34,11 @@ namespace _Scripts.Gameplay
         private float _vertical;
         private Vector2 _movement = Vector2.zero;
 
-        // Singleton.
-        private static PlayerInputs _instance;
-
         // Components.
         private UIManager _uiManager;
+        
+        // Singleton.
+        private static PlayerInputs _instance;
         
         #endregion
 
@@ -53,7 +52,7 @@ namespace _Scripts.Gameplay
         // Player movements.
         public Vector2 Movement => _movement;
 
-        // Singleton.
+        // Singleton Property.
         public static PlayerInputs Instance => _instance;
         
         #endregion
@@ -90,21 +89,12 @@ namespace _Scripts.Gameplay
             _attack = Input.GetKey(attack);
             _interaction = Input.GetKeyDown(interaction);
             
-            // Change that.
+            // TO-DO: Change that to a function(In mb the inventory component).
             if (_interaction)
             {
                 _uiManager.ManageInventory();
             }
-
-            if (Input.GetKeyDown(KeyCode.J))
-            {
-                SaveToJson();
-            }
             
-            if (Input.GetKeyDown(KeyCode.K))
-            {
-                ReadFromJson();
-            }
         }
 
         #endregion
@@ -132,41 +122,6 @@ namespace _Scripts.Gameplay
             if (Input.GetKey(verticalUp)) return _vertical = Mathf.Clamp(_vertical + Time.deltaTime, 0f, 1f);
             if (Input.GetKey(verticalDown)) return _vertical = Mathf.Clamp(_vertical - Time.deltaTime, -1f, 0f);
             return _vertical = 0f;
-        }
-
-        #endregion
-
-        #region Save Temp
-
-        // Test Variable.
-        [SerializeField] private InfoTestJson _info = new InfoTestJson();
-        
-        /**
-         * <summary>
-         * Example of saving file.
-         * </summary>
-         */
-        void SaveToJson()
-        {
-            _info.donneeSensible = "sgzgzgezgz";
-            _info.positionsDeLaCible = "sgzgzgezgz";
-            string valueToSave = JsonUtility.ToJson(_info);
-            System.IO.File.WriteAllText(Application.persistentDataPath + "/infos.json", valueToSave);
-        }
-
-        
-        /**
-         * <summary>
-         * Example of reading file.
-         * </summary>
-         */
-        void ReadFromJson()
-        {
-            string path = Application.persistentDataPath + "/infos.json";
-            string json = File.ReadAllText(path);
-            Debug.Log(json);
-
-            _info = JsonUtility.FromJson<InfoTestJson>(json);
         }
 
         #endregion

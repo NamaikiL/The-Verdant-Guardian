@@ -1,9 +1,16 @@
+using _Scripts.Scriptables;
 using UnityEngine;
 
 namespace _Scripts.Gameplay
 {
+    
+    /**
+     * <summary>
+     * Handler of the NPC.
+     * </summary>
+     */
     [RequireComponent(typeof(SphereCollider))]
-    public class PNJController : MonoBehaviour
+    public class NpcController : MonoBehaviour
     {
         #region Variables
 
@@ -26,17 +33,6 @@ namespace _Scripts.Gameplay
         void Start()
         {
             InitializeSphereCollider();
-        }
-
-    
-        /**
-         * <summary>
-         * Update is called once per frame.
-         * </summary>
-         */
-        void Update()
-        {
-        
         }
     
 

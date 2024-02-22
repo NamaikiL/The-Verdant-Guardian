@@ -1,4 +1,3 @@
-using _Scripts.Gameplay;
 using _Scripts.Scriptables;
 using TMPro;
 using UnityEngine;
@@ -6,9 +5,14 @@ using UnityEngine.UI;
 
 namespace _Scripts.Managers
 {
+    
+    /**
+     * <summary>
+     * Manager of the UI in general.
+     * </summary>
+     */
     public class UIManager : MonoBehaviour
     {
-
         #region Variables
 
         [Header("Quest UI.")]
@@ -16,17 +20,24 @@ namespace _Scripts.Managers
         [SerializeField] private GameObject panQuest;
         
         [Header("Inventory")]
+        // Panels.
         [SerializeField] private GameObject panInventory;
+        // Items UI Assets.
         [SerializeField] private GameObject btnItem;
+        // Item UI Information
         [SerializeField] private Image imgItem;
         [SerializeField] private TMP_Text txtName;
         [SerializeField] private TMP_Text txtPrice;
         [SerializeField] private Button btnDrop;
 
+        // Base variable for item case in inventory.
         private GameObject _itemCase;
 
-        // Inventory
+        // Inventory Variables.
         private bool _inventoryShowed;
+        
+        // Components.
+        private InventoryManager _inventoryManager;
         
         // Singleton.
         private static UIManager _instance;
@@ -35,7 +46,7 @@ namespace _Scripts.Managers
 
         #region Properties
 
-        // Singleton.
+        // Singleton Property.
         public static UIManager Instance => _instance;
 
         #endregion
@@ -52,6 +63,9 @@ namespace _Scripts.Managers
             // Singleton.
             if (_instance) Destroy(this);
             _instance = this;
+            
+            // Components.
+            _inventoryManager = InventoryManager.Instance;
         }
 
         #endregion
@@ -85,7 +99,7 @@ namespace _Scripts.Managers
 
         /**
          * <summary>
-         * Managing the inventory.
+         * Manage the inventory.
          * </summary>
          */
         public void ManageInventory()
@@ -102,6 +116,7 @@ namespace _Scripts.Managers
             _inventoryShowed = !_inventoryShowed;
         }
 
+        
         /**
          * <summary>
          * Create an item case in the inventory.
@@ -139,7 +154,7 @@ namespace _Scripts.Managers
          */
         private void DropItem(Items item)
         {
-            GameObject.FindWithTag("Player").GetComponent<PlayerController>().RemoveItemFromInventory(item);
+            _inventoryManager.RemoveItemFromInventory(item);
             Destroy(_itemCase);
         } 
 

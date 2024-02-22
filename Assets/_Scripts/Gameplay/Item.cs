@@ -1,3 +1,4 @@
+using _Scripts.Managers;
 using _Scripts.Scriptables;
 using UnityEngine;
 
@@ -13,7 +14,13 @@ namespace _Scripts.Gameplay
         Collectable,
         Weapon
     }
-
+    
+    
+    /**
+     * <summary>
+     * The base Item script.
+     * </summary>
+     */
     [RequireComponent(typeof(SphereCollider))]
     public class Item : MonoBehaviour
     {
@@ -22,27 +29,54 @@ namespace _Scripts.Gameplay
         [Header("Quest Parameters")]
         [SerializeField] private bool isQuestConnected;
         
+        [Header("Scriptable Data")]
+        [SerializeField] protected Items itemScriptable;
+        
         [Header("Item Properties")]
         [SerializeField] private ItemType itemType;
-        [SerializeField] protected Items scriptable;
         
         [Header("UI Properties")]
         [SerializeField] private GameObject interactionUI;
-
+        
+        // Components.
+        private InventoryManager _inventoryManager;
+        
         #endregion
 
         #region Properties
         
-        // Quest Parameters.
+        // Quest Conditions.
         public bool IsQuestConnected => isQuestConnected;
         
         // Item Properties.
-        public Items Scriptable => scriptable;
+        public Items ItemScriptable => itemScriptable;
 
         #endregion
 
         #region Built-In Methods
-    
+
+        /**
+         * <summary>
+         * Unity calls Awake when an enabled script instance is being loaded.
+         * </summary>
+         */
+        void Awake()
+        {
+            _inventoryManager = InventoryManager.Instance;
+        }
+
+
+        /**
+         * <summary>
+         * This function is called when the behaviour becomes disabled.
+         * </summary>
+         */
+        private void OnDisable()
+        {
+            PlayerController.OnInteraction -= CollectItem;
+        }
+        
+        
         /**
          * <summary>
          * When a GameObject collides with another GameObject, Unity calls OnTriggerEnter.
@@ -51,13 +85,14 @@ namespace _Scripts.Gameplay
          */
         void OnTriggerEnter(Collider other)
         {
-            if(other.CompareTag("Player"))  // If the player go into the item zone.
-                if(interactionUI)
+            if (other.CompareTag("Player")){ 
+                if (interactionUI)
                 {
                     interactionUI.SetActive(true);
                     //EVENT
-                    PlayerController.OnInteraction += CollectItem;
-                } // If the item can be interact with.
+                    PlayerController.OnInteraction += CollectItem;      // Subscribe to the OnInteraction Event.
+                }       // If the item can be interact with.
+            }       // If the player go into the item zone.
         }
 
 
@@ -73,24 +108,13 @@ namespace _Scripts.Gameplay
             {
                 // Stop the interaction.
                 interactionUI.SetActive(false);
-                PlayerController.OnInteraction -= CollectItem;
-            }   // If the item can be interact with.
-        }
-
-        
-        /**
-         * <summary>
-         * This function is called when the behaviour becomes disabled.
-         * </summary>
-         */
-        private void OnDisable()
-        {
-            PlayerController.OnInteraction -= CollectItem;
-        }
+                PlayerController.OnInteraction -= CollectItem;      // UnSubscribe to the OnInteractionEvent.
+            }       // If the item can be interact with.
+        }       // If the UI is still active.
 
         #endregion
 
-        #region Custom Methods
+        #region Item Behavior Methods
 
         /**
          * <summary>
@@ -100,8 +124,7 @@ namespace _Scripts.Gameplay
          */
         private void CollectItem(PlayerController playerController)
         {
-            // Add items to the player inventory.
-            playerController.AddItemToInventory(this, scriptable, itemType);
+            _inventoryManager.AddItemToInventory(this, itemScriptable, itemType, playerController);        // Add items to the player inventory.
         }
 
         #endregion

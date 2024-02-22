@@ -4,6 +4,12 @@ using UnityEngine;
 
 namespace _Scripts
 {
+    
+    /**
+     * <summary>
+     * Testing the instantiation of weapon and its data.
+     * </summary>
+     */
     public class InstantiateRandomWeapon : MonoBehaviour
     {
         #region Variables

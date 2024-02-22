@@ -2,6 +2,12 @@ using UnityEngine;
 
 namespace _Scripts.Scriptables
 {
+    
+    /**
+     * <summary>
+     * The Sciptable Object for weapons.
+     * </summary>
+     */
     [CreateAssetMenu(fileName = "New Weapon", menuName = "RPG/Weapon", order = 0)]
     public class Weapons : Items
     {
@@ -16,6 +22,7 @@ namespace _Scripts.Scriptables
 
         #region Properties
 
+        // Weapon Properties.
         public int Damage => damage;
         public float AttackSpeed => attackSpeed;
         public float Durability => durability;
