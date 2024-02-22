@@ -2,6 +2,12 @@ using UnityEngine;
 
 namespace _Scripts.UI
 {
+    
+    /**
+     * <summary>
+     * Making the UI in world space facing the player.
+     * </summary>
+     */
     public class FacingCamera : MonoBehaviour
     {
         #region Variables
@@ -23,6 +29,7 @@ namespace _Scripts.UI
             _camera = Camera.main;
         }
 
+        
         /**
          * <summary>
          * Update is called once per frame.

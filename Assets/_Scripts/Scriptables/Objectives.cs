@@ -1,7 +1,14 @@
+using _Scripts.Gameplay;
 using UnityEngine;
 
-namespace _Scripts.Gameplay
+namespace _Scripts.Scriptables
 {
+    
+    /**
+     * <summary>
+     * Define the multiple objectives type.
+     * </summary>
+     */
     public enum ObjectiveType
     {
         Collect, 
@@ -10,7 +17,12 @@ namespace _Scripts.Gameplay
         Talk
     }
     
-    [CreateAssetMenu(fileName = "New Objectives", menuName = "Objective", order = 1)]
+    /**
+     * <summary>
+     * Scriptable objects for the objectives.
+     * </summary>
+     */
+    [CreateAssetMenu(fileName = "New Objectives", menuName = "RPG/Objective", order = 1)]
     public class Objectives : ScriptableObject
     {
         #region Variables
@@ -22,7 +34,7 @@ namespace _Scripts.Gameplay
         
         [Header("Objective Information")]
         [SerializeField] private string objectiveName;
-        [SerializeField] private string description;
+        [TextArea][SerializeField] private string objectiveDescription;
         [SerializeField] private ObjectiveType objectiveType;
 
         [Header("Collect Type")] 
@@ -49,7 +61,7 @@ namespace _Scripts.Gameplay
         
         // Objective Information.
         public string ObjectiveName => objectiveName;
-        public string Description => description;
+        public string ObjectiveDescription => objectiveDescription;
         public ObjectiveType ActualObjectiveType => objectiveType;
         
         // Collect Objective Type.
@@ -73,7 +85,7 @@ namespace _Scripts.Gameplay
         
         #endregion
         
-        #region Methods
+        #region Custom Methods
 
         /**
          * <summary>
