@@ -57,12 +57,13 @@ namespace _Scripts.Gameplay
 
         /**
          * <summary>
-         * Unity calls Awake when an enabled script instance is being loaded.
+         * Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
          * </summary>
          */
-        void Awake()
+        protected virtual void Start()
         {
             _inventoryManager = InventoryManager.Instance;
+            Debug.Log(_inventoryManager);
         }
 
 
@@ -124,6 +125,7 @@ namespace _Scripts.Gameplay
          */
         private void CollectItem(PlayerController playerController)
         {
+            Debug.Log(_inventoryManager);
             _inventoryManager.AddItemToInventory(this, itemScriptable, itemType, playerController);        // Add items to the player inventory.
         }
 

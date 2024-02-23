@@ -141,9 +141,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 794014c491be2cc4b8f96ff94a74a3c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemType: 1
   isQuestConnected: 0
-  scriptable: {fileID: 11400000, guid: 07862951f6297664fab9a4973a416ac3, type: 2}
+  itemScriptable: {fileID: 11400000, guid: 07862951f6297664fab9a4973a416ac3, type: 2}
+  itemType: 1
   interactionUI: {fileID: 5121706450623206473}
 --- !u!1001 &1595336957268084407
 PrefabInstance:

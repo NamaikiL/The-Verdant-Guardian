@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using _Scripts.Gameplay;
 using _Scripts.Scriptables;
@@ -48,7 +49,16 @@ namespace _Scripts.Managers
         {
             if(_instance) Destroy(this);
             _instance = this;
-            
+        }
+
+
+        /**
+         * <summary>
+         * Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
+         * </summary>
+         */
+        void Start()
+        {
             _uiManager = UIManager.Instance;
         }
 
