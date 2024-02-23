@@ -11,16 +11,10 @@ namespace _Scripts.Gameplay
     public class Collectable : Item
     {
         #region Variables
-        
-        [Header("Scriptable Data")]
-        [SerializeField] private Collectables collectableScriptable;
 
         #endregion
 
         #region Properties
-
-        // Scriptable Data.
-        public Collectables CollectableScriptable => collectableScriptable;
 
         #endregion
         

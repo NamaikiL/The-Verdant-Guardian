@@ -48,8 +48,9 @@ namespace _Scripts.Gameplay
          * Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
          * </summary>
          */
-        void Start()
+        protected override void Start()
         {
+            base.Start();
             InitializeWeaponStats(ItemScriptable);      // Initialize the weapon Stats
         }
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using _Scripts.Managers;
 using _Scripts.Scriptables;
@@ -13,6 +14,8 @@ namespace _Scripts.Gameplay
      */
     [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(CharacterController))]
+    [RequireComponent(typeof(PlayerInputs))]
+    [RequireComponent(typeof(PlayerStats))]
     public class PlayerController : MonoBehaviour
     {
         #region Variables
@@ -20,18 +23,39 @@ namespace _Scripts.Gameplay
         [Header("Movements")]
         [SerializeField] private float moveSpeed = 7f; 
         [SerializeField] private float turnSmoothSpeed = 0.05f;
+        
+        [Header("Sprint")]
+        [SerializeField] private float moveSpeedSprint = 15f; 
+        
+        [Header("Crouch")]
+        [SerializeField] private float moveSpeedCrouch = 3f;
+
+        [Header("Dodging")] 
+        [SerializeField] private float dodgeSpeed = 10f;
+        [SerializeField] private float dodgeDuration = .2f;
+        [SerializeField] private float timeBetweenDodge = 1f;
     
         [Header("Forces")]
-        [SerializeField] private float jumpForce = 10f;
-        [SerializeField] private float gravity = 6f;
+        [SerializeField] private float jumpForce = 2f;
+        [SerializeField] private float gravity = -9.81f;
     
         // Movements.
+        private float _currentMoveSpeed;
         private float _currentVelocity;
         private float _verticalSpeed;
         private bool _canMove = true;
         private Vector3 _movement = Vector3.zero;
         private Vector3 _direction = Vector2.zero;
         private Vector3 _moveDirection = Vector3.zero;
+        
+        // Crouching
+        private float _baseHeight;
+        private bool _isCrouching;
+        
+        // Dodging.
+        private bool _canDodge = true;
+        private bool _isDodging;
+        private Vector3 dodgeDirection;
         
         // NPC Interaction.
         private bool _isNpcHere;
@@ -48,6 +72,7 @@ namespace _Scripts.Gameplay
         private Animator _animator;
         private Camera _camera;
         private CharacterController _characterController;
+        private PlayerStats _playerStats;
         
         private PlayerInputs _playerInputs;
         private UIManager _uiManager;
@@ -56,6 +81,10 @@ namespace _Scripts.Gameplay
 
         #region Properties
 
+        // Movement Property.
+        public Vector3 Direction => _direction;
+        
+        // Quest Property.
         public List<Quest> PlayerQuestsList => _playerQuestsList;
 
         #endregion
@@ -64,10 +93,10 @@ namespace _Scripts.Gameplay
 
         /**
          * <summary>
-         * Unity calls Awake when an enabled script instance is being loaded.
+         * Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
          * </summary>
          */
-        void Awake()
+        void Start()
         {
             // Component by instance.
             _playerInputs = PlayerInputs.Instance;
@@ -76,8 +105,12 @@ namespace _Scripts.Gameplay
             // Component in object.
             _characterController = GetComponent<CharacterController>();
             _animator = GetComponent<Animator>();
+            _playerStats = GetComponent<PlayerStats>();
 
             _camera = Camera.main;  // Camera.
+
+            _currentMoveSpeed = moveSpeed;  // Apply the moveSpeed value.
+            _baseHeight = _characterController.height;
         }
 
 
@@ -88,17 +121,44 @@ namespace _Scripts.Gameplay
          */
         void FixedUpdate()
         {
-            // Player movements.
-            Locomotion();
-            CalculateVerticalMovement();
+            // Dodge Behavior
+            if (_playerInputs.Dodge && !_isDodging && _canDodge)
+            {
+                StartDodge();
+            }
+            if (_isDodging)
+            {
+                ContinueDodge();
+            }
+            // Movements & Gravity.
+            else
+            {
+                // Player movements.
+                Locomotion();
+                CalculateVerticalMovement();
+            }
             
             // Player animations.
             UpdateAnimation();
-            
-            // EVENT
-            if (_playerInputs.Interaction)
+        }
+
+        /**
+         * <summary>
+         * Update is called once per frame.
+         * </summary>
+         */
+        void Update()
+        {
+            if(!_isDodging)
             {
-                OnInteraction?.Invoke(this);
+                // EVENT
+                if (_playerInputs.Interaction)
+                {
+                    OnInteraction?.Invoke(this);
+                }
+
+                MoveSpeedBehavior();
+                Crouch();
             }
         }
 
@@ -121,14 +181,13 @@ namespace _Scripts.Gameplay
 
                 if (_direction.normalized.magnitude >= 0.1f)
                 {
-                    // Angle calculation.
+                    
                     float targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg +
-                                        _camera.transform.eulerAngles.y;
+                                        _camera.transform.eulerAngles.y;    // Angle calculation.
                     float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _currentVelocity,
-                        turnSmoothSpeed);
-
-                    transform.rotation = Quaternion.Euler(0, angle, 0);
-
+                        turnSmoothSpeed);   // Smoothing the rotation.
+                    transform.rotation = Quaternion.Euler(0, angle, 0); // Rotation of the player.
+                    
                     _moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
                 }
                 else
@@ -137,7 +196,7 @@ namespace _Scripts.Gameplay
                 }       // In case the player don't move.
             }
             
-            _movement = _moveDirection.normalized * (moveSpeed * Time.deltaTime);       // Movements of the player.
+            _movement = _moveDirection.normalized * (_currentMoveSpeed * Time.deltaTime);       // Movements of the player.
         }
 
 
@@ -150,22 +209,121 @@ namespace _Scripts.Gameplay
         {
             if (_characterController.isGrounded)
             {
-                _verticalSpeed = -gravity * 0.3f * Time.deltaTime;
-
+                _verticalSpeed += gravity * Time.deltaTime;
+                
                 if (_playerInputs.Jumped && _canMove)
                 {
-                    _verticalSpeed = jumpForce;     // Jump.
+                    _verticalSpeed = Mathf.Sqrt(jumpForce * -3f * gravity);     // Jump.
                 }
             }
             else
             {
-                _verticalSpeed -= gravity * Time.deltaTime;
+                _verticalSpeed += gravity * Time.deltaTime;
             }
+            
             _movement += _verticalSpeed * Vector3.up;
             _characterController.Move(_movement);
         }
 
 
+        /**
+         * <summary>
+         * When the speed needs a change.
+         * </summary>
+         */
+        private void MoveSpeedBehavior()
+        {
+            if (_playerInputs.Sprint && !_isCrouching && _playerStats.CurrentPlayerStamina > 0f)
+            {
+                _currentMoveSpeed = moveSpeedSprint;
+                _playerStats.UseStaminaSprint();
+                // TO-DO: Update the animation.
+            }
+            else if (_isCrouching)
+            {
+                _currentMoveSpeed = moveSpeedCrouch;
+            }
+            else
+            {
+                _currentMoveSpeed = moveSpeed;
+                // TO-DO: Update the animation.
+            }
+        }
+
+
+        /**
+         * <summary>
+         * Handle the Crouching behavior.
+         * </summary>
+         */
+        private void Crouch()
+        {
+            if (_playerInputs.Crouch)
+            {
+                _isCrouching = !_isCrouching;
+                _characterController.height = _isCrouching ? _baseHeight / 2f : _baseHeight;
+                // TO-DO: Update the animation.
+            }
+        }
+
+
+        /**
+         * <summary>
+         * The start of the dodge.
+         * </summary>
+         */
+        private void StartDodge()
+        {
+            _playerInputs.Dodge = false;
+            if (_playerStats.CurrentPlayerStamina > _playerStats.RollStaminaCost
+                && !_isCrouching)
+            {
+                _canDodge = false;
+                _playerStats.UseStaminaRoll();
+
+                _isDodging = true;
+                dodgeDirection = transform.TransformDirection(_direction.normalized);
+                
+                Invoke("EndDodge", dodgeDuration);
+            }
+        }
+
+
+        /**
+         * <summary>
+         * The action of the Dodge.
+         * </summary>
+         */
+        private void ContinueDodge()
+        {
+            _characterController.Move(dodgeDirection * (dodgeSpeed * Time.deltaTime));
+        }
+
+
+        /**
+         * <summary>
+         * End the dodge.
+         * </summary>
+         */
+        private void EndDodge()
+        {
+            _isDodging = false;
+            StartCoroutine(CanDodge());
+        }
+
+
+        /**
+         * <summary>
+         * Make that the player can dodge again after precised time.
+         * </summary>
+         */
+        private IEnumerator CanDodge()
+        {
+            yield return new WaitForSeconds(timeBetweenDodge);
+            _canDodge = true;
+        }
+
+        
         /**
          * <summary>
          * Update the animations.
@@ -215,7 +373,10 @@ namespace _Scripts.Gameplay
                 _moveDirection = Vector3.zero;
             }
         }
-
+        
+        #endregion
+        
+        #region Quest Management
 
         /**
          * <summary>

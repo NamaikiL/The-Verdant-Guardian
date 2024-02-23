@@ -12,14 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 015f397173eb5a745b84ac50cbc394f5, type: 3}
   m_Name: KnightAxe
   m_EditorClassIdentifier: 
-  weight: 15
   itemName: KnightAxe
-  description: An old weapon used by Knights.
-  cost: 0
-  sellCost: 0
-  rarity: 0
-  image: {fileID: 21300000, guid: 0a7bef4f481abbe45b3d3e8375c2b616, type: 3}
-  model: {fileID: 973534011401184978, guid: 0d5e385879b9e2e4bac6451b47cd3a94, type: 3}
+  itemDescription: 
+  itemRarity: 0
+  itemWeight: 0
+  itemCost: 0
+  itemSellCost: 0
+  itemImage: {fileID: 21300000, guid: 0a7bef4f481abbe45b3d3e8375c2b616, type: 3}
+  itemModel: {fileID: 973534011401184978, guid: 0d5e385879b9e2e4bac6451b47cd3a94,
+    type: 3}
   damage: 10
   attackSpeed: 2
   durability: 500

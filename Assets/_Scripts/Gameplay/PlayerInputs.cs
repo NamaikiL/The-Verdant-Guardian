@@ -18,6 +18,9 @@ namespace _Scripts.Gameplay
         [SerializeField] private KeyCode horizontalRight = KeyCode.D;
         [SerializeField] private KeyCode verticalUp = KeyCode.W;
         [SerializeField] private KeyCode verticalDown = KeyCode.S;
+        [SerializeField] private KeyCode sprintKey = KeyCode.LeftShift;
+        [SerializeField] private KeyCode crouchKey = KeyCode.C;
+        [SerializeField] private KeyCode dodgeKey = KeyCode.LeftControl;
         
         [Header("Player Interactions")]
         [SerializeField] private KeyCode jump = KeyCode.Space;
@@ -28,6 +31,9 @@ namespace _Scripts.Gameplay
         private bool _jumped;
         private bool _attack;
         private bool _interaction;
+        private bool _sprint;
+        private bool _crouch;
+        private bool _dodge;
 
         // Player movements.
         private float _horizontal;
@@ -48,6 +54,17 @@ namespace _Scripts.Gameplay
         public bool Attack => _attack;
         public bool Jumped => _jumped;
         public bool Interaction => _interaction;
+        public bool Sprint
+        {
+            get => _sprint;
+            set => _sprint = value;
+        }
+        public bool Crouch => _crouch;
+        public bool Dodge
+        {
+            get => _dodge;
+            set => _dodge = value;
+        }
 
         // Player movements.
         public Vector2 Movement => _movement;
@@ -69,7 +86,16 @@ namespace _Scripts.Gameplay
             // Singleton.
             if(_instance) Destroy(gameObject);
             _instance = this;
-            
+        }
+
+        
+        /**
+         * <summary>
+         * Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
+         * </summary>
+         */
+        void Start()
+        {
             // Components Initialization.
             _uiManager = UIManager.Instance;
         }
@@ -88,7 +114,16 @@ namespace _Scripts.Gameplay
             _jumped = Input.GetKey(jump);
             _attack = Input.GetKey(attack);
             _interaction = Input.GetKeyDown(interaction);
+            _crouch = Input.GetKeyDown(crouchKey);
+
+            // Sprint.
+            if (Input.GetKeyDown(sprintKey)) _sprint = true;
+            else if(Input.GetKeyUp(sprintKey)) _sprint = false;
             
+            // Dodge.
+            if(Input.GetKeyDown(dodgeKey)) _dodge = true;
+            
+            // Manage Inventory.
             // TO-DO: Change that to a function(In mb the inventory component).
             if (_interaction)
             {

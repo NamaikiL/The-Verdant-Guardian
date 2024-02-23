@@ -63,8 +63,16 @@ namespace _Scripts.Managers
             // Singleton.
             if (_instance) Destroy(this);
             _instance = this;
-            
-            // Components.
+        }
+
+
+        /**
+         * <summary>
+         * Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
+         * </summary>
+         */
+        void Start()
+        {
             _inventoryManager = InventoryManager.Instance;
         }
 
