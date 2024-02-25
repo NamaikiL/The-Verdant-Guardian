@@ -1,7 +1,14 @@
+using _Scripts.Managers;
 using UnityEngine;
 
 namespace _Scripts.Gameplay
 {
+    
+    /**
+     * <summary>
+     * Inputs management.
+     * </summary>
+     */
     public class PlayerInputs : MonoBehaviour
     {
         #region Variables
@@ -27,6 +34,9 @@ namespace _Scripts.Gameplay
         private float _vertical;
         private Vector2 _movement = Vector2.zero;
 
+        // Components.
+        private UIManager _uiManager;
+        
         // Singleton.
         private static PlayerInputs _instance;
         
@@ -42,7 +52,7 @@ namespace _Scripts.Gameplay
         // Player movements.
         public Vector2 Movement => _movement;
 
-        // Singleton.
+        // Singleton Property.
         public static PlayerInputs Instance => _instance;
         
         #endregion
@@ -51,19 +61,24 @@ namespace _Scripts.Gameplay
 
         /**
          * <summary>
-         * Start is called before the first frame update.
+         * Unity calls Awake when an enabled script instance is being loaded.
          * </summary>
          */
         void Awake()
         {
+            // Singleton.
             if(_instance) Destroy(gameObject);
             _instance = this;
+            
+            // Components Initialization.
+            _uiManager = UIManager.Instance;
         }
 
 
         /**
          * <summary>
          * Update is called once per frame.
+         * TO-DO: Change the save spot and the inventory spot.
          * </summary>
          */
         void Update()
@@ -73,12 +88,19 @@ namespace _Scripts.Gameplay
             _jumped = Input.GetKey(jump);
             _attack = Input.GetKey(attack);
             _interaction = Input.GetKeyDown(interaction);
+            
+            // TO-DO: Change that to a function(In mb the inventory component).
+            if (_interaction)
+            {
+                _uiManager.ManageInventory();
+            }
+            
         }
 
         #endregion
 
         #region Movements
-
+        
         /**
          * <summary>
          * Calculate the Horizontal Movements.

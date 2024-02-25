@@ -1,10 +1,16 @@
 using System;
 using System.Collections.Generic;
 using _Scripts.Managers;
+using _Scripts.Scriptables;
 using UnityEngine;
 
 namespace _Scripts.Gameplay
 {
+    /**
+     * <summary>
+     * The Player controller, all functions about his behavior are here.
+     * </summary>
+     */
     [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(CharacterController))]
     public class PlayerController : MonoBehaviour
@@ -31,9 +37,10 @@ namespace _Scripts.Gameplay
         private bool _isNpcHere;
 
         // Quests Handler(Public variables not permanent).
-        public List<Quest> questsList = new List<Quest>();
-        public Quest activeQuest;
-
+        // TO-DO: Move this to a quest handler.
+        private List<Quest> _playerQuestsList = new List<Quest>();
+        private Quest _playerActiveQuest;
+        
         // EVENT.
         public static event Action<PlayerController> OnInteraction; 
         
@@ -47,14 +54,20 @@ namespace _Scripts.Gameplay
         
         #endregion
 
+        #region Properties
+
+        public List<Quest> PlayerQuestsList => _playerQuestsList;
+
+        #endregion
+
         #region Builtin Methods
 
         /**
          * <summary>
-         * Start is called before the first frame update.
+         * Unity calls Awake when an enabled script instance is being loaded.
          * </summary>
          */
-        void Start()
+        void Awake()
         {
             // Component by instance.
             _playerInputs = PlayerInputs.Instance;
@@ -212,17 +225,17 @@ namespace _Scripts.Gameplay
          */
         public void ReceiveNewQuest(Quest quest)
         {
-            questsList.Add(quest);      // Add the quest to the list.
+            _playerQuestsList.Add(quest);      // Add the quest to the list.
             
             // Change active quest.
             quest.IsActive = true;
-            activeQuest = quest;
+            _playerActiveQuest = quest;
             
             // EVENT.
-            Quest.OnQuestComplete += RemoveCompletedQuest;
+            quest.OnQuestComplete += RemoveCompletedQuest;
             
             // UI.
-            _uiManager.AddNewQuest(quest.Title, quest.Description);
+            _uiManager.AddNewQuest(quest.QuestTitle, quest.QuestDescription);
         }
 
         
@@ -235,33 +248,17 @@ namespace _Scripts.Gameplay
         private void RemoveCompletedQuest(Quest quest)
         {
             // EVENT.
-            Quest.OnQuestComplete -= RemoveCompletedQuest;
-        }
+            quest.OnQuestComplete -= RemoveCompletedQuest;
+            _playerQuestsList.Remove(quest);
 
-        
-        /**
-         * <summary>
-         * Update the quests with gathering type.
-         * </summary>
-         * <param name="itemType">The item type.</param>
-         */
-        public void AddItemToInventory(ItemType itemType)
-        {
-            foreach (Quest quest in questsList)
+            if (_playerQuestsList.Count > 0)
             {
-                foreach (Objectives objective in quest.Objectives)
-                {
-                    if (!objective.IsComplete && objective.ActualObjectiveType == ObjectiveType.Collect && objective.ActualItemType == itemType)
-                    {
-                        objective.NbCollected++;
-                        if (objective.NbCollected == objective.NbToCollect)
-                        {
-                            objective.CompleteObjective();
-                        }
-                        return;
-                    }
-                }
+                _playerActiveQuest = _playerQuestsList[0];
+                _uiManager.AddNewQuest(_playerQuestsList[0].QuestTitle, _playerQuestsList[0].QuestDescription);
             }
+            _uiManager.RemoveQuest();
+            
+            Debug.Log(quest.QuestTitle + "Quête terminé");
         }
 
         #endregion
