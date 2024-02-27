@@ -428,6 +428,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Kobold_T-Pose
       objectReference: {fileID: 0}
+    - target: {fileID: 2826934884153121378, guid: 78d9a93cfb89cce48b2bc744df9f94ae,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1dae556c55629d54ebaf38fd1fccdc40, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -495,7 +500,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 4c28404c2f6489b44b4aae6dd159468f, type: 2}
+      objectReference: {fileID: 2100000, guid: 8d75f65b8a7b3ac47b7d6ff58977e8ff, type: 2}
     - target: {fileID: 919132149155446097, guid: 42f65dfe41376db42a8450393c041cfb,
         type: 3}
       propertyPath: m_Name
