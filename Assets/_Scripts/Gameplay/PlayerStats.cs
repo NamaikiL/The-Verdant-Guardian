@@ -1,4 +1,5 @@
 using System.Collections;
+using _Scripts.UI;
 using UnityEngine;
 
 namespace _Scripts.Gameplay
@@ -24,6 +25,9 @@ namespace _Scripts.Gameplay
         // Stamina Conditions.
         private IEnumerator _regenStamina;
 
+        //Singleton
+        private LifeBar _lifeBar;
+
         #endregion
 
         #region Properties
@@ -39,6 +43,8 @@ namespace _Scripts.Gameplay
         {
             _currentPlayerHP = maxPlayerHP;
             _currentPlayerStamina = maxPlayerStamina;
+
+            _lifeBar = GetComponent<LifeBar>();
         }
 
         #endregion
@@ -54,7 +60,7 @@ namespace _Scripts.Gameplay
         public void TakeDamage(int damage)
         {
             _currentPlayerHP -= damage;
-            // TO-DO: Show it on the UI.
+            _lifeBar.UpdateLifeBar(_currentPlayerHP, maxPlayerHP);
         }
 
 
@@ -67,7 +73,7 @@ namespace _Scripts.Gameplay
         public void RegenHealth(int quantity)
         {
             _currentPlayerHP += quantity;
-            // TO-DO: Show it on the UI.
+            _lifeBar.UpdateLifeBar(_currentPlayerHP, maxPlayerHP);
         }
 
         #endregion
