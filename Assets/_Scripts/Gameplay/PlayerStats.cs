@@ -8,8 +8,9 @@ namespace _Scripts.Gameplay
     {
         #region Variables
 
-        [Header("Player Health")] 
+        [Header("Player Health")]
         [SerializeField] private int maxPlayerHP = 100;
+        [SerializeField] private LifeBar lifeBar;
         
         [Header("Player Stamina")]
         [SerializeField] private float maxPlayerStamina = 100f;
@@ -24,9 +25,6 @@ namespace _Scripts.Gameplay
         
         // Stamina Conditions.
         private IEnumerator _regenStamina;
-
-        //Singleton
-        private LifeBar _lifeBar;
 
         #endregion
 
@@ -44,11 +42,30 @@ namespace _Scripts.Gameplay
             _currentPlayerHP = maxPlayerHP;
             _currentPlayerStamina = maxPlayerStamina;
 
-            _lifeBar = GetComponent<LifeBar>();
+            lifeBar.SetLifeBarMax(maxPlayerHP);
+        }
+
+        /**
+         * <summary>
+         * Update is called once per frame.
+         * </summary>
+         */
+        private void Update()
+        {
+            _currentPlayerHP = Mathf.Clamp(_currentPlayerHP, 0, maxPlayerHP);
+
+            if (Input.GetKeyUp(KeyCode.P))
+            {
+                TakeDamage(10);
+            }
+            if (Input.GetKeyUp(KeyCode.O))
+            {
+                RegenHealth(10);
+            }
         }
 
         #endregion
-        
+
         #region Health Management
 
         /**
@@ -60,7 +77,7 @@ namespace _Scripts.Gameplay
         public void TakeDamage(int damage)
         {
             _currentPlayerHP -= damage;
-            _lifeBar.UpdateLifeBar(_currentPlayerHP, maxPlayerHP);
+            lifeBar.UpdateLifeBar(_currentPlayerHP);
         }
 
 
@@ -73,7 +90,7 @@ namespace _Scripts.Gameplay
         public void RegenHealth(int quantity)
         {
             _currentPlayerHP += quantity;
-            _lifeBar.UpdateLifeBar(_currentPlayerHP, maxPlayerHP);
+            lifeBar.UpdateLifeBar(_currentPlayerHP);
         }
 
         #endregion
