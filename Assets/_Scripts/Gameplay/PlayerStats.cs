@@ -50,18 +50,9 @@ namespace _Scripts.Gameplay
          * Update is called once per frame.
          * </summary>
          */
-        private void Update()
+        void Update()
         {
             _currentPlayerHP = Mathf.Clamp(_currentPlayerHP, 0, maxPlayerHP);
-
-            if (Input.GetKeyUp(KeyCode.P))
-            {
-                TakeDamage(10);
-            }
-            if (Input.GetKeyUp(KeyCode.O))
-            {
-                RegenHealth(10);
-            }
         }
 
         #endregion
@@ -80,7 +71,6 @@ namespace _Scripts.Gameplay
             lifeBar.UpdateLifeBar(_currentPlayerHP);
         }
 
-
         /**
          * <summary>
          * Regen the player's HP based on a quantity given.
@@ -90,6 +80,18 @@ namespace _Scripts.Gameplay
         public void RegenHealth(int quantity)
         {
             _currentPlayerHP += quantity;
+            lifeBar.UpdateLifeBar(_currentPlayerHP);
+        }
+
+        /**
+         * <summary>
+         * Regen all the player HP.
+         * </summary>
+         * <param name="quantity">The quantity to regen.</param>
+         */
+        public void RegenAllHealth(int quantity)
+        {
+            _currentPlayerHP += maxPlayerHP;
             lifeBar.UpdateLifeBar(_currentPlayerHP);
         }
 
