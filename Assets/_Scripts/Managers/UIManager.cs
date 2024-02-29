@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using _Scripts.Scriptables;
+using _Scripts.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,15 +25,7 @@ namespace _Scripts.Managers
         // Panels.
         [SerializeField] private GameObject panInventory;
         // Items UI Assets.
-        [SerializeField] private GameObject btnItem;
-        // Item UI Information
-        [SerializeField] private Image imgItem;
-        [SerializeField] private TMP_Text txtName;
-        [SerializeField] private TMP_Text txtPrice;
-        [SerializeField] private Button btnDrop;
-
-        // Base variable for item case in inventory.
-        private GameObject _itemCase;
+        [SerializeField] private List<InventorySlotUI> inventorySlots;
 
         // Inventory Variables.
         private bool _inventoryShowed;
@@ -46,6 +40,9 @@ namespace _Scripts.Managers
 
         #region Properties
 
+        // Inventory Management.
+        public List<InventorySlotUI> InventorySlot => inventorySlots;
+        
         // Singleton Property.
         public static UIManager Instance => _instance;
 
@@ -78,7 +75,7 @@ namespace _Scripts.Managers
 
         #endregion
 
-        #region Custom Methods
+        #region Quests
 
         /**
          * <summary>
@@ -105,6 +102,10 @@ namespace _Scripts.Managers
             Destroy(panQuestHolder.transform.GetChild(0).gameObject);
         }
 
+        #endregion
+
+        #region Inventory
+
         /**
          * <summary>
          * Manage the inventory.
@@ -127,30 +128,60 @@ namespace _Scripts.Managers
         
         /**
          * <summary>
-         * Create an item case in the inventory.
+         * Manage the information of the item.
          * </summary>
-         * <param name="item">The actual item.</param>
+         * <param name="inventoryItems">The list of items.</param>
          */
-        public void CreateItemInventory(Items item)
+        public void AddItemToUI(Items item, int quantity)
         {
-            _itemCase = Instantiate(btnItem, panInventory.transform.GetChild(0).transform);
-            _itemCase.GetComponent<Image>().sprite = item.ItemImage;
-            _itemCase.GetComponent<Button>().onClick.AddListener(() => ManageItemInfo(item));       // Add a listener to the button.
+            foreach (InventorySlotUI slot in inventorySlots)
+            {
+                if (slot.IsStackable(item))
+                {
+                    slot.CurrentQuantity += quantity;
+                    slot.UpdateSlot(slot.CurrentItem, slot.CurrentQuantity);
+                    return;
+                }
+            }
+            
+            foreach (InventorySlotUI slot in inventorySlots)
+            {
+                if (slot.CurrentItem == null)
+                {
+                    slot.UpdateSlot(item, quantity);
+                    break;
+                }
+            }
         }
-
+        
         
         /**
          * <summary>
          * Manage the information of the item.
          * </summary>
-         * <param name="item">The actual item.</param>
+         * <param name="inventoryItems">The list of items.</param>
          */
-        private void ManageItemInfo(Items item)
+        public void RemoveItemToUI(Items item, int quantity)
         {
-            imgItem.sprite = item.ItemImage;
-            txtName.text = item.ItemName;
-            txtPrice.text = item.ItemSellCost.ToString();
-            btnDrop.GetComponent<Button>().onClick.AddListener(() => DropItem(item));
+            foreach (InventorySlotUI slot in inventorySlots)
+            {
+                if (slot.CurrentItem == item)
+                {
+                    if (slot.CurrentQuantity > quantity)
+                    {
+                        slot.CurrentQuantity -= quantity;
+                        slot.UpdateSlot(slot.CurrentItem, slot.CurrentQuantity);
+                        return;
+                    }
+                    else
+                    {
+                        quantity -= slot.CurrentQuantity;
+                        slot.ClearSlot();
+
+                        if (quantity == 0) return;
+                    }
+                }
+            }
         }
 
         
@@ -160,10 +191,9 @@ namespace _Scripts.Managers
          * </summary>
          * <param name="item">The actual item.</param>
          */
-        private void DropItem(Items item)
+        private void DropItem(Items item, int quantity)
         {
-            _inventoryManager.RemoveItemFromInventory(item);
-            Destroy(_itemCase);
+            _inventoryManager.RemoveItemFromInventory(item, quantity);
         } 
 
         #endregion

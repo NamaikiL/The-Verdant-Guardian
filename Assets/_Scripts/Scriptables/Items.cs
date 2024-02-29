@@ -42,6 +42,9 @@ namespace _Scripts.Scriptables
         [SerializeField] private Sprite itemImage;
         [SerializeField] private GameObject itemModel;
 
+        [Header("Inventory Properties")] 
+        [SerializeField] private int maxStack = 1;
+
         #endregion
 
         #region Properties
@@ -60,7 +63,11 @@ namespace _Scripts.Scriptables
         public Sprite ItemImage => itemImage;
         public GameObject ItemModel => itemModel;
         
-        #endregion
         
+        // Inventory Properties.
+        public int MaxStack => maxStack;
+
+        #endregion
+
     }
 }

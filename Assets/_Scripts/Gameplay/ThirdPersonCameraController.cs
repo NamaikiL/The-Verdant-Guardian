@@ -1,105 +1,67 @@
-using System;
 using UnityEngine;
 
 namespace _Scripts.Gameplay
 {
     public class ThirdPersonCameraController : MonoBehaviour
     {
-        #region Variables
-
-        [Header("Player Follow Parameters")] 
+        [Header("Player Properties")]
         [SerializeField] private Transform target;
-        [SerializeField] private Vector3 offset;
-        [SerializeField] private float collisionOffset = .2f;
-        
-        [Header("Camera")]
-        [SerializeField] private float smoothSpeed = 1f;
-        [SerializeField] private float mouseSensitivity = 100f;
-        [SerializeField] private float pitchMin = -35f;
+
+        [Header("Camera Properties")]
+        [SerializeField] private float smoothSpeed = 0.2f;
+        [SerializeField] private Vector3 cameraOffset = new Vector3(0f, 2f, -7f);
+
+        [Header("Camera Rotation Properties")]
+        [SerializeField] private float mouseSensitivity = 150f;
+        [SerializeField] private float pitchMin = -30f;
         [SerializeField] private float pitchMax = 60f;
-        [SerializeField] private float lookAheadDistance = 2f;
-        [SerializeField] private float lookAheadSmoothTime = .5f;
-        
-        // Camera Rotation.
-        private float _yaw;      // Vertical Rotation.
-        private float _pitch;    // Horizontal Rotation.
-        
-        // Look Ahead;
-        private Vector3 _velocity;
 
-        #endregion
+        [Header("Camera Movement Following")]
+        [SerializeField] private float movementSensitivity = 2f; // Adjust this value to control how much the camera's yaw changes with player movement
 
-        #region Built-In Methods
+        [Header("Collision Properties")]
+        [SerializeField] private float collisionOffset = 1.5f;
 
-        /**
-         * <summary>
-         * 
-         * </summary>
-         */
+        private float _pitch;
+        private float _yaw;
+
         void Start()
         {
             Cursor.lockState = CursorLockMode.Locked;
+            _yaw = transform.eulerAngles.y;
+            _pitch = transform.eulerAngles.x;
         }
 
-        
-        /**
-         * <summary>
-         * 
-         * </summary>
-         */
         void LateUpdate()
         {
-            if (target.parent.GetComponent<PlayerController>().Direction.normalized.magnitude >= .1f)
-            {
-                _yaw = target.eulerAngles.y;
-            }
-            else
-            {
-                HandleCameraRotation();
-            }
+            if (!target) return;
 
-            Transform targetTransform = target;
-            Vector3 desiredPosition = targetTransform.position + offset + targetTransform.forward * lookAheadDistance;
-            Vector3 smoothedPosition = Vector3.SmoothDamp(transform.position, desiredPosition, ref _velocity, lookAheadSmoothTime);
+            HandleCameraRotation();
 
-            HandleCollisions(smoothedPosition);
-            
-            transform.LookAt(targetTransform.position + targetTransform.forward * lookAheadDistance);
+            Vector3 desiredCameraPosition = target.position + Quaternion.Euler(_pitch, _yaw, 0) * cameraOffset;
+            Vector3 collisionAdjustedPosition = CameraCollisionAdjustment(target.position, desiredCameraPosition);
+            transform.position = Vector3.Lerp(transform.position, collisionAdjustedPosition, smoothSpeed * Time.deltaTime);
+            transform.LookAt(target);
         }
 
-        #endregion
-
-        #region Camera Behavior
-
-        /**
-         * <summary>
-         * Handle the camera rotation with the mouse pos.
-         * </summary>
-         */
         private void HandleCameraRotation()
         {
             float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
             float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+            float playerMovementDirection = Input.GetAxis("Horizontal"); // Assuming "Horizontal" maps to player's left/right movement
 
-            _yaw += mouseX;
+            _yaw += mouseX + (playerMovementDirection * movementSensitivity); // Modify yaw based on player movement as well as mouse input
             _pitch -= mouseY;
             _pitch = Mathf.Clamp(_pitch, pitchMin, pitchMax);
-
-            transform.eulerAngles = new Vector3(_pitch, _yaw, 0f);
-            offset = Quaternion.Euler(_pitch, _yaw, 0f) * new Vector3(5.2f, 2f, -3f);
         }
 
-
-        private void HandleCollisions(Vector3 smoothedPosition)
+        private Vector3 CameraCollisionAdjustment(Vector3 fromPosition, Vector3 toPosition)
         {
-            if (Physics.Linecast(target.position, smoothedPosition, out RaycastHit hit))
+            if (Physics.Linecast(fromPosition, toPosition, out RaycastHit hit))
             {
-                smoothedPosition = hit.point + hit.normal * collisionOffset;
+                return hit.point + hit.normal * collisionOffset;
             }
-            
-            transform.position = smoothedPosition;
+            return toPosition;
         }
-
-        #endregion
     }
 }

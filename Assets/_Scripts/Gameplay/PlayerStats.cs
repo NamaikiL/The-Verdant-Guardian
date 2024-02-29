@@ -94,7 +94,6 @@ namespace _Scripts.Gameplay
             
             if (_currentPlayerStamina == 0)
             {
-                Debug.Log("La ?");
                 GetComponent<PlayerInputs>().Sprint = false;
             }
 
@@ -155,7 +154,6 @@ namespace _Scripts.Gameplay
             
             while (_currentPlayerStamina < maxPlayerStamina)
             {
-                Debug.Log("Test");
                 _currentPlayerStamina = Mathf.Clamp(_currentPlayerStamina + staminaRegenRate * Time.deltaTime, 0f, maxPlayerStamina);
                 // TO-DO: UI Update.
                 yield return null;

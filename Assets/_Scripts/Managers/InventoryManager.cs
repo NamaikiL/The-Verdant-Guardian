@@ -6,6 +6,44 @@ using UnityEngine;
 
 namespace _Scripts.Managers
 {
+
+    [Serializable]
+    public class InventoryItem
+    {
+        #region Variables
+
+        [Header("Item")] 
+        [SerializeField] private Items item;
+        [SerializeField] private int itemQuantity;
+
+        #endregion
+
+        #region Properties
+
+        public Items Item
+        {
+            get => item;
+            set => item = value;
+        }
+        
+        public int ItemQuantity
+        {
+            get => itemQuantity;
+            set => itemQuantity = value;
+        }
+
+        #endregion
+
+        #region Methods
+
+        public InventoryItem(Items items, int quantity)
+        {
+            item = items;
+            itemQuantity = quantity;
+        }
+
+        #endregion
+    }
     
     /**
      * <summary>
@@ -21,7 +59,7 @@ namespace _Scripts.Managers
         
         // Inventory Item Handler.
         private int _currentItemCount;
-        private List<Items> _inventoryItems = new List<Items>();
+        private List<InventoryItem> _inventoryItems = new List<InventoryItem>();
         
         // Components.
         private UIManager _uiManager;
@@ -103,9 +141,9 @@ namespace _Scripts.Managers
                 }
                 
                 // Inventory Management.
-                _uiManager.CreateItemInventory(item.ItemScriptable);
                 _currentItemCount++;
-                _inventoryItems.Add(itemScriptable);
+                _inventoryItems.Add(new InventoryItem(item.ItemScriptable, 1));
+                _uiManager.AddItemToUI(item.ItemScriptable, 1);
                 
                 // GameObject handler.
                 Destroy(item.gameObject);
@@ -119,15 +157,31 @@ namespace _Scripts.Managers
          * </summary>
          * <param name="item">The actual item.</param>
          */
-        public void RemoveItemFromInventory(Items item)
+        public void RemoveItemFromInventory(Items item, int quantity)
         {
-            foreach (Items items in _inventoryItems)
+            if (_inventoryItems[_inventoryItems.FindIndex(inventoryItem => inventoryItem.Item == item)].ItemQuantity >= quantity)
             {
-                if (items == item)
+                for (int i = 0; i <= _inventoryItems.Count; i++)
                 {
-                    _inventoryItems.Remove(item);
-                    return;
+                    if (_inventoryItems[i].Item == item)
+                    {
+                        _inventoryItems[i].ItemQuantity -= quantity;
+                        
+                        if (_inventoryItems[i].ItemQuantity <= 0)
+                        {
+                            _inventoryItems.RemoveAt(i);
+                            _uiManager.RemoveItemToUI(item, quantity);
+                        }
+                        
+                        _uiManager.RemoveItemToUI(item, quantity);
+
+                        break;
+                    }
                 }
+            }
+            else
+            {
+                Debug.Log("No.");
             }
         }
 

@@ -105,7 +105,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 2.5
+  m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &-8640944927738159853
 MonoBehaviour:
@@ -119,12 +119,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79fd3c60daa0bcc42bba8c071bb43de9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemType: 0
   isQuestConnected: 1
-  scriptable: {fileID: 11400000, guid: 715f8407c86e53a4daf507f2ba7caf2e, type: 2}
+  itemScriptable: {fileID: 11400000, guid: 715f8407c86e53a4daf507f2ba7caf2e, type: 2}
+  itemType: 0
   interactionUI: {fileID: 3250474274251407424}
-  collectablesScriptable: {fileID: 11400000, guid: 715f8407c86e53a4daf507f2ba7caf2e,
-    type: 2}
 --- !u!1001 &8947582920092046014
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -142,6 +140,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: InteractionButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 5850231317177651966, guid: b2efa859fec10304ebdf4c6aad876d36,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8103799936587529650, guid: b2efa859fec10304ebdf4c6aad876d36,
         type: 3}

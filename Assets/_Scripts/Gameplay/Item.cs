@@ -63,7 +63,6 @@ namespace _Scripts.Gameplay
         protected virtual void Start()
         {
             _inventoryManager = InventoryManager.Instance;
-            Debug.Log(_inventoryManager);
         }
 
 
