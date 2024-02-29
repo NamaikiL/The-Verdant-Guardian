@@ -9826,7 +9826,6 @@ GameObject:
   - component: {fileID: 3200342409299436730}
   - component: {fileID: 2593018477815755810}
   - component: {fileID: 2416125067247940365}
-  - component: {fileID: 6021029600479212014}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -9963,23 +9962,7 @@ MonoBehaviour:
   staminaRegenDelay: 5
   sprintStaminaCost: 5
   rollStaminaCost: 20
---- !u!114 &6021029600479212014
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7386197055365572710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c424cf98c97d344c84b5405dfc08bb0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lifeSlider: {fileID: 0}
-  damageSlider: {fileID: 0}
-  cam: {fileID: 0}
-  target: {fileID: 0}
-  gaugePosition: {x: 0, y: 0, z: 0}
+  uiManager: {fileID: 0}
 --- !u!1 &8045266601308899639
 GameObject:
   m_ObjectHideFlags: 0

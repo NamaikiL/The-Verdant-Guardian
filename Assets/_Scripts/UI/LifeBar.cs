@@ -14,7 +14,7 @@ namespace _Scripts.UI
     {
         #region Variables
 
-        [Header("Life gauge UI")]
+        [Header("Life gauge UI.")]
         [SerializeField] private Slider lifeSlider;
         [SerializeField] private Slider damageSlider;
 

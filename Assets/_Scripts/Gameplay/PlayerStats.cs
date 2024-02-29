@@ -1,4 +1,5 @@
 using System.Collections;
+using _Scripts.Managers;
 using _Scripts.UI;
 using UnityEngine;
 
@@ -13,13 +14,14 @@ namespace _Scripts.Gameplay
         [SerializeField] private LifeBar lifeBar;
         [SerializeField] private float durationHealVFX = 2f;
         [SerializeField] private GameObject healVFX;
-        
+
         [Header("Player Stamina")]
         [SerializeField] private float maxPlayerStamina = 100f;
         [SerializeField] private float staminaRegenRate = 5f;
         [SerializeField] private float staminaRegenDelay = 5f;
         [SerializeField] private float sprintStaminaCost = 5f;
         [SerializeField] private float rollStaminaCost = 20f;
+        [SerializeField] private UIManager uiManager;
         
         // Player Stats.
         private int _currentPlayerHP;
@@ -44,7 +46,9 @@ namespace _Scripts.Gameplay
             _currentPlayerHP = maxPlayerHP;
             _currentPlayerStamina = maxPlayerStamina;
 
+            //Update maximum size of gauges
             lifeBar.SetLifeBarMax(maxPlayerHP);
+            uiManager.SetStaminaBarMax(maxPlayerStamina);
         }
 
         /**
@@ -55,16 +59,6 @@ namespace _Scripts.Gameplay
         void Update()
         {
             _currentPlayerHP = Mathf.Clamp(_currentPlayerHP, 0, maxPlayerHP);
-
-            //Provisoir pour tester la vie
-            if(Input.GetKeyUp(KeyCode.O))
-            {
-                RegenHealth(15);
-            }
-            if (Input.GetKeyUp(KeyCode.P))
-            {
-                TakeDamage(10);
-            }
         }
 
         #endregion
@@ -139,7 +133,7 @@ namespace _Scripts.Gameplay
                     _regenStamina = null;
                 }
                 _currentPlayerStamina = Mathf.Clamp(_currentPlayerStamina - sprintStaminaCost * Time.deltaTime, 0f, maxPlayerStamina);
-                // TO-DO: UI Update.
+                uiManager.UpdateStaminaBar(_currentPlayerStamina);
             }
             
             if (_currentPlayerStamina == 0)
@@ -167,7 +161,7 @@ namespace _Scripts.Gameplay
             }
             
             _currentPlayerStamina = Mathf.Clamp(_currentPlayerStamina - rollStaminaCost, 0f, maxPlayerStamina);
-            // TO-DO: UI Update.
+            uiManager.UpdateStaminaBar(_currentPlayerStamina);
             _regenStamina = RegenerateStamina();
             StartCoroutine(_regenStamina);
         }
@@ -188,7 +182,7 @@ namespace _Scripts.Gameplay
             }
             
             _currentPlayerStamina = Mathf.Clamp(_currentPlayerStamina - amount, 0f, maxPlayerStamina);
-            // TO-DO: UI Update.
+            uiManager.UpdateStaminaBar(_currentPlayerStamina);
             _regenStamina = RegenerateStamina();
             StartCoroutine(_regenStamina);
         }
@@ -207,7 +201,7 @@ namespace _Scripts.Gameplay
             {
                 Debug.Log("Test");
                 _currentPlayerStamina = Mathf.Clamp(_currentPlayerStamina + staminaRegenRate * Time.deltaTime, 0f, maxPlayerStamina);
-                // TO-DO: UI Update.
+                uiManager.UpdateStaminaBar(_currentPlayerStamina);
                 yield return null;
             }
         }

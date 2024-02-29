@@ -14,6 +14,8 @@ namespace _Scripts.Managers
     public class UIManager : MonoBehaviour
     {
         #region Variables
+        [Header("Stamina gauge UI.")]
+        [SerializeField] private Slider staminaSlider;
 
         [Header("Quest UI.")]
         [SerializeField] private Transform panQuestHolder;
@@ -79,6 +81,30 @@ namespace _Scripts.Managers
         #endregion
 
         #region Custom Methods
+
+        /**
+         * <summary>
+         * Update the size of the gauge based on the maximum stamina.
+         * </summary>
+         * <param name="maxStamina">The maximum stamina disponible. </param>
+         */
+        public void SetStaminaBarMax(float maxStamina)
+        {
+            staminaSlider.maxValue = maxStamina;
+            UpdateStaminaBar(maxStamina);
+        }
+
+        /**
+         * <summary>
+         * Update stamina bar.
+         * </summary>
+         * <param name="currentStamina">The actual stamina value. </param>
+         */
+        public void UpdateStaminaBar(float currentStamina)
+        {
+            staminaSlider.value = currentStamina;
+        }
+
 
         /**
          * <summary>
