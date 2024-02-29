@@ -11,6 +11,8 @@ namespace _Scripts.Gameplay
         [Header("Player Health")]
         [SerializeField] private int maxPlayerHP = 100;
         [SerializeField] private LifeBar lifeBar;
+        [SerializeField] private float durationHealVFX = 2f;
+        [SerializeField] private GameObject healVFX;
         
         [Header("Player Stamina")]
         [SerializeField] private float maxPlayerStamina = 100f;
@@ -53,6 +55,16 @@ namespace _Scripts.Gameplay
         void Update()
         {
             _currentPlayerHP = Mathf.Clamp(_currentPlayerHP, 0, maxPlayerHP);
+
+            //Provisoir pour tester la vie
+            if(Input.GetKeyUp(KeyCode.O))
+            {
+                RegenHealth(15);
+            }
+            if (Input.GetKeyUp(KeyCode.P))
+            {
+                TakeDamage(10);
+            }
         }
 
         #endregion
@@ -81,6 +93,7 @@ namespace _Scripts.Gameplay
         {
             _currentPlayerHP += quantity;
             lifeBar.UpdateLifeBar(_currentPlayerHP);
+            StartCoroutine(HealEffectDuration());
         }
 
         /**
@@ -93,6 +106,18 @@ namespace _Scripts.Gameplay
         {
             _currentPlayerHP += maxPlayerHP;
             lifeBar.UpdateLifeBar(_currentPlayerHP);
+        }
+
+        /**
+         * <summary>
+         * Active VFX when the player get healed for a certain duration.
+         * </summary>
+         */
+        private IEnumerator HealEffectDuration()
+        {
+            healVFX.SetActive(true);
+            yield return new WaitForSeconds(durationHealVFX);
+            healVFX.SetActive(false);
         }
 
         #endregion

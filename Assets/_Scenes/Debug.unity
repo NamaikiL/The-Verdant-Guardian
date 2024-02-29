@@ -1273,6 +1273,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1451409151}
     m_Modifications:
+    - target: {fileID: 2622616642477216419, guid: b2efa859fec10304ebdf4c6aad876d36,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5850231317177651966, guid: b2efa859fec10304ebdf4c6aad876d36,
         type: 3}
       propertyPath: m_Name
@@ -3652,84 +3657,28 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 708055374628479020, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 708055374628479020, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.071418256
-      objectReference: {fileID: 0}
-    - target: {fileID: 708055374628479020, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.05427338
-      objectReference: {fileID: 0}
-    - target: {fileID: 897166141803098849, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -4.8173375
-      objectReference: {fileID: 0}
-    - target: {fileID: 897166141803098849, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -1.3391266
-      objectReference: {fileID: 0}
     - target: {fileID: 2416125067247940365, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
         type: 3}
       propertyPath: lifeBar
       value: 
       objectReference: {fileID: 2105925034}
-    - target: {fileID: 2416125067247940365, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
+    - target: {fileID: 6021029600479212014, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
         type: 3}
-      propertyPath: maxPlayerHP
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 2593018477815755810, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
+      propertyPath: lifeSlider
+      value: 
+      objectReference: {fileID: 1751897569}
+    - target: {fileID: 6021029600479212014, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
         type: 3}
-      propertyPath: gravity
-      value: -9.81
-      objectReference: {fileID: 0}
-    - target: {fileID: 2593018477815755810, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
-        type: 3}
-      propertyPath: jumpForce
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2593018477815755810, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
-        type: 3}
-      propertyPath: moveSpeed
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2593018477815755810, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
-        type: 3}
-      propertyPath: moveSpeedCrouch
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2593018477815755810, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
-        type: 3}
-      propertyPath: moveSpeedSprint
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 2593018477815755810, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
-        type: 3}
-      propertyPath: turnSmoothSpeed
-      value: 0.2
-      objectReference: {fileID: 0}
+      propertyPath: damageSlider
+      value: 
+      objectReference: {fileID: 532948142}
     - target: {fileID: 7386197055365572710, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
         type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 8748657717824169658, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
-        type: 3}
-      propertyPath: m_SkinWidth
-      value: 0.0001
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 1922728007220361187, guid: 969b8e9ac949b5b4dbecba9af4ee6450, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 969b8e9ac949b5b4dbecba9af4ee6450, type: 3}
