@@ -60,14 +60,6 @@ namespace _Scripts.Gameplay
         void Update()
         {
             _currentPlayerHP = Mathf.Clamp(_currentPlayerHP, 0, maxPlayerHP);
-            if(Input.GetKeyDown(KeyCode.P))
-            {
-                TakeDamage(10);
-            }
-            if (Input.GetKeyDown(KeyCode.O))
-            {
-                RegenHealth(5);
-            }
         }
 
         #endregion
