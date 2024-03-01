@@ -9,9 +9,11 @@ namespace _Scripts.Gameplay
     {
         #region Variables
 
+        [Header("Scripts")]
+        [SerializeField] private UIManager uiManager;
+
         [Header("Player Health")]
         [SerializeField] private int maxPlayerHP = 100;
-        [SerializeField] private LifeBar lifeBar;
         [SerializeField] private float durationHealVFX = 2f;
         [SerializeField] private GameObject healVFX;
 
@@ -21,7 +23,6 @@ namespace _Scripts.Gameplay
         [SerializeField] private float staminaRegenDelay = 5f;
         [SerializeField] private float sprintStaminaCost = 5f;
         [SerializeField] private float rollStaminaCost = 20f;
-        [SerializeField] private UIManager uiManager;
         
         // Player Stats.
         private int _currentPlayerHP;
@@ -47,7 +48,7 @@ namespace _Scripts.Gameplay
             _currentPlayerStamina = maxPlayerStamina;
 
             //Update maximum size of gauges
-            lifeBar.SetLifeBarMax(maxPlayerHP);
+            uiManager.SetLifeBarMax(maxPlayerHP);
             uiManager.SetStaminaBarMax(maxPlayerStamina);
         }
 
@@ -59,6 +60,14 @@ namespace _Scripts.Gameplay
         void Update()
         {
             _currentPlayerHP = Mathf.Clamp(_currentPlayerHP, 0, maxPlayerHP);
+            if(Input.GetKeyDown(KeyCode.P))
+            {
+                TakeDamage(10);
+            }
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                RegenHealth(5);
+            }
         }
 
         #endregion
@@ -74,7 +83,7 @@ namespace _Scripts.Gameplay
         public void TakeDamage(int damage)
         {
             _currentPlayerHP -= damage;
-            lifeBar.UpdateLifeBar(_currentPlayerHP);
+            uiManager.UpdateLifeBar(_currentPlayerHP);
         }
 
         /**
@@ -86,7 +95,7 @@ namespace _Scripts.Gameplay
         public void RegenHealth(int quantity)
         {
             _currentPlayerHP += quantity;
-            lifeBar.UpdateLifeBar(_currentPlayerHP);
+            uiManager.UpdateLifeBar(_currentPlayerHP);
             StartCoroutine(HealEffectDuration());
         }
 
@@ -99,7 +108,7 @@ namespace _Scripts.Gameplay
         public void RegenAllHealth(int quantity)
         {
             _currentPlayerHP += maxPlayerHP;
-            lifeBar.UpdateLifeBar(_currentPlayerHP);
+            uiManager.UpdateLifeBar(_currentPlayerHP);
         }
 
         /**

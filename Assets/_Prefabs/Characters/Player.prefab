@@ -9675,7 +9675,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5132234125548204818
 Transform:
   m_ObjectHideFlags: 0
@@ -9953,8 +9953,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdf844fc6d3271c42a3a5c5a6f870d43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiManager: {fileID: 0}
   maxPlayerHP: 100
-  lifeBar: {fileID: 0}
   durationHealVFX: 3
   healVFX: {fileID: 5041991792393152033}
   maxPlayerStamina: 100
@@ -9962,7 +9962,6 @@ MonoBehaviour:
   staminaRegenDelay: 5
   sprintStaminaCost: 5
   rollStaminaCost: 20
-  uiManager: {fileID: 0}
 --- !u!1 &8045266601308899639
 GameObject:
   m_ObjectHideFlags: 0
