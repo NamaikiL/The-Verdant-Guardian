@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isActive: 0
   isComplete: 0
-  questTitle: 
-  questDescription: 
-  questObjectives: []
+  questTitle: "Trouver l'\xE9p\xE9e l\xE9gendaire"
+  questDescription: "R\xE9cup\xE8re l'\xE9p\xE9e l\xE9gendaire, dans la for\xEAt
+    proche des montagnes."
+  questObjectives:
+  - {fileID: 11400000, guid: afe07c554945e664d9c6eff630d292dd, type: 2}
