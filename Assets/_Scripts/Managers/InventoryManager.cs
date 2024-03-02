@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using _Scripts.Gameplay;
 using _Scripts.Scriptables;
@@ -6,45 +5,6 @@ using UnityEngine;
 
 namespace _Scripts.Managers
 {
-
-    [Serializable]
-    public class InventoryItem
-    {
-        #region Variables
-
-        [Header("Item")] 
-        [SerializeField] private Items item;
-        [SerializeField] private int itemQuantity;
-
-        #endregion
-
-        #region Properties
-
-        public Items Item
-        {
-            get => item;
-            set => item = value;
-        }
-        
-        public int ItemQuantity
-        {
-            get => itemQuantity;
-            set => itemQuantity = value;
-        }
-
-        #endregion
-
-        #region Methods
-
-        public InventoryItem(Items items, int quantity)
-        {
-            item = items;
-            itemQuantity = quantity;
-        }
-
-        #endregion
-    }
-    
     /**
      * <summary>
      * Handler of the inventory.
@@ -55,11 +15,7 @@ namespace _Scripts.Managers
         #region Variables
 
         [Header("Inventory Item Properties")] 
-        [SerializeField] private int inventoryItemCapacity = 30;
-        
-        // Inventory Item Handler.
-        private int _currentItemCount;
-        private List<InventoryItem> _inventoryItems = new List<InventoryItem>();
+        [SerializeField] private Inventory inventoryScriptable;
         
         // Components.
         private UIManager _uiManager;
@@ -71,6 +27,9 @@ namespace _Scripts.Managers
 
         #region Properties
 
+        // Scriptable Objects.
+        public Inventory InventoryScriptable => inventoryScriptable;
+        
         // Singleton Property.
         public static InventoryManager Instance => _instance;
 
@@ -98,91 +57,70 @@ namespace _Scripts.Managers
         void Start()
         {
             _uiManager = UIManager.Instance;
+
+            _uiManager.OnSwapItems += HandleSwapItems;
+            _uiManager.OnStartDragging += HandleDragging;
+            _uiManager.OnItemActionRequested += HandleItemActionRequest;
+            
+            //inventoryScriptable.InitializeInventory();
+
+            inventoryScriptable.OnInventoryUpdated += UpdateInventoryUI;
+        }
+
+        private void UpdateInventoryUI(Dictionary<int, InventoryItem> inventoryState)
+        {
+            _uiManager.ResetAllItems();
+            foreach (var item in inventoryState)
+            {
+                _uiManager.UpdateInventorySlotUI(item.Key, item.Value.item, item.Value.quantity);
+            }
+        }
+
+
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                if (!_uiManager.InventoryShowed)
+                {
+                    _uiManager.ManageInventory();
+                    foreach (var inventoryItem in inventoryScriptable.GetCurrentInventoryState())
+                    {
+                        _uiManager.UpdateInventorySlotUI(
+                            inventoryItem.Key, 
+                            inventoryItem.Value.item, 
+                            inventoryItem.Value.quantity
+                            );
+                    }
+                }
+                else
+                {
+                    _uiManager.ManageInventory();
+                }
+            }
         }
 
         #endregion
 
-        #region Inventory Item Management
+        #region Events
 
-        /**
-         * <summary>
-         * Update the item inventory.
-         * </summary>
-         * <param name="item">The item.</param>
-         * <param name="itemScriptable">The scriptable data of the item.</param>
-         * <param name="itemType">The item type.</param>
-         * <param name="playerController">The controller of the player.</param>
-         */
-        public void AddItemToInventory(Item item, Items itemScriptable, ItemType itemType, PlayerController playerController)
+        private void HandleItemActionRequest(int itemIndex)
         {
-            if (_inventoryItems.Count < inventoryItemCapacity)
-            {   // If the item inventory capacity isn't full.
-                if (item.IsQuestConnected)
-                {   // If the item is a quest item.
-                    foreach (Quest quest in playerController.PlayerQuestsList)
-                    {   // If one of the quest the player have has the item required in its objectives.
-                        foreach (Objectives objective in quest.QuestObjectives)
-                        {   
-                            if (!objective.IsComplete 
-                                && objective.ActualObjectiveType == ObjectiveType.Collect 
-                                && objective.ActualItemType == itemType)
-                            {   // Check the objective condtions.
-                                objective.NbCollected++;
-                                
-                                if (objective.NbCollected == objective.NbToCollect)
-                                {   // When the number to collect is the one required.
-                                    objective.CompleteObjective();
-                                }
-
-                                return;
-                            }
-                        }
-                    }
-                }
-                
-                // Inventory Management.
-                _currentItemCount++;
-                _inventoryItems.Add(new InventoryItem(item.ItemScriptable, 1));
-                _uiManager.AddItemToUI(item.ItemScriptable, 1);
-                
-                // GameObject handler.
-                Destroy(item.gameObject);
-            }
+            
         }
 
-
-        /**
-         * <summary>
-         * Remove an item from the player inventory.
-         * </summary>
-         * <param name="item">The actual item.</param>
-         */
-        public void RemoveItemFromInventory(Items item, int quantity)
+        
+        private void HandleDragging(int itemIndex)
         {
-            if (_inventoryItems[_inventoryItems.FindIndex(inventoryItem => inventoryItem.Item == item)].ItemQuantity >= quantity)
-            {
-                for (int i = 0; i <= _inventoryItems.Count; i++)
-                {
-                    if (_inventoryItems[i].Item == item)
-                    {
-                        _inventoryItems[i].ItemQuantity -= quantity;
-                        
-                        if (_inventoryItems[i].ItemQuantity <= 0)
-                        {
-                            _inventoryItems.RemoveAt(i);
-                            _uiManager.RemoveItemToUI(item, quantity);
-                        }
-                        
-                        _uiManager.RemoveItemToUI(item, quantity);
+            InventoryItem inventoryItem = inventoryScriptable.GetItemAt(itemIndex);
+            if (inventoryItem.IsEmpty) return;
+            _uiManager.CreateDraggedItem(inventoryItem.item, inventoryItem.quantity);
+        }
 
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                Debug.Log("No.");
-            }
+        
+        private void HandleSwapItems(int itemIndex1, int itemIndex2)
+        {
+            inventoryScriptable.SwapItems(itemIndex1, itemIndex2);
         }
 
         #endregion

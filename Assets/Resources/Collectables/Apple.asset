@@ -20,5 +20,6 @@ MonoBehaviour:
   itemSellCost: 0
   itemImage: {fileID: 0}
   itemModel: {fileID: 0}
-  maxStack: 2
+  isStackable: 1
+  maxStack: 26
   collectableName: Apple

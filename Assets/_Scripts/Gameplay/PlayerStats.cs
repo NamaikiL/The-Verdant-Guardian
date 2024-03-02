@@ -3,6 +3,16 @@ using UnityEngine;
 
 namespace _Scripts.Gameplay
 {
+
+    public enum PlayerSkills
+    {
+        Constitution,
+        Strength,
+        Vigor,
+        Dexterity,
+        Luck
+    }
+    
     public class PlayerStats : MonoBehaviour
     {
         #region Variables

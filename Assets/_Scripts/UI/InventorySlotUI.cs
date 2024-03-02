@@ -1,62 +1,103 @@
+using System;
 using _Scripts.Scriptables;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace _Scripts.UI
 {
-    public class InventorySlotUI : MonoBehaviour
+    public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDropHandler, IDragHandler
     {
         #region Variables
 
         [Header("Item Case Properties")] 
         [SerializeField] private Image itemIcon;
         [SerializeField] private TMP_Text itemText;
-        [SerializeField] private Items currentItem;
-        [SerializeField] private int currentQuantity;
+
+        private Items _currentItem;
+        private int _currentQuantity;
+
+        // Conditions.
+        private bool _isEmpty = true;
+        private IDragHandler _dragHandlerImplementation;
+
+        // Events for the Inventory UI Interactions.
+        public event Action<InventorySlotUI> OnItemRightClicked, OnItemDroppedOn, OnItemBeginDrag, OnItemEndDrag; 
 
         #endregion
 
         #region Properties
 
-        public int CurrentQuantity
-        {
-            get => currentQuantity;
-            set => currentQuantity = value;
-        }
-        public Items CurrentItem => currentItem;
-
+        public Items CurrentItem => _currentItem;
+        public int CurrentQuantity => _currentQuantity;
+        
         #endregion
 
+        #region Built-In Methods
+
+        void Awake()
+        {
+            ClearSlot();
+        }
+
+        #endregion
+        
         #region Custom Methods
 
         public void UpdateSlot(Items item, int quantity)
         {
-            currentItem = item;
-            currentQuantity = quantity;
             itemIcon.gameObject.SetActive(true);
             itemIcon.sprite = item.ItemImage;
             itemText.gameObject.SetActive(true);
             itemText.text = quantity.ToString();
+
+            _currentQuantity = quantity;
+            _currentItem = item;
+            _isEmpty = false;
         }
 
 
         public void ClearSlot()
         {
-            currentItem = null;
-            currentQuantity = 0;
             itemIcon.gameObject.SetActive(false);
             itemIcon.sprite = null;
             itemText.gameObject.SetActive(false);
             itemText.text = "";
-        }
 
-
-        public bool IsStackable(Items item)
-        {
-            return currentItem != null && currentItem == item && currentQuantity < item.MaxStack;
+            _isEmpty = true;
         }
 
         #endregion
+
+        #region Events Handler
+
+        public void OnBeginDrag(PointerEventData eventData)
+        {
+            if (_isEmpty) return;
+            OnItemBeginDrag?.Invoke(this);
+        }
+
+        public void OnDrop(PointerEventData eventData)
+        {
+            OnItemDroppedOn?.Invoke(this);
+        }
+
+        public void OnEndDrag(PointerEventData eventData)
+        {
+            OnItemEndDrag?.Invoke(this);
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if(eventData.button == PointerEventData.InputButton.Right) OnItemRightClicked?.Invoke(this);
+        }
+
+        #endregion
+
+        public void OnDrag(PointerEventData eventData)
+        {
+            
+        }
     }
 }

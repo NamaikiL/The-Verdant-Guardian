@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using _Scripts.Scriptables;
 using _Scripts.UI;
@@ -7,7 +8,6 @@ using UnityEngine.UI;
 
 namespace _Scripts.Managers
 {
-    
     /**
      * <summary>
      * Manager of the UI in general.
@@ -26,9 +26,16 @@ namespace _Scripts.Managers
         [SerializeField] private GameObject panInventory;
         // Items UI Assets.
         [SerializeField] private List<InventorySlotUI> inventorySlots;
+        // Mouse Controller
+        [SerializeField] private MouseFollower mouseFollower;
 
         // Inventory Variables.
+        private int _currentlyDraggedItemIndex = -1;
         private bool _inventoryShowed;
+        
+        // Inventory Events.
+        public event Action<int> OnItemActionRequested, OnStartDragging; 
+        public event Action<int, int> OnSwapItems;
         
         // Components.
         private InventoryManager _inventoryManager;
@@ -41,6 +48,7 @@ namespace _Scripts.Managers
         #region Properties
 
         // Inventory Management.
+        public bool InventoryShowed => _inventoryShowed;
         public List<InventorySlotUI> InventorySlot => inventorySlots;
         
         // Singleton Property.
@@ -60,6 +68,18 @@ namespace _Scripts.Managers
             // Singleton.
             if (_instance) Destroy(this);
             _instance = this;
+        }
+        
+        
+        void OnEnable()
+        {
+            foreach (InventorySlotUI inventorySlotUI in inventorySlots)
+            {
+                inventorySlotUI.OnItemBeginDrag += HandleBeginDrag;
+                inventorySlotUI.OnItemDroppedOn += HandleSwap;
+                inventorySlotUI.OnItemEndDrag += HandleEndDrag;
+                inventorySlotUI.OnItemRightClicked += HandleShowItemsActions;
+            }
         }
 
 
@@ -104,7 +124,7 @@ namespace _Scripts.Managers
 
         #endregion
 
-        #region Inventory
+        #region Inventory Item Management
 
         /**
          * <summary>
@@ -132,55 +152,11 @@ namespace _Scripts.Managers
          * </summary>
          * <param name="inventoryItems">The list of items.</param>
          */
-        public void AddItemToUI(Items item, int quantity)
+        public void UpdateInventorySlotUI(int id, Items itemScriptable, int quantity)
         {
-            foreach (InventorySlotUI slot in inventorySlots)
+            if (inventorySlots.Count > id)
             {
-                if (slot.IsStackable(item))
-                {
-                    slot.CurrentQuantity += quantity;
-                    slot.UpdateSlot(slot.CurrentItem, slot.CurrentQuantity);
-                    return;
-                }
-            }
-            
-            foreach (InventorySlotUI slot in inventorySlots)
-            {
-                if (slot.CurrentItem == null)
-                {
-                    slot.UpdateSlot(item, quantity);
-                    break;
-                }
-            }
-        }
-        
-        
-        /**
-         * <summary>
-         * Manage the information of the item.
-         * </summary>
-         * <param name="inventoryItems">The list of items.</param>
-         */
-        public void RemoveItemToUI(Items item, int quantity)
-        {
-            foreach (InventorySlotUI slot in inventorySlots)
-            {
-                if (slot.CurrentItem == item)
-                {
-                    if (slot.CurrentQuantity > quantity)
-                    {
-                        slot.CurrentQuantity -= quantity;
-                        slot.UpdateSlot(slot.CurrentItem, slot.CurrentQuantity);
-                        return;
-                    }
-                    else
-                    {
-                        quantity -= slot.CurrentQuantity;
-                        slot.ClearSlot();
-
-                        if (quantity == 0) return;
-                    }
-                }
+                inventorySlots[id].UpdateSlot(itemScriptable, quantity);
             }
         }
 
@@ -193,10 +169,83 @@ namespace _Scripts.Managers
          */
         private void DropItem(Items item, int quantity)
         {
-            _inventoryManager.RemoveItemFromInventory(item, quantity);
+            
         } 
+        
+        
+        public void ResetAllItems()
+        {
+            foreach (InventorySlotUI inventorySlot in inventorySlots)
+            {
+                inventorySlot.ClearSlot();
+            }
+        }
+        
+        
+        // EVENTS
+        
+        
+        private void HandleShowItemsActions(InventorySlotUI obj)
+        {
+            
+        }
+
+        
+        private void HandleEndDrag(InventorySlotUI obj)
+        {
+            ResetDraggedItem();
+        }
+
+        
+        private void HandleSwap(InventorySlotUI obj)
+        {
+            int index = inventorySlots.IndexOf(obj);
+            if (index == -1)
+            {
+                return;
+            }
+
+            OnSwapItems ?.Invoke(_currentlyDraggedItemIndex, index);
+        }
+
+        
+        private void HandleBeginDrag(InventorySlotUI obj)
+        {
+            int index = inventorySlots.IndexOf(obj);
+            if (index == -1) return;
+            _currentlyDraggedItemIndex = index;
+            OnStartDragging?.Invoke(index);
+        }
+
+
+        public void CreateDraggedItem(Items item, int quantity)
+        {
+            mouseFollower.Toggle(true);
+            mouseFollower.UpdateMouseFollowerSlot(item, quantity);
+        }
+
+
+        private void ResetDraggedItem()
+        {
+            mouseFollower.Toggle(false);
+            _currentlyDraggedItemIndex = -1;
+        }
 
         #endregion
 
+        #region Inventory Stats Management
+
+        public void BtnStatsIncrement()
+        {
+            
+        }
+
+
+        public void BtnStatsDecrement()
+        {
+            
+        }
+
+        #endregion
     }
 }

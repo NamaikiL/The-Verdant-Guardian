@@ -123,13 +123,6 @@ namespace _Scripts.Gameplay
             // Dodge.
             if(Input.GetKeyDown(dodgeKey)) _dodge = true;
             
-            // Manage Inventory.
-            // TO-DO: Change that to a function(In mb the inventory component).
-            if (_interaction)
-            {
-                _uiManager.ManageInventory();
-            }
-            
         }
 
         #endregion

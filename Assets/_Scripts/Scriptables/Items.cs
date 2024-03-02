@@ -32,7 +32,7 @@ namespace _Scripts.Scriptables
         [Header("Item Properties")]
         // Item Information.
         [SerializeField] private string itemName;
-        [SerializeField] private string itemDescription;
+        [TextArea][SerializeField] private string itemDescription;
         [SerializeField] private ItemRarity itemRarity;
         [SerializeField] private float itemWeight;
         // Economic variables.
@@ -43,13 +43,18 @@ namespace _Scripts.Scriptables
         [SerializeField] private GameObject itemModel;
 
         [Header("Inventory Properties")] 
+        [SerializeField] private bool isStackable;
         [SerializeField] private int maxStack = 1;
+        
+        // Item ID.
+        private int _itemId => GetInstanceID();
 
         #endregion
 
         #region Properties
 
         // Item Information Properties
+        public int ItemId => _itemId;
         public string ItemName => itemName;
         public string ItemDescription => itemDescription;
         public ItemRarity ItemRarity => itemRarity;
@@ -65,6 +70,7 @@ namespace _Scripts.Scriptables
         
         
         // Inventory Properties.
+        public bool IsStackable => isStackable;
         public int MaxStack => maxStack;
 
         #endregion
