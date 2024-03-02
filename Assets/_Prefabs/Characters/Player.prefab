@@ -41,7 +41,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4255988023923898070}
   serializedVersion: 8
-  lengthInSec: 3
+  lengthInSec: 10
   simulationSpeed: 0.05
   stopAction: 3
   cullingMode: 0
@@ -4871,7 +4871,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4818278438046269105}
   serializedVersion: 8
-  lengthInSec: 5
+  lengthInSec: 10
   simulationSpeed: 1
   stopAction: 3
   cullingMode: 0
@@ -9955,11 +9955,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiManager: {fileID: 0}
   maxPlayerHP: 100
+  healthRegenRate: 0.1
+  healthRegenDelay: 2
   durationHealVFX: 3
   healVFX: {fileID: 5041991792393152033}
   maxPlayerStamina: 100
   staminaRegenRate: 5
-  staminaRegenDelay: 5
+  staminaRegenDelay: 2
   sprintStaminaCost: 5
   rollStaminaCost: 20
 --- !u!1 &8045266601308899639

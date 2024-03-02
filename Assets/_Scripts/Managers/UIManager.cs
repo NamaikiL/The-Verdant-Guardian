@@ -102,13 +102,14 @@ namespace _Scripts.Managers
         #endregion
 
         #region Health Management
+
         /**
          * <summary>
          * Update the size of the gauge based on the maximum life of the character.
          * </summary>
          * <param name="maxLife">The maximum life disponible. </param>
          */
-        public void SetLifeBarMax(int maxLife)
+        public void SetLifeBarMax(float maxLife)
         {
             lifeSlider.maxValue = maxLife;
             damageSlider.maxValue = maxLife;
@@ -121,7 +122,7 @@ namespace _Scripts.Managers
          * </summary>
          * <param name="currentLife">The actual life value. </param>
          */
-        public void UpdateLifeBar(int currentLife)
+        public void UpdateLifeBar(float currentLife)
         {
             lifeSlider.value = currentLife;
             StartCoroutine(EffectLifeDamage(currentLife));
@@ -129,11 +130,11 @@ namespace _Scripts.Managers
 
         /**
          * <summary>
-         * Visual effect when a character loose life.
+         * Coroutine for the visual effect on the gauge when a character loose life.
          * </summary>
          * <param name="currentDamage">The actual damage value. </param>
          */
-        private IEnumerator EffectLifeDamage(int currentDamage)
+        private IEnumerator EffectLifeDamage(float currentDamage)
         {
             yield return new WaitForSeconds(cooldownDamageEffect);
             damageSlider.value = currentDamage;
