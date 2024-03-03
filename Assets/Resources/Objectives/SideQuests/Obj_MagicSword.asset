@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9af5d535f76ae740837c81db135d2ff, type: 3}
   m_Name: Obj_MagicSword
   m_EditorClassIdentifier: 
-  parentQuest: {fileID: 0}
+  parentQuest: {fileID: 11400000, guid: 77eec185a138b0742a2e526e3521905a, type: 2}
   isRequired: 0
   isComplete: 0
   objectiveName: "Trouver l'\xE9p\xE9e l\xE9gendaire"
@@ -21,7 +21,7 @@ MonoBehaviour:
   objectiveType: 0
   nbToCollect: 1
   nbCollected: 0
-  itemType: 0
+  itemType: 1
   nbToFight: 0
   nbFighted: 0
   npcToTalk: {fileID: 0}
