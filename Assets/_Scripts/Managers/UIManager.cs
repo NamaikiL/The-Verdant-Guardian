@@ -1,5 +1,4 @@
 using _Scripts.Scriptables;
-using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,15 +14,6 @@ namespace _Scripts.Managers
     public class UIManager : MonoBehaviour
     {
         #region Variables
-        [Header("Life gauge UI.")]
-        [SerializeField] private Slider lifeSlider;
-        [SerializeField] private Slider damageSlider;
-        [SerializeField] private float cooldownDamageEffect = 0.3f;
-
-        [Header("Floating life gauge position")]
-        [SerializeField] private Camera cam;
-        [SerializeField] private Transform target;
-        [SerializeField] private Vector3 gaugePosition;
 
         [Header("Stamina gauge UI.")]
         [SerializeField] private Slider staminaSlider;
@@ -89,75 +79,6 @@ namespace _Scripts.Managers
             _inventoryManager = InventoryManager.Instance;
         }
 
-        /**
-         * <summary>
-         * Update is called once per frame.
-         * </summary>
-         */
-        void Update()
-        {
-            LifeBarPosition();
-        }
-
-        #endregion
-
-        #region Health Management
-
-        /**
-         * <summary>
-         * Update the size of the gauge based on the maximum life of the character.
-         * </summary>
-         * <param name="maxLife">The maximum life disponible. </param>
-         */
-        public void SetLifeBarMax(float maxLife)
-        {
-            lifeSlider.maxValue = maxLife;
-            damageSlider.maxValue = maxLife;
-            UpdateLifeBar(maxLife);
-        }
-
-        /**
-         * <summary>
-         * Update life bar.
-         * </summary>
-         * <param name="currentLife">The actual life value. </param>
-         */
-        public void UpdateLifeBar(float currentLife)
-        {
-            lifeSlider.value = currentLife;
-            StartCoroutine(EffectLifeDamage(currentLife));
-        }
-
-        /**
-         * <summary>
-         * Coroutine for the visual effect on the gauge when a character loose life.
-         * </summary>
-         * <param name="currentDamage">The actual damage value. </param>
-         */
-        private IEnumerator EffectLifeDamage(float currentDamage)
-        {
-            yield return new WaitForSeconds(cooldownDamageEffect);
-            damageSlider.value = currentDamage;
-        }
-
-        /**
-         * <summary>
-         * Set up the rotation and position of floating life bar depending on the character and the camera.
-         * </summary>
-         */
-        private void LifeBarPosition()
-        {
-            if (cam)
-            {
-                transform.rotation = cam.transform.rotation;
-            }
-
-            if (target)
-            {
-                transform.position = target.position + gaugePosition;
-            }
-        }
-
         #endregion
 
         #region Stamina Management
@@ -213,6 +134,10 @@ namespace _Scripts.Managers
         {
             Destroy(panQuestHolder.transform.GetChild(0).gameObject);
         }
+
+        #endregion
+
+        #region Inventory Management
 
         /**
          * <summary>

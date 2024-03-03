@@ -1,5 +1,8 @@
+using _Scripts.Managers;
 using _Scripts.Scriptables;
+using _Scripts.UI;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace _Scripts.Gameplay
 {
@@ -9,10 +12,69 @@ namespace _Scripts.Gameplay
      * Handler of the NPC.
      * </summary>
      */
-    [RequireComponent(typeof(SphereCollider))]
+    //[RequireComponent(typeof(SphereCollider))]
     public class NpcController : MonoBehaviour
     {
         #region Variables
+        [Header("Scripts")]
+        [SerializeField] private HealthBar healthBar;
+
+        [Header("NPC Health")]
+        [SerializeField] private int maxNpcHP = 100;
+
+        private int _currentNpcHP;
+
+        #endregion
+
+        #region Built-In Methods
+
+        /**
+         * <summary>
+         * Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
+         * </summary>
+         */
+        void Start ()
+        {
+            _currentNpcHP = maxNpcHP;
+
+            //Update the maximum size of gauges
+            healthBar.SetHealthBarMax(maxNpcHP);
+        }
+
+        /**
+         * <summary>
+         * Update is called once per frame.
+         * </summary>
+         */
+        void Update()
+        {
+            _currentNpcHP = Mathf.Clamp(_currentNpcHP, 0, maxNpcHP);
+
+            if(Input.GetKeyDown(KeyCode.I))
+            {
+                TakeDamage(10);
+            }
+        }
+
+        #endregion
+
+        #region Health Management
+
+        /**
+         * <summary>
+         * Remove HP from the NPC based on a quantity given.
+         * </summary>
+         * <param name="damage">The number of damage the player took.</param>
+         */
+        private void TakeDamage(int damage)
+        {
+            _currentNpcHP -= damage;
+            healthBar.UpdateHealthBar(_currentNpcHP);
+        }
+
+        #endregion
+
+        /*#region Variables
 
         [Header("Interaction")] 
         [SerializeField] private GameObject interactionUI;
@@ -30,7 +92,7 @@ namespace _Scripts.Gameplay
          * Start is called before the first frame update.
          * </summary>
          */
-        void Start()
+        /*void Start()
         {
             InitializeSphereCollider();
         }
@@ -42,7 +104,7 @@ namespace _Scripts.Gameplay
          * </summary>
          * <param name="other">The other Collider involved in this collision.</param>
          */
-        void OnTriggerEnter(Collider other)
+        /*void OnTriggerEnter(Collider other)
         {
             if(other.CompareTag("Player"))      // If player is near.
                 if(interactionUI)
@@ -60,7 +122,7 @@ namespace _Scripts.Gameplay
          * </summary>
          * <param name="other">The other Collider involved in this collision.</param>
          */
-        void OnTriggerExit(Collider other)
+        /*void OnTriggerExit(Collider other)
         {
             if(interactionUI)
             {
@@ -79,7 +141,7 @@ namespace _Scripts.Gameplay
          * Initialize the sphere collider of the NPC.
          * </summary>
          */
-        private void InitializeSphereCollider()
+        /*private void InitializeSphereCollider()
         {
             _trigger = GetComponent<SphereCollider>();
             _trigger.isTrigger = true;
@@ -93,11 +155,11 @@ namespace _Scripts.Gameplay
          * </summary>
          * <param name="playerController">The player controller.</param>
          */
-        private void GiveQuest(PlayerController playerController)
+        /*private void GiveQuest(PlayerController playerController)
         {
             playerController.ReceiveNewQuest(quest);
         }
 
-        #endregion
+        #endregion*/
     }
 }
