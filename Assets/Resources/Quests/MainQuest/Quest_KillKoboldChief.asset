@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d9ebad2a00531cf42b0b1c84e245723b, type: 3}
-  m_Name: Quest_TalkToMayor
+  m_Name: Quest_KillKoboldChief
   m_EditorClassIdentifier: 
   isActive: 0
   isComplete: 0
-  questTitle: Retourner parler au Maire
-  questDescription: Retrouver le Maire au village.
+  questTitle: Tuer le chef des kobolds
+  questDescription: "Tue le chef des kobolds, il se cache pr\xE8s de la cabane du
+    bucheron."
   questObjectives:
-  - {fileID: 11400000, guid: 65be4056493b9e743b900cd86a2ee532, type: 2}
+  - {fileID: 11400000, guid: 3664080bfae9aa6479052b38bdc12f61, type: 2}

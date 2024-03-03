@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d9ebad2a00531cf42b0b1c84e245723b, type: 3}
-  m_Name: Quest_TalkToMayor
+  m_Name: Quest_KillDragon
   m_EditorClassIdentifier: 
   isActive: 0
   isComplete: 0
-  questTitle: Retourner parler au Maire
-  questDescription: Retrouver le Maire au village.
+  questTitle: Tuer le dragon
+  questDescription: Tue le dragon qui se cache dans les montagnes face au pont.
   questObjectives:
-  - {fileID: 11400000, guid: 65be4056493b9e743b900cd86a2ee532, type: 2}
+  - {fileID: 11400000, guid: 0be0d04529752234bbadcc1f593e0093, type: 2}
