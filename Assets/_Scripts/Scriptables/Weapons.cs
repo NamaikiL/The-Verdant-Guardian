@@ -23,7 +23,11 @@ namespace _Scripts.Scriptables
         #region Properties
 
         // Weapon Properties.
-        public int Damage => damage;
+        //public int Damage => damage;
+        public int Damage
+        {
+            get => damage;
+        }
         public float AttackSpeed => attackSpeed;
         public float Durability => durability;
 

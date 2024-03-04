@@ -1,6 +1,7 @@
 using _Scripts.Managers;
 using _Scripts.Scriptables;
 using _Scripts.UI;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,13 +17,18 @@ namespace _Scripts.Gameplay
     public class NpcController : MonoBehaviour
     {
         #region Variables
+
         [Header("Scripts")]
         [SerializeField] private HealthBar healthBar;
 
         [Header("NPC Health")]
         [SerializeField] private int maxNpcHP = 100;
 
+        //NPC Stats
         private int _currentNpcHP;
+        private int _damage;
+        
+        public Weapon weapons;
 
         #endregion
 
@@ -36,6 +42,7 @@ namespace _Scripts.Gameplay
         void Start ()
         {
             _currentNpcHP = maxNpcHP;
+            _damage = weapons.WeaponDamage;
 
             //Update the maximum size of gauges
             healthBar.SetHealthBarMax(maxNpcHP);
@@ -49,10 +56,20 @@ namespace _Scripts.Gameplay
         void Update()
         {
             _currentNpcHP = Mathf.Clamp(_currentNpcHP, 0, maxNpcHP);
+        }
 
-            if(Input.GetKeyDown(KeyCode.I))
+        /**
+         * <summary>
+         * When a GameObject collides with another GameObject, Unity calls OnTriggerEnter.
+         * </summary>
+         * <param name="other">The other Collider involved in this collision.</param>
+         */
+        void OnTriggerEnter(Collider other)
+        {
+            if(other.transform.tag == "Weapon")
             {
-                TakeDamage(10);
+                Debug.Log("dd");
+                TakeDamage(_damage);
             }
         }
 
@@ -66,10 +83,25 @@ namespace _Scripts.Gameplay
          * </summary>
          * <param name="damage">The number of damage the player took.</param>
          */
-        private void TakeDamage(int damage)
+        public void TakeDamage(int damage)
         {
             _currentNpcHP -= damage;
             healthBar.UpdateHealthBar(_currentNpcHP);
+
+            if(_currentNpcHP == 0)
+            {
+                NpcDeath();
+            }
+        }
+
+        /**
+         * <summary>
+         * Give the behaviour to the object when he dies.
+         * </summary>
+         */
+        private void NpcDeath()
+        {
+            Destroy(this.gameObject);
         }
 
         #endregion

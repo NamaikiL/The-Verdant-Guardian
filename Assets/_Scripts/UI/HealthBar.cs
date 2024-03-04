@@ -19,9 +19,8 @@ namespace _Scripts.UI
         [SerializeField] private float cooldownDamageEffect = 0.3f;
 
         [Header("Floating life gauge position")]
-        [SerializeField] private Camera cam;
+        [SerializeField] private Transform cam;
         [SerializeField] private Transform target;
-        [SerializeField] private Vector3 gaugePosition;
 
         #endregion
 
@@ -84,19 +83,14 @@ namespace _Scripts.UI
 
         /**
          * <summary>
-         * Set up the rotation and position of floating life bar depending on the character and the camera.
+         * Set up the rotation of floating life bar depending on the camera.
          * </summary>
          */
         private void LifeBarPosition()
         {   
             if (cam)
             {
-                transform.rotation = cam.transform.rotation;
-            }
-
-            if (target)
-            {
-                transform.position = target.position + gaugePosition;
+                target.LookAt(cam);
             }
         }
 

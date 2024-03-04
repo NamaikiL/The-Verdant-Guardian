@@ -1,4 +1,5 @@
 using _Scripts.Scriptables;
+using UnityEngine;
 
 namespace _Scripts.Gameplay
 {
@@ -23,7 +24,7 @@ namespace _Scripts.Gameplay
         #endregion
 
         #region Properties
-        
+
         // Weapon Stats Properties.
         public int WeaponDamage => _weaponDamage;
 
@@ -88,6 +89,6 @@ namespace _Scripts.Gameplay
         }
 
         #endregion
-        
+
     }
 }
