@@ -67,7 +67,7 @@ namespace _Scripts.Gameplay
          * Unity calls Awake when an enabled script instance is being loaded.
          * </summary>
          */
-        void Awake()
+        void Start()
         {
             // Component by instance.
             _playerInputs = PlayerInputs.Instance;
