@@ -101,16 +101,18 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _FlowSpeed: 0.85
-    - _FoamDensity: 3
-    - _FoamSpeed: 0.1
+    - _FlowSpeed: 0.1
+    - _FoamDensity: 10.18
+    - _FoamSpeed: 3.52
     - _FoamStrenght: 5
-    - _FoamThickness: 2
+    - _FoamThickness: 1.81
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _MAxHeight: 0.5
+    - _MaxDistance: 30
     - _Metallic: 0
+    - _MinDistance: 10
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
@@ -124,15 +126,17 @@ Material:
     - _Strenght: 1
     - _Surface: 0
     - _WaveHeight: 0.05
-    - _WaveSpeed: 1
+    - _WaveSpeed: 5
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - _AlphaMax: {r: 0, g: 0.13357282, b: 1, a: 1}
+    - _AlphaZero: {r: 1, g: 1, b: 1, a: 0}
     - _BaseColor: {r: 0.58775365, g: 0.90197235, b: 0.9811321, a: 1}
-    - _Color: {r: 0.086908154, g: 0.6865063, b: 0.8773585, a: 1}
+    - _Color: {r: 0.021359911, g: 0.6912847, b: 0.9056604, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FlowDirection: {r: 0.1, g: 0.5, b: 0, a: 0}
-    - _FoamColor: {r: 0.023764357, g: 3.1921797, b: 5.0380316, a: 0}
+    - _FoamColor: {r: 0.09505741, g: 12.768717, b: 20.152122, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &8113706031974386980
