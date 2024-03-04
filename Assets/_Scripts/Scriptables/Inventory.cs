@@ -25,6 +25,26 @@ namespace _Scripts.Scriptables
             }
         }
 
+        public int AddItem(Items itemScriptable, int quantity)
+        {
+            if(!itemScriptable.IsStackable)
+            {
+                for (int i = 0; i < inventoryItems.Count; i++)
+                {
+                    while(quantity > 0 && !IsInventoryFull())
+                    {
+                        quantity -= AddItemToFirstFreeSlot(itemScriptable, 1);
+                    }
+                    InformAboutChange();
+                    return quantity;
+                }
+            }
+
+            quantity = AddStackableItem(itemScriptable, quantity);
+            InformAboutChange();
+            return quantity;
+        }
+        
         public int AddItem(Item item, Items itemScriptable, ItemType itemType, int quantity, PlayerController playerController)
         {
             if(!itemScriptable.IsStackable)
@@ -69,6 +89,17 @@ namespace _Scripts.Scriptables
             InformAboutChange();
             return quantity;
         }
+
+
+        public void RemoveItemFromInventory(int itemIndex)
+        {
+            if (inventoryItems.Count > itemIndex)
+            {
+                inventoryItems[itemIndex] = InventoryItem.GetEmptyItem();
+                InformAboutChange();
+            }
+        }
+        
 
         private int AddStackableItem(Items itemScriptable, int quantity)
         {

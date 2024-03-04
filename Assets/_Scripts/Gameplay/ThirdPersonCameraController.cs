@@ -27,7 +27,7 @@ namespace _Scripts.Gameplay
 
         void Start()
         {
-            //Cursor.lockState = CursorLockMode.Locked;
+            Cursor.lockState = CursorLockMode.Locked;
             _yaw = transform.eulerAngles.y;
             _pitch = transform.eulerAngles.x;
         }

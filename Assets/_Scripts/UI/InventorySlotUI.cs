@@ -7,7 +7,35 @@ using UnityEngine.UI;
 
 namespace _Scripts.UI
 {
-    public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDropHandler, IDragHandler
+    [Serializable]
+    public class ItemEventData
+    {
+        #region Variables
+
+        private PointerEventData pointerData;
+        private InventorySlotUI inventorySlotUI;
+
+        #endregion
+
+        #region Properties
+
+        public PointerEventData PointerData => pointerData;
+        public InventorySlotUI InventorySlotUI => inventorySlotUI;
+
+        #endregion
+
+        #region Constructor
+
+        public ItemEventData(PointerEventData pointerData, InventorySlotUI inventorySlotUI)
+        {
+            this.pointerData = pointerData;
+            this.inventorySlotUI = inventorySlotUI;
+        }
+
+        #endregion
+    }
+    
+    public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDropHandler, IDragHandler, IPointerEnterHandler, IPointerExitHandler
     {
         #region Variables
 
@@ -23,7 +51,10 @@ namespace _Scripts.UI
         private IDragHandler _dragHandlerImplementation;
 
         // Events for the Inventory UI Interactions.
-        public event Action<InventorySlotUI> OnItemRightClicked, OnItemDroppedOn, OnItemBeginDrag, OnItemEndDrag; 
+        public event Action<InventorySlotUI> OnItemDroppedOn, OnItemBeginDrag, OnItemEndDrag, OnItemHoverEnd;
+
+        public delegate void ItemEvent(ItemEventData eventData);
+        public event ItemEvent OnItemHoverBegin, OnItemRightClicked;
 
         #endregion
 
@@ -72,6 +103,7 @@ namespace _Scripts.UI
 
         #region Events Handler
 
+        // Item Inventory Management Events.
         public void OnBeginDrag(PointerEventData eventData)
         {
             if (_isEmpty) return;
@@ -90,14 +122,32 @@ namespace _Scripts.UI
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if(eventData.button == PointerEventData.InputButton.Right) OnItemRightClicked?.Invoke(this);
+            if (eventData.button == PointerEventData.InputButton.Right && !_isEmpty)
+            {
+                ItemEventData itemEventData = new ItemEventData(eventData, this);
+                OnItemRightClicked?.Invoke(itemEventData);
+            }
         }
-
-        #endregion
 
         public void OnDrag(PointerEventData eventData)
         {
             
         }
+        
+        // Item Information Events.
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            if (_isEmpty) return;
+            ItemEventData itemEventData = new ItemEventData(eventData, this);
+            OnItemHoverBegin?.Invoke(itemEventData);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            OnItemHoverEnd?.Invoke(this);
+        }
+        
+        #endregion
     }
 }
