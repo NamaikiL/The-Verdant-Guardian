@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9af5d535f76ae740837c81db135d2ff, type: 3}
-  m_Name: Objective1
+  m_Name: Obj_KillDragon
   m_EditorClassIdentifier: 
-  parentQuest: {fileID: 11400000, guid: 26a86f4a4cb24a44285f904b3a3d3072, type: 2}
-  isRequired: 1
+  parentQuest: {fileID: 0}
+  isRequired: 0
   isComplete: 0
-  objectiveName: 
-  description: J'ai faim
-  objectiveType: 0
-  nbToCollect: 3
+  objectiveName: Tuer le dragon
+  objectiveDescription: Tue le dragon qui se cache dans les montagnes face au pont.
+  objectiveType: 1
+  nbToCollect: 0
   nbCollected: 0
   itemType: 0
-  nbToFight: 0
-  escortPoint: {fileID: 0}
+  nbToFight: 1
+  nbFighted: 0
   npcToTalk: {fileID: 0}

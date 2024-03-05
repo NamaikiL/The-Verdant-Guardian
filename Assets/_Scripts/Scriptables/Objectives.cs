@@ -12,8 +12,7 @@ namespace _Scripts.Scriptables
     public enum ObjectiveType
     {
         Collect, 
-        Fight, 
-        Escort,
+        Fight,
         Talk
     }
     
@@ -44,9 +43,7 @@ namespace _Scripts.Scriptables
 
         [Header("Killing Type")] 
         [SerializeField] private int nbToFight;
-
-        [Header("Escort Type")] 
-        [SerializeField] private Transform escortPoint;
+        [SerializeField] private int nbFighted;
 
         [Header("Talk Type")] 
         [SerializeField] private GameObject npcToTalk;
@@ -76,9 +73,11 @@ namespace _Scripts.Scriptables
         
         // Killing Objective Type.
         public int NbToFight => nbToFight;
-        
-        // Escort Objective Type.
-        public Transform EscortPoint => escortPoint;
+        public int NbFighted
+        {
+            get => nbFighted;
+            set => nbFighted = value;
+        }
         
         // Talk Objective Type.
         public GameObject NpcToTalk => npcToTalk;

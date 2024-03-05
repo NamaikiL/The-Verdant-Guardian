@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using _Scripts.Managers;
 using _Scripts.Scriptables;
+using _Scripts.UI;
 using UnityEngine;
 
 namespace _Scripts.Gameplay
@@ -57,9 +58,14 @@ namespace _Scripts.Gameplay
         [Header("Player Level")] 
         [SerializeField] private List<PlayerLevel> playerLevels;
         
-        [Header("Player Health")] 
-        [SerializeField] private int maxPlayerHP = 100;
-        
+        [Header("Player Health")]
+        [SerializeField] private float maxPlayerHP = 100f;
+        [SerializeField] private float healthRegenRate = 5f;
+        [SerializeField] private float healthRegenDelay = 5f;
+        [SerializeField] private float durationHealVFX = 2f;
+        [SerializeField] private GameObject healVFX;
+        [SerializeField] private HealthBar healthBar;
+
         [Header("Player Stamina")]
         [SerializeField] private float maxPlayerStamina = 100f;
         [SerializeField] private float staminaRegenRate = 5f;
@@ -78,7 +84,7 @@ namespace _Scripts.Gameplay
         private int _currentPlayerExp;
         
         // Player Stats.
-        private int _currentPlayerHp;
+        private float _currentPlayerHP;
         private float _currentPlayerStamina;
         private float _currentPlayerAttack;
         private float _currentPlayerCritAttack;
@@ -128,6 +134,20 @@ namespace _Scripts.Gameplay
             // Player stats.
             _currentPlayerHp = maxPlayerHP;
             _currentPlayerStamina = maxPlayerStamina;
+
+            //Update the maximum size of gauges
+            healthBar.SetHealthBarMax(maxPlayerHP);
+            uiManager.SetStaminaBarMax(maxPlayerStamina);
+        }
+
+        /**
+         * <summary>
+         * Update is called once per frame.
+         * </summary>
+         */
+        void Update()
+        {
+            _currentPlayerHP = Mathf.Clamp(_currentPlayerHP, 0f, maxPlayerHP);
         }
 
         #endregion
@@ -198,7 +218,7 @@ namespace _Scripts.Gameplay
         }
 
         #endregion
-        
+
         #region Health Management
 
         /**
@@ -207,12 +227,12 @@ namespace _Scripts.Gameplay
          * </summary>
          * <param name="damage">The number of damage the player took.</param>
          */
-        public void TakeDamage(int damage)
+        public void TakeDamage(float damage)
         {
-            _currentPlayerHp -= damage;
-            // TO-DO: Show it on the UI.
+            _currentPlayerHP -= damage;
+            healthBar.UpdateHealthBar(_currentPlayerHP);
+            StartCoroutine(RegenerateHealth());
         }
-
 
         /**
          * <summary>
@@ -220,10 +240,51 @@ namespace _Scripts.Gameplay
          * </summary>
          * <param name="quantity">The quantity to regen.</param>
          */
-        public void RegenHealth(int quantity)
+        public void RegenHealth(float quantity)
         {
-            _currentPlayerHp += quantity;
-            // TO-DO: Show it on the UI.
+            _currentPlayerHP += quantity;
+            healthBar.UpdateHealthBar(_currentPlayerHP);
+            StartCoroutine(HealEffectDuration());
+        }
+
+        /**
+         * <summary>
+         * Regen all the player HP.
+         * </summary>
+         */
+        public void RegenAllHealth()
+        {
+            _currentPlayerHP += maxPlayerHP;
+            healthBar.UpdateHealthBar(_currentPlayerHP);
+        }
+
+        /**
+         * <summary>
+         * Active VFX when the player get healed for a certain duration.
+         * </summary>
+         */
+        private IEnumerator HealEffectDuration()
+        {
+            healVFX.SetActive(true);
+            yield return new WaitForSeconds(durationHealVFX);
+            healVFX.SetActive(false);
+        }
+
+        /**
+         * <summary>
+         * Coroutine to regenerate the life after a decided time.
+         * </summary>
+         */
+        private IEnumerator RegenerateHealth()
+        {
+            yield return new WaitForSeconds(healthRegenDelay);
+
+            while (_currentPlayerHP < maxPlayerHP)
+            {
+                _currentPlayerHP = Mathf.Clamp(_currentPlayerHP + healthRegenRate * Time.deltaTime, 0f, maxPlayerHP);
+                healthBar.UpdateHealthBar(_currentPlayerHP);
+                yield return null;
+            }
         }
 
         #endregion
@@ -245,7 +306,7 @@ namespace _Scripts.Gameplay
                     _regenStamina = null;
                 }
                 _currentPlayerStamina = Mathf.Clamp(_currentPlayerStamina - sprintStaminaCost * Time.deltaTime, 0f, maxPlayerStamina);
-                // TO-DO: UI Update.
+                uiManager.UpdateStaminaBar(_currentPlayerStamina);
             }
             
             if (_currentPlayerStamina == 0)
@@ -272,7 +333,7 @@ namespace _Scripts.Gameplay
             }
             
             _currentPlayerStamina = Mathf.Clamp(_currentPlayerStamina - rollStaminaCost, 0f, maxPlayerStamina);
-            // TO-DO: UI Update.
+            uiManager.UpdateStaminaBar(_currentPlayerStamina);
             _regenStamina = RegenerateStamina();
             StartCoroutine(_regenStamina);
         }
@@ -293,7 +354,7 @@ namespace _Scripts.Gameplay
             }
             
             _currentPlayerStamina = Mathf.Clamp(_currentPlayerStamina - amount, 0f, maxPlayerStamina);
-            // TO-DO: UI Update.
+            uiManager.UpdateStaminaBar(_currentPlayerStamina);
             _regenStamina = RegenerateStamina();
             StartCoroutine(_regenStamina);
         }
@@ -311,7 +372,7 @@ namespace _Scripts.Gameplay
             while (_currentPlayerStamina < maxPlayerStamina)
             {
                 _currentPlayerStamina = Mathf.Clamp(_currentPlayerStamina + staminaRegenRate * Time.deltaTime, 0f, maxPlayerStamina);
-                // TO-DO: UI Update.
+                uiManager.UpdateStaminaBar(_currentPlayerStamina);
                 yield return null;
             }
         }
