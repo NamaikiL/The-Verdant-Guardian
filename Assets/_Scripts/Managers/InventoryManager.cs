@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using _Scripts.Gameplay;
 using _Scripts.Scriptables;
@@ -6,7 +5,6 @@ using UnityEngine;
 
 namespace _Scripts.Managers
 {
-    
     /**
      * <summary>
      * Handler of the inventory.
@@ -17,14 +15,11 @@ namespace _Scripts.Managers
         #region Variables
 
         [Header("Inventory Item Properties")] 
-        [SerializeField] private int inventoryItemCapacity = 30;
-        
-        // Inventory Item Handler.
-        private int _currentItemCount;
-        private List<Items> _inventoryItems = new List<Items>();
+        [SerializeField] private Inventory inventoryScriptable;
         
         // Components.
         private UIManager _uiManager;
+        private PlayerInputs _playerInputs;
         
         // Singleton.
         private static InventoryManager _instance;
@@ -33,6 +28,9 @@ namespace _Scripts.Managers
 
         #region Properties
 
+        // Scriptable Objects.
+        public Inventory InventoryScriptable => inventoryScriptable;
+        
         // Singleton Property.
         public static InventoryManager Instance => _instance;
 
@@ -59,76 +57,94 @@ namespace _Scripts.Managers
          */
         void Start()
         {
+            // Components
             _uiManager = UIManager.Instance;
+            _playerInputs = PlayerInputs.Instance;
+            
+            // Events.
+            _uiManager.OnStartDragging += HandleDragging;
+            _uiManager.OnSwapItems += HandleSwapItems;
+
+            inventoryScriptable.OnInventoryUpdated += UpdateInventoryUI;
+        }
+
+        
+        /**
+         * <summary>
+         * Update is called every frame, if the MonoBehaviour is enabled.
+         * </summary>
+         */
+        void Update()
+        {
+            if (_playerInputs.Inventory)
+            {
+                if (!_uiManager.InventoryShowed)
+                {
+                    _uiManager.ManageInventory();
+                    foreach (var inventoryItem in inventoryScriptable.GetCurrentInventoryState())
+                    {   // Apply inventory content on UI.
+                        _uiManager.UpdateInventorySlotUI(
+                            inventoryItem.Key, 
+                            inventoryItem.Value.item, 
+                            inventoryItem.Value.quantity
+                            );
+                    }
+                }
+                else
+                {
+                    _uiManager.ManageInventory();
+                }
+            }
         }
 
         #endregion
 
-        #region Inventory Item Management
+        #region UI Integration Methods
 
         /**
          * <summary>
-         * Update the item inventory.
+         * Update the Inventory UI.
          * </summary>
-         * <param name="item">The item.</param>
-         * <param name="itemScriptable">The scriptable data of the item.</param>
-         * <param name="itemType">The item type.</param>
-         * <param name="playerController">The controller of the player.</param>
+         * <param name="inventoryState">Get the inventory state from the inventory data.</param>
          */
-        public void AddItemToInventory(Item item, Items itemScriptable, ItemType itemType, PlayerController playerController)
+        private void UpdateInventoryUI(Dictionary<int, InventoryItem> inventoryState)
         {
-            if (_inventoryItems.Count < inventoryItemCapacity)
-            {   // If the item inventory capacity isn't full.
-                if (item.IsQuestConnected)
-                {   // If the item is a quest item.
-                    foreach (Quest quest in playerController.PlayerQuestsList)
-                    {   // If one of the quest the player have has the item required in its objectives.
-                        foreach (Objectives objective in quest.QuestObjectives)
-                        {   
-                            if (!objective.IsComplete 
-                                && objective.ActualObjectiveType == ObjectiveType.Collect 
-                                && objective.ActualItemType == itemType)
-                            {   // Check the objective condtions.
-                                objective.NbCollected++;
-                                
-                                if (objective.NbCollected == objective.NbToCollect)
-                                {   // When the number to collect is the one required.
-                                    objective.CompleteObjective();
-                                }
-
-                                return;
-                            }
-                        }
-                    }
-                }
-                
-                // Inventory Management.
-                _uiManager.CreateItemInventory(item.ItemScriptable);
-                _currentItemCount++;
-                _inventoryItems.Add(itemScriptable);
-                
-                // GameObject handler.
-                Destroy(item.gameObject);
+            _uiManager.ResetAllItems();     // Reset the inventory.
+            foreach (var item in inventoryState)
+            {   // Apply Inventory actual content.
+                _uiManager.UpdateInventorySlotUI(item.Key, item.Value.item, item.Value.quantity);
             }
         }
 
+        #endregion
 
+        #region Events Methods
+        
         /**
          * <summary>
-         * Remove an item from the player inventory.
+         * Handle the dragging item.
          * </summary>
-         * <param name="item">The actual item.</param>
+         * <param name="itemInventorySlotIndex">The actual item ID.</param>
          */
-        public void RemoveItemFromInventory(Items item)
+        private void HandleDragging(int itemInventorySlotIndex)
         {
-            foreach (Items items in _inventoryItems)
-            {
-                if (items == item)
-                {
-                    _inventoryItems.Remove(item);
-                    return;
-                }
-            }
+            InventoryItem inventoryItem = inventoryScriptable.GetItemAt(itemInventorySlotIndex);
+            if (inventoryItem.IsEmpty) return;
+            
+            _uiManager.CreateDraggedItem(inventoryItem.item, inventoryItem.quantity);
+        }
+
+        
+        /**
+         * <summary>
+         * Swap the two items between the one dragged and the slot hovered.
+         * </summary>
+         * <param name="itemInventorySlotIndex1">The item dragged.</param>
+         * <param name="itemInventorySlotIndex2">The item hovered.</param>
+         */
+        private void HandleSwapItems(int itemInventorySlotIndex1, int itemInventorySlotIndex2)
+        {
+            inventoryScriptable.SwapItems(itemInventorySlotIndex1, itemInventorySlotIndex2);
         }
 
         #endregion

@@ -1,4 +1,3 @@
-using _Scripts.Managers;
 using UnityEngine;
 
 namespace _Scripts.Gameplay
@@ -26,6 +25,7 @@ namespace _Scripts.Gameplay
         [SerializeField] private KeyCode jump = KeyCode.Space;
         [SerializeField] private KeyCode attack = KeyCode.Mouse0;
         [SerializeField] private KeyCode interaction = KeyCode.E;
+        [SerializeField] private KeyCode inventory = KeyCode.I;
         
         // Conditions.
         private bool _jumped;
@@ -34,14 +34,12 @@ namespace _Scripts.Gameplay
         private bool _sprint;
         private bool _crouch;
         private bool _dodge;
+        private bool _inventory;
 
         // Player movements.
         private float _horizontal;
         private float _vertical;
         private Vector2 _movement = Vector2.zero;
-
-        // Components.
-        private UIManager _uiManager;
         
         // Singleton.
         private static PlayerInputs _instance;
@@ -66,6 +64,8 @@ namespace _Scripts.Gameplay
             set => _dodge = value;
         }
 
+        public bool Inventory => _inventory;
+
         // Player movements.
         public Vector2 Movement => _movement;
 
@@ -88,23 +88,10 @@ namespace _Scripts.Gameplay
             _instance = this;
         }
 
-        
-        /**
-         * <summary>
-         * Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
-         * </summary>
-         */
-        void Start()
-        {
-            // Components Initialization.
-            _uiManager = UIManager.Instance;
-        }
-
 
         /**
          * <summary>
          * Update is called once per frame.
-         * TO-DO: Change the save spot and the inventory spot.
          * </summary>
          */
         void Update()
@@ -114,6 +101,7 @@ namespace _Scripts.Gameplay
             _jumped = Input.GetKey(jump);
             _attack = Input.GetKey(attack);
             _interaction = Input.GetKeyDown(interaction);
+            _inventory = Input.GetKeyDown(inventory);
             _crouch = Input.GetKeyDown(crouchKey);
 
             // Sprint.
@@ -123,18 +111,11 @@ namespace _Scripts.Gameplay
             // Dodge.
             if(Input.GetKeyDown(dodgeKey)) _dodge = true;
             
-            // Manage Inventory.
-            // TO-DO: Change that to a function(In mb the inventory component).
-            if (_interaction)
-            {
-                _uiManager.ManageInventory();
-            }
-            
         }
 
         #endregion
 
-        #region Movements
+        #region Movements Methods
         
         /**
          * <summary>

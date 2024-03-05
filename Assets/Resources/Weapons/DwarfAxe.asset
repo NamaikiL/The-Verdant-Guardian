@@ -21,6 +21,8 @@ MonoBehaviour:
   itemImage: {fileID: 21300000, guid: cf7051456719c6946be03f1332e04985, type: 3}
   itemModel: {fileID: 868225742684298475, guid: 86d7b8639a649294e9761761086f63e1,
     type: 3}
+  isStackable: 0
+  maxStack: 1
   damage: 10
   attackSpeed: 5
   durability: 500

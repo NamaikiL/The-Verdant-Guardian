@@ -33,6 +33,7 @@ namespace _Scripts.Gameplay
         [SerializeField] protected Items itemScriptable;
         
         [Header("Item Properties")]
+        [SerializeField] private int itemQuantity;
         [SerializeField] private ItemType itemType;
         
         [Header("UI Properties")]
@@ -63,7 +64,6 @@ namespace _Scripts.Gameplay
         protected virtual void Start()
         {
             _inventoryManager = InventoryManager.Instance;
-            Debug.Log(_inventoryManager);
         }
 
 
@@ -125,8 +125,16 @@ namespace _Scripts.Gameplay
          */
         private void CollectItem(PlayerController playerController)
         {
-            Debug.Log(_inventoryManager);
-            _inventoryManager.AddItemToInventory(this, itemScriptable, itemType, playerController);        // Add items to the player inventory.
+            int quantityReminder = _inventoryManager.InventoryScriptable.AddItem(
+                                    this,
+                                    itemScriptable,
+                                    itemType,
+                                    itemQuantity,
+                                    playerController
+                                    ); // Add items to the player inventory.
+            
+            if (quantityReminder == 0) Destroy(gameObject);
+            else itemQuantity = quantityReminder;
         }
 
         #endregion
