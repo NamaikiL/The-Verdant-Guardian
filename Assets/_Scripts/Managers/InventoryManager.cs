@@ -19,6 +19,7 @@ namespace _Scripts.Managers
         
         // Components.
         private UIManager _uiManager;
+        private PlayerInputs _playerInputs;
         
         // Singleton.
         private static InventoryManager _instance;
@@ -56,36 +57,32 @@ namespace _Scripts.Managers
          */
         void Start()
         {
+            // Components
             _uiManager = UIManager.Instance;
-
-            _uiManager.OnSwapItems += HandleSwapItems;
-            _uiManager.OnStartDragging += HandleDragging;
-            _uiManager.OnItemActionRequested += HandleItemActionRequest;
+            _playerInputs = PlayerInputs.Instance;
             
-            //inventoryScriptable.InitializeInventory();
+            // Events.
+            _uiManager.OnStartDragging += HandleDragging;
+            _uiManager.OnSwapItems += HandleSwapItems;
 
             inventoryScriptable.OnInventoryUpdated += UpdateInventoryUI;
         }
 
-        private void UpdateInventoryUI(Dictionary<int, InventoryItem> inventoryState)
-        {
-            _uiManager.ResetAllItems();
-            foreach (var item in inventoryState)
-            {
-                _uiManager.UpdateInventorySlotUI(item.Key, item.Value.item, item.Value.quantity);
-            }
-        }
-
-
+        
+        /**
+         * <summary>
+         * Update is called every frame, if the MonoBehaviour is enabled.
+         * </summary>
+         */
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.P))
+            if (_playerInputs.Inventory)
             {
                 if (!_uiManager.InventoryShowed)
                 {
                     _uiManager.ManageInventory();
                     foreach (var inventoryItem in inventoryScriptable.GetCurrentInventoryState())
-                    {
+                    {   // Apply inventory content on UI.
                         _uiManager.UpdateInventorySlotUI(
                             inventoryItem.Key, 
                             inventoryItem.Value.item, 
@@ -102,25 +99,52 @@ namespace _Scripts.Managers
 
         #endregion
 
-        #region Events
+        #region UI Integration Methods
 
-        private void HandleItemActionRequest(int itemIndex)
+        /**
+         * <summary>
+         * Update the Inventory UI.
+         * </summary>
+         * <param name="inventoryState">Get the inventory state from the inventory data.</param>
+         */
+        private void UpdateInventoryUI(Dictionary<int, InventoryItem> inventoryState)
         {
-            
+            _uiManager.ResetAllItems();     // Reset the inventory.
+            foreach (var item in inventoryState)
+            {   // Apply Inventory actual content.
+                _uiManager.UpdateInventorySlotUI(item.Key, item.Value.item, item.Value.quantity);
+            }
         }
 
+        #endregion
+
+        #region Events Methods
         
-        private void HandleDragging(int itemIndex)
+        /**
+         * <summary>
+         * Handle the dragging item.
+         * </summary>
+         * <param name="itemInventorySlotIndex">The actual item ID.</param>
+         */
+        private void HandleDragging(int itemInventorySlotIndex)
         {
-            InventoryItem inventoryItem = inventoryScriptable.GetItemAt(itemIndex);
+            InventoryItem inventoryItem = inventoryScriptable.GetItemAt(itemInventorySlotIndex);
             if (inventoryItem.IsEmpty) return;
+            
             _uiManager.CreateDraggedItem(inventoryItem.item, inventoryItem.quantity);
         }
 
         
-        private void HandleSwapItems(int itemIndex1, int itemIndex2)
+        /**
+         * <summary>
+         * Swap the two items between the one dragged and the slot hovered.
+         * </summary>
+         * <param name="itemInventorySlotIndex1">The item dragged.</param>
+         * <param name="itemInventorySlotIndex2">The item hovered.</param>
+         */
+        private void HandleSwapItems(int itemInventorySlotIndex1, int itemInventorySlotIndex2)
         {
-            inventoryScriptable.SwapItems(itemIndex1, itemIndex2);
+            inventoryScriptable.SwapItems(itemInventorySlotIndex1, itemInventorySlotIndex2);
         }
 
         #endregion

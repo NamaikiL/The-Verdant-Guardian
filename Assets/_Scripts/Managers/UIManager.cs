@@ -5,7 +5,6 @@ using _Scripts.Scriptables;
 using _Scripts.UI;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using Screen = UnityEngine.Device.Screen;
 
 namespace _Scripts.Managers
@@ -55,13 +54,9 @@ namespace _Scripts.Managers
         private RectTransform _itemTooltipTransform;
         private RectTransform _backgroundTooltipTransform;
         
-        
         // Inventory Events.
-        public event Action<int> OnItemActionRequested, OnStartDragging; 
+        public event Action<int> OnStartDragging; 
         public event Action<int, int> OnSwapItems;
-        
-        // Components.
-        private InventoryManager _inventoryManager;
         
         // Singleton.
         private static UIManager _instance;
@@ -72,7 +67,6 @@ namespace _Scripts.Managers
 
         // Inventory Management.
         public bool InventoryShowed => _inventoryShowed;
-        public List<InventorySlotUI> InventorySlot => inventorySlots;
         
         // Singleton Property.
         public static UIManager Instance => _instance;
@@ -97,10 +91,15 @@ namespace _Scripts.Managers
         }
         
         
+        /**
+         * <summary>
+         * This function is called when the object becomes enabled and active.
+         * </summary>
+         */
         void OnEnable()
         {
             foreach (InventorySlotUI inventorySlotUI in inventorySlots)
-            {
+            {   // Initialize the events.
                 inventorySlotUI.OnItemBeginDrag += HandleBeginDrag;
                 inventorySlotUI.OnItemDroppedOn += HandleSwap;
                 inventorySlotUI.OnItemEndDrag += HandleEndDrag;
@@ -113,15 +112,9 @@ namespace _Scripts.Managers
 
         /**
          * <summary>
-         * Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
+         * Update is called every frame, if the MonoBehaviour is enabled.
          * </summary>
          */
-        void Start()
-        {
-            _inventoryManager = InventoryManager.Instance;
-        }
-
-
         void Update()
         {
             if (itemTooltip.isActiveAndEnabled)
@@ -185,7 +178,7 @@ namespace _Scripts.Managers
 
         #endregion
 
-        #region Inventory Item Management
+        #region Inventory Item Methods
 
         /**
          * <summary>
@@ -216,7 +209,7 @@ namespace _Scripts.Managers
          * Update the information of the Item on its Slot
          * </summary>
          * <param name="itemId">The current instance ID of the Item.</param>
-         * <param name="itemSO">The ItemSO.</param>
+         * <param name="itemSO">The Item data.</param>
          * <param name="itemQuantity">The quantity of the item.</param>
          */
         public void UpdateInventorySlotUI(int itemId, Items itemSO, int itemQuantity)
@@ -228,6 +221,11 @@ namespace _Scripts.Managers
         }
         
         
+        /**
+         * <summary>
+         * Reset all the inventory slots UI content.
+         * </summary>
+         */
         public void ResetAllItems()
         {
             foreach (InventorySlotUI inventorySlot in inventorySlots)
@@ -236,56 +234,37 @@ namespace _Scripts.Managers
             }
         }
 
+        
+        /**
+         * <summary>
+         * Close the tooltip and reset its values.
+         * </summary>
+         */
         private void CloseTooltip()
         {
             itemTooltip.ResetToolTip();
             itemTooltip.gameObject.SetActive(false);
         }
 
+        
+        /**
+         * <summary>
+         * Close the action tooltip.
+         * </summary>
+         */
         private void CloseActionTooltip()
         {
             itemActionTooltip.gameObject.SetActive(false);
         }
         
-        // EVENTS
         
-        
-        private void HandleShowItemsActions(ItemEventData eventData)
-        {
-            int index = inventorySlots.IndexOf(eventData.InventorySlotUI);
-            itemActionTooltip.gameObject.SetActive(true);
-            itemActionTooltip.InitializeButtons(index, eventData.InventorySlotUI.CurrentItem);
-            itemActionTooltip.transform.position = eventData.PointerData.position;
-        }
-
-        
-        private void HandleEndDrag(InventorySlotUI inventorySlotUI)
-        {
-            ResetDraggedItem();
-        }
-
-        
-        private void HandleSwap(InventorySlotUI inventorySlotUI)
-        {
-            int index = inventorySlots.IndexOf(inventorySlotUI);
-            if (index == -1)
-            {
-                return;
-            }
-
-            OnSwapItems ?.Invoke(_currentlyDraggedItemIndex, index);
-        }
-
-        
-        private void HandleBeginDrag(InventorySlotUI inventorySlotUI)
-        {
-            int index = inventorySlots.IndexOf(inventorySlotUI);
-            if (index == -1) return;
-            _currentlyDraggedItemIndex = index;
-            OnStartDragging?.Invoke(index);
-        }
-
-
+        /**
+         * <summary>
+         * Create a dragged item.
+         * </summary>
+         * <param name="itemSO">The item data.</param>
+         * <param name="itemQuantity">The quantity of the item.</param>
+         */
         public void CreateDraggedItem(Items itemSO, int itemQuantity)
         {
             mouseFollower.Toggle(true);
@@ -293,12 +272,89 @@ namespace _Scripts.Managers
         }
 
 
+        /**
+         * <summary>
+         * Reset the dragged item.
+         * </summary>
+         */
         private void ResetDraggedItem()
         {
             mouseFollower.Toggle(false);
             _currentlyDraggedItemIndex = -1;
         }
         
+        #endregion
+
+        #region Inventory Item Event Methods
+
+        // EVENTS
+        
+        /**
+         * <summary>
+         * Handle the items actions when the player right click on an Inventory Slot.
+         * </summary>
+         * <param name="eventData">Custom event class storing the inventorySlot and the PointerEventData.</param>
+         */
+        private void HandleShowItemsActions(ItemEventData eventData)
+        {
+            int indexInventorySlot = inventorySlots.IndexOf(eventData.InventorySlotUI); // Get the Inventory Slot ID.
+            
+            // Initialize the Action tooltip.
+            itemActionTooltip.InitializeActionTooltip(indexInventorySlot, eventData.InventorySlotUI.CurrentItem);
+            itemActionTooltip.transform.position = eventData.PointerData.position;
+            itemActionTooltip.gameObject.SetActive(true);
+        }
+
+        
+        /**
+         * <summary>
+         * When the player start dragging an object on its inventory.
+         * </summary>
+         * <param name="inventorySlotUI">The actual inventory slot.</param>
+         */
+        private void HandleBeginDrag(InventorySlotUI inventorySlotUI)
+        {
+            int indexInventorySlot = inventorySlots.IndexOf(inventorySlotUI);   // Storing the inventory slot.
+            if (indexInventorySlot == -1) return;    // If there's no inventory slot.
+            _currentlyDraggedItemIndex = indexInventorySlot;
+            
+            OnStartDragging?.Invoke(indexInventorySlot);    // Start Dragging if there's an inventory slot and an item.
+        }
+        
+        
+        /**
+         * <summary>
+         * When the player release the drag when the mouse isn't on another slot.
+         * </summary>
+         * <param name="inventorySlotUI">The actual inventory slot.</param>
+         */
+        private void HandleEndDrag(InventorySlotUI inventorySlotUI)
+        {
+            ResetDraggedItem();
+        }
+
+        
+        /**
+         * <summary>
+         * Handle the swap movement.
+         * </summary>
+         * <param name="inventorySlotUI">The current inventory slot.</param>
+         */
+        private void HandleSwap(InventorySlotUI inventorySlotUI)
+        {
+            int index = inventorySlots.IndexOf(inventorySlotUI);
+            if (index == -1) return;
+
+            OnSwapItems ?.Invoke(_currentlyDraggedItemIndex, index);
+        }
+        
+        
+        /**
+         * <summary>
+         * Show the tooltip of the item when mouse over the slot.
+         * </summary>
+         * <param name="eventData">The custom event data.</param>
+         */
         private void HandleHoverItemBegin(ItemEventData eventData)
         {
             itemTooltip.gameObject.SetActive(true);
@@ -306,15 +362,30 @@ namespace _Scripts.Managers
             itemTooltip.InitializeTooltip(eventData.InventorySlotUI.CurrentItem);
         }
         
+        
+        /**
+         * <summary>
+         * Hide the tooltip of the item when mouse goes outside its slot.
+         * </summary>
+         */
         private void HandleHoverItemEnd(InventorySlotUI inventorySlotUI)
         {
             CloseTooltip();
         }
-        
+
         #endregion
 
-        #region Inventory Stats Management
+        #region Inventory Stats Methods
 
+        /**
+         * <summary>
+         * Update the player stats on the Inventory UI.
+         * </summary>
+         * <param name="playerHp">The current player hp.</param>
+         * <param name="maxPlayerHp">The max Hp the player can have.</param>
+         * <param name="playerStamina">The current player stamina.</param>
+         * <param name="maxPlayerStamina">The max stamina the player can have.</param>
+         */
         public void UpdatePlayerStats(int playerHp, int maxPlayerHp, float playerStamina, float maxPlayerStamina)
         {
             txtPlayerHpUI.text = $"Health {playerHp}/{maxPlayerHp}";
@@ -322,6 +393,17 @@ namespace _Scripts.Managers
         }
 
 
+        /**
+         * <summary>
+         * Update the player skills on the UI.
+         * </summary>
+         * <param name="skillPoints">The current number of skill point the player have.</param>
+         * <param name="consPoint">The current number of constitution point the player have.</param>
+         * <param name="strPoint">The current number of strength point the player have.</param>
+         * <param name="vigPoint">The current number of vigor point the player have.</param>
+         * <param name="dexPoint">The current number of dexterity point the player have.</param>
+         * <param name="luckPoint">The current number of luck point the player have.</param>
+         */
         public void UpdatePlayerSkillPoints(int skillPoints, int consPoint, int strPoint, int vigPoint, int dexPoint, int luckPoint)
         {
             txtPlayerSkillPoints.text = $"Skill points: {skillPoints}";
@@ -334,6 +416,15 @@ namespace _Scripts.Managers
         }
         
         
+        /**
+         * <summary>
+         * Update the player level and experience on the UI.
+         * </summary>
+         * <param name="playerLevel">The current player level.</param>
+         * <param name="playerExperience">The current player experience.</param>
+         * <param name="experienceRequired">The experience required for the next level.</param>
+         * <param name="playerSkillPoints">The current player skill points.</param>
+         */
         public void UpdatePlayerLevelAndExperienceUI(int playerLevel, int playerExperience, int experienceRequired, int playerSkillPoints)
         {
             txtPlayerLevelUI.text = $"Level {playerLevel}";
@@ -342,6 +433,12 @@ namespace _Scripts.Managers
         }
         
         
+        /**
+         * <summary>
+         * Button that increase the player skill.
+         * </summary>
+         * <param name="skill">The skill to upgrade.</param>
+         */
         public void BtnStatsIncrement(String skill)
         {
             if (GameObject.FindWithTag("Player").TryGetComponent(out PlayerStats playerStats))
@@ -351,6 +448,12 @@ namespace _Scripts.Managers
         }
 
 
+        /**
+         * <summary>
+         * Button that decrease the player skill.
+         * </summary>
+         * <param name="skill">The skill to upgrade.</param>
+         */
         public void BtnStatsDecrement(String skill)
         {
             if (GameObject.FindWithTag("Player").TryGetComponent(out PlayerStats playerStats))

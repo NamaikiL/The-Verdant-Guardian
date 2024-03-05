@@ -2,17 +2,29 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using _Scripts.Managers;
+using _Scripts.Scriptables;
 using UnityEngine;
 
 namespace _Scripts.Gameplay
 {
     
+    /**
+     * <summary>
+     * Enum used to upgrade or degrade the skills.
+     * </summary>
+     */
     public enum SkillUpdate
     {
         Increment,
         Decrement
     }
 
+    
+    /**
+     * <summary>
+     * Handle the player level and experiences.
+     * </summary>
+     */
     [Serializable]
     public class PlayerLevel
     {
@@ -32,6 +44,12 @@ namespace _Scripts.Gameplay
         #endregion
     }
     
+    
+    /**
+     * <summary>
+     * Handle the players stats and skills.
+     * </summary>
+     */
     public class PlayerStats : MonoBehaviour
     {
         #region Variables
@@ -67,13 +85,18 @@ namespace _Scripts.Gameplay
         private float _currentPlayerSpeed;
         private float _currentPlayerLootRate;
         
-        // Player Skill Management;
+        // Player Skill Management.
         private int _skillPoints = 10;
         private int _constitutionPoints;
         private int _strengthPoints;
         private int _vigorPoints;
         private int _dexterityPoints;
         private int _luckPoints;
+        
+        // Player Equipment Stats.
+        private int _actualWeaponAtk;
+        private float _actualWeaponAtkSpeed;
+        private int _actualArmorDefense;
         
         // Stamina Conditions.
         private IEnumerator _regenStamina;
@@ -92,10 +115,17 @@ namespace _Scripts.Gameplay
 
         #region Built-In Methods
 
+        /**
+         * <summary>
+         * Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
+         * </summary>
+         */
         void Start()
         {
+            // Components.
             _uiManager = UIManager.Instance;
             
+            // Player stats.
             _currentPlayerHp = maxPlayerHP;
             _currentPlayerStamina = maxPlayerStamina;
         }
@@ -108,6 +138,8 @@ namespace _Scripts.Gameplay
          * <summary>
          * Initialize the player level from the save file.
          * </summary>
+         * <param name="levelPlayer">The level to initialize.</param>
+         * <param name="expPlayer">The experience to initialize.</param>
          */
         public void InitializeLevel(int levelPlayer, int expPlayer)
         {
@@ -125,6 +157,12 @@ namespace _Scripts.Gameplay
          * <summary>
          * Initialize the player skills and stats from the save file.
          * </summary>
+         * <param name="skillPoints">The skill points to initialize.</param>
+         * <param name="consPoints">The constitution points to initialize.</param>
+         * <param name="strPoints">The strength points to initialize.</param>
+         * <param name="vigPoints">The vigor points to initialize.</param>
+         * <param name="dexPoints">The dexterity points to initialize.</param>
+         * <param name="luckPoints">The luck points to initialize.</param>
          */
         public void InitializePlayerSkills(int skillPoints, int consPoints, int strPoints, int vigPoints, int dexPoints, int luckPoints)
         {
@@ -137,6 +175,26 @@ namespace _Scripts.Gameplay
             _luckPoints = luckPoints;
             
             LoadSkillsAndStatsValues();
+        }
+
+
+        /**
+         * <summary>
+         * Initialize the Player Equipment.
+         * </summary>
+         * <param name="itemSO">The item data.</param>
+         */
+        public void InitializePlayerEquipment(Items itemSO)
+        {
+            if (itemSO is Weapons weaponSO)
+            {
+                _actualWeaponAtk = weaponSO.WeaponDamage;
+                _actualWeaponAtkSpeed = weaponSO.WeaponAttackSpeed;
+            }
+            else if (itemSO is Armors armorSO)
+            {
+                _actualArmorDefense = armorSO.ArmorDefense;
+            }
         }
 
         #endregion
@@ -260,7 +318,7 @@ namespace _Scripts.Gameplay
 
         #endregion
 
-        #region Player Level Management
+        #region Player Level Methods
 
         /**
          * <summary>
@@ -307,7 +365,7 @@ namespace _Scripts.Gameplay
 
         #endregion
 
-        #region Player Skills & Stats management
+        #region Player Skills & Stats Methods
 
         /**
          * Load the skills and stats values from the save.
@@ -365,7 +423,7 @@ namespace _Scripts.Gameplay
          * <summary>
          * Upgrade the skills points and update the skills.
          * </summary>
-         * <param name="playerSkills">The actual skill point to upgrade</param>
+         * <param name="skill">The actual skill point to upgrade</param>
          * <param name="skillUpdate">To know if we add a point or remove one.</param>
          */
         public void UpgradeSkill(String skill, SkillUpdate skillUpdate)

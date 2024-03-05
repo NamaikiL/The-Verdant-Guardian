@@ -1,10 +1,14 @@
-using System.Globalization;
 using _Scripts.Scriptables;
 using TMPro;
 using UnityEngine;
 
 namespace _Scripts.UI
 {
+    /**
+     * <summary>
+     * The tooltip when hovering an item.
+     * </summary>
+     */
     public class ItemTooltip : MonoBehaviour
     {
         #region Variables
@@ -21,6 +25,12 @@ namespace _Scripts.UI
 
         #region Initializing Methods
 
+        /**
+         * <summary>
+         * Initialize the Tooltip.
+         * </summary>
+         * <param name="itemSO">the item data.</param>
+         */
         public void InitializeTooltip(Items itemSO)
         {
             txtName.text = itemSO.ItemName;
@@ -28,15 +38,25 @@ namespace _Scripts.UI
 
             if (itemSO is Weapons weaponSO)
             {
-                txtStat.text = $"{weaponSO.Damage} Atk | {weaponSO.AttackSpeed} Atk Spd";
-                txtDurability.text = weaponSO.Durability.ToString(CultureInfo.CurrentCulture);
+                txtStat.text = $"{weaponSO.WeaponDamage} Atk | {weaponSO.WeaponAttackSpeed} Atk Spd";
+                txtDurability.text = $"{weaponSO.WeaponDurability}";
+            }
+            else if (itemSO is Armors armorSO)
+            {
+                txtStat.text = $"{armorSO.ArmorDefense} DF";
+                txtDurability.text = $"{armorSO.ArmorDurability}";
             }
 
-            txtCost.text = itemSO.ItemCost.ToString(CultureInfo.CurrentCulture);
-            txtRarity.text = itemSO.ItemRarity.ToString();
+            txtCost.text = $"{itemSO.ItemCost}";
+            txtRarity.text = $"{itemSO.ItemRarity}";
         }
 
 
+        /**
+         * <summary>
+         * Reset the Tooltip values.
+         * </summary>
+         */
         public void ResetToolTip()
         {
             txtName.text = "";

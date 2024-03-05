@@ -9,14 +9,24 @@ namespace _Scripts.Scriptables
     [CreateAssetMenu(fileName = "New Inventory", menuName = "RPG/Inventory", order = 0)]
     public class Inventory : ScriptableObject
     {
+        #region Variables
+
         [Header("Inventory Properties")]
         [SerializeField] private List<InventoryItem> inventoryItems = new List<InventoryItem>();
         [SerializeField] private int inventoryItemCapacity = 25;
 
+        // Event.
         public event Action<Dictionary<int, InventoryItem>> OnInventoryUpdated;
 
-        public int InventoryItemCapacity => inventoryItemCapacity;
+        #endregion
 
+        #region Initialize Methods
+
+        /**
+         * <summary>
+         * Initialize the inventory.
+         * </summary>
+         */
         public void InitializeInventory()
         {
             for (int i = 0; i < inventoryItemCapacity; i++)
@@ -25,47 +35,69 @@ namespace _Scripts.Scriptables
             }
         }
 
-        public int AddItem(Items itemScriptable, int quantity)
+        #endregion
+
+        #region Inventory Slot Methods
+
+        /**
+         * <summary>
+         * Add an item to the inventory if the inventory isn't full (Simple version).
+         * </summary>
+         * <param name="itemSO">The item data.</param>
+         * <param name="itemQuantity">The item quantity.</param>
+         * <returns>The int value of the quantity remaining.</returns>
+         */
+        public int AddItem(Items itemSO, int itemQuantity)
         {
-            if(!itemScriptable.IsStackable)
-            {
+            if(!itemSO.IsStackable)
+            {   // If the item is not a stackable item.
                 for (int i = 0; i < inventoryItems.Count; i++)
                 {
-                    while(quantity > 0 && !IsInventoryFull())
-                    {
-                        quantity -= AddItemToFirstFreeSlot(itemScriptable, 1);
+                    while(itemQuantity > 0 && !IsInventoryFull())
+                    {   // While inventory not full and item quantity is more than 0.
+                        itemQuantity -= AddItemToFirstFreeSlot(itemSO, 1);  // Add the non-stackable item.
                     }
-                    InformAboutChange();
-                    return quantity;
+                    InformAboutChange();    // Inform the UI about the changes.
+                    return itemQuantity;
                 }
             }
 
-            quantity = AddStackableItem(itemScriptable, quantity);
-            InformAboutChange();
-            return quantity;
+            itemQuantity = AddStackableItem(itemSO, itemQuantity);      // Add the stackable item.
+            InformAboutChange(); // Inform the UI about the changes.
+            return itemQuantity;
         }
         
-        public int AddItem(Item item, Items itemScriptable, ItemType itemType, int quantity, PlayerController playerController)
+        
+        /**
+         * <summary>
+         * Add an item to the inventory if the inventory isn't full (Quest version). 
+         * </summary>
+         * <param name="itemScript">The script of the item.</param>
+         * <param name="itemSO">The item data.</param>
+         * <param name="itemType">The item type.</param>
+         * <param name="itemQuantity">The quantity of the item.</param>
+         * <param name="playerController">The player controller.</param>
+         * <returns>The int value of the quantity remaining.</returns>
+         */
+        public int AddItem(Item itemScript, Items itemSO, ItemType itemType, int itemQuantity, PlayerController playerController)
         {
-            if(!itemScriptable.IsStackable)
-            {
+            if(!itemSO.IsStackable)
+            {   // If the item is not a stackable item.
                 for (int i = 0; i < inventoryItems.Count; i++)
                 {
-                    while(quantity > 0 && !IsInventoryFull())
-                    {
-                        if (item.IsQuestConnected)
-                        {
-                            // If the item is a quest item.
+                    while(itemQuantity > 0 && !IsInventoryFull())
+                    {   // While inventory not full and item quantity is more than 0.
+                        if (itemScript.IsQuestConnected)
+                        {   // If the item is a quest item.
                             foreach (Quest quest in playerController.PlayerQuestsList)
-                            {
-                                // If one of the quest the player have has the item required in its objectives.
+                            {   // If one of the quest the player have has the item required in its objectives.
                                 foreach (Objectives objective in quest.QuestObjectives)
                                 {
                                     if (!objective.IsComplete
                                         && objective.ActualObjectiveType == ObjectiveType.Collect
                                         && objective.ActualItemType == itemType)
                                     {
-                                        // Check the objective condtions.
+                                        // Check the objective conditions.
                                         objective.NbCollected++;
 
                                         if (objective.NbCollected == objective.NbToCollect)
@@ -78,85 +110,124 @@ namespace _Scripts.Scriptables
                             }
                         }
 
-                        quantity -= AddItemToFirstFreeSlot(itemScriptable, 1);
+                        itemQuantity -= AddItemToFirstFreeSlot(itemSO, 1);  // Add the non-stackable item.
                     }
-                    InformAboutChange();
-                    return quantity;
+                    InformAboutChange();    // Inform the UI about the changes.
+                    return itemQuantity;
                 }
             }
 
-            quantity = AddStackableItem(itemScriptable, quantity);
-            InformAboutChange();
-            return quantity;
+            itemQuantity = AddStackableItem(itemSO, itemQuantity);  // Add the stackable item.
+            InformAboutChange();    // Inform the UI about the changes.
+            return itemQuantity;
         }
 
-
-        public void RemoveItemFromInventory(int itemIndex)
+        
+        /**
+         * <summary>
+         * Remove the items from a slot.
+         * </summary>
+         * <param name="itemInventoySlotIndex">The id of the inventory slot.</param>
+         */
+        public void RemoveItemFromInventory(int itemInventoySlotIndex)
         {
-            if (inventoryItems.Count > itemIndex)
-            {
-                inventoryItems[itemIndex] = InventoryItem.GetEmptyItem();
-                InformAboutChange();
+            if (inventoryItems.Count > itemInventoySlotIndex)
+            {   // Check if the item slot exist.
+                inventoryItems[itemInventoySlotIndex] = InventoryItem.GetEmptyItem();   // Reset the slot.
+                InformAboutChange();    // Inform the UI about the change.
             }
         }
         
 
-        private int AddStackableItem(Items itemScriptable, int quantity)
+        /**
+         * <summary>
+         * Add stackable items to the inventory.
+         * </summary>
+         * <param name="itemSO">The item data.</param>
+         * <param name="itemQuantity">The item quantity.</param>
+         * <returns>Return the value of the item quantity remaining</returns>
+         */
+        private int AddStackableItem(Items itemSO, int itemQuantity)
         {
             for (int i = 0; i < inventoryItems.Count; i++)
             {
-                if (inventoryItems[i].IsEmpty) continue;
-                if (inventoryItems[i].item.ItemId == itemScriptable.ItemId)
-                {
-                    int amountPossibleToTake = inventoryItems[i].item.MaxStack - inventoryItems[i].quantity;
+                if (inventoryItems[i].IsEmpty) continue;    // Skip the slot if the inventory slot is empty.
+                if (inventoryItems[i].item.ItemId == itemSO.ItemId)
+                {   // If the item id of the slot is the same item as the one on the parameters
+                    int amountPossibleToTake = inventoryItems[i].item.MaxStack - inventoryItems[i].quantity;    // Calculate the amount it can take.
 
-                    if (quantity > amountPossibleToTake)
+                    if (itemQuantity > amountPossibleToTake)
                     {
                         inventoryItems[i] = inventoryItems[i].ChangeQuantity(inventoryItems[i].item.MaxStack);
-                        quantity -= amountPossibleToTake;
+                        itemQuantity -= amountPossibleToTake;
                     }
                     else
                     {
-                        inventoryItems[i] = inventoryItems[i].ChangeQuantity(inventoryItems[i].quantity + quantity);
-                        InformAboutChange();
+                        inventoryItems[i] = inventoryItems[i].ChangeQuantity(inventoryItems[i].quantity + itemQuantity);
+                        InformAboutChange();    // Inform the UI about the changes.
                         return 0;
                     }
                 }
             }
 
-            while (quantity > 0 && !IsInventoryFull())
-            {
-                int newQuantity = Mathf.Clamp(quantity, 0, itemScriptable.MaxStack);
-                quantity -= newQuantity;
-                AddItemToFirstFreeSlot(itemScriptable, newQuantity);
+            while (itemQuantity > 0 && !IsInventoryFull())
+            {       // If the item isn't in the inventory yet.
+                int newQuantity = Mathf.Clamp(itemQuantity, 0, itemSO.MaxStack);
+                itemQuantity -= newQuantity;
+                AddItemToFirstFreeSlot(itemSO, newQuantity);
             }
 
-            return quantity;
+            return itemQuantity;
         }
 
-        private int AddItemToFirstFreeSlot(Items itemScriptable, int quantity)
+        
+        /**
+         * <summary>
+         * Add the item to the first free inventory slot.
+         * </summary>
+         * <param name="itemSO">The item data.</param>
+         * <param name="itemQuantity">The item quantity.</param>
+         * <returns>Return the value of the item quantity remaining</returns>
+         */
+        private int AddItemToFirstFreeSlot(Items itemSO, int itemQuantity)
         {
+            // Define the inventory slot item values.
             InventoryItem inventoryItem = new InventoryItem
             {
-                item = itemScriptable,
-                quantity = quantity
+                item = itemSO,
+                quantity = itemQuantity
             };
 
+            // Check if there's a free slot.
             for (int i = 0; i < inventoryItems.Count; i++)
             {
                 if (inventoryItems[i].IsEmpty)
                 {
                     inventoryItems[i] = inventoryItem;
-                    return quantity;
+                    return itemQuantity;
                 }
             }
 
             return 0;
         }
 
+        #endregion
+
+        #region Conditions Methods
+
+        /**
+         * <returns>Returns a bool if the inventory is full or not.</returns>
+         */
         private bool IsInventoryFull()
             => inventoryItems.Any(item => item.IsEmpty) == false;
 
+        
+        /**
+         * <summary>
+         * Get the current Inventory State.
+         * </summary>
+         * <returns>Returns a dictionary of the inventory.</returns>
+         */
         public Dictionary<int, InventoryItem> GetCurrentInventoryState()
         {
             Dictionary<int, InventoryItem> returnValue = new Dictionary<int, InventoryItem>();
@@ -170,30 +241,79 @@ namespace _Scripts.Scriptables
             return returnValue;
         }
 
-        public InventoryItem GetItemAt(int itemIndex)
+        #endregion
+
+        #region UI Methods
+
+        /**
+         * <summary>
+         * Get the inventory item from the index given.
+         * </summary>
+         * <param name="itemInventorySlotIndex">The index of the inventory slot.</param>
+         */
+        public InventoryItem GetItemAt(int itemInventorySlotIndex)
         {
-            return inventoryItems[itemIndex];
+            return inventoryItems[itemInventorySlotIndex];
         }
 
-        public void SwapItems(int itemIndex1, int itemIndex2)
+        
+        /**
+         * <summary>
+         * Swap two item in the inventory.
+         * </summary>
+         * <param name="itemInventorySlotIndex1">The first item.</param>
+         * <param name="itemInventorySlotIndex2">The second item.</param>
+         */
+        public void SwapItems(int itemInventorySlotIndex1, int itemInventorySlotIndex2)
         {
-            (inventoryItems[itemIndex1], inventoryItems[itemIndex2]) = (inventoryItems[itemIndex2], inventoryItems[itemIndex1]);
-            InformAboutChange();
+            (inventoryItems[itemInventorySlotIndex1], inventoryItems[itemInventorySlotIndex2]) = 
+            (inventoryItems[itemInventorySlotIndex2], inventoryItems[itemInventorySlotIndex1]);
+            InformAboutChange();    // Inform the UI about the changes.
         }
 
+        
+        /**
+         * <summary>
+         * Inform the UI about the changes.
+         * </summary>
+         */
         private void InformAboutChange()
         {
             OnInventoryUpdated?.Invoke(GetCurrentInventoryState());
         }
+
+        #endregion
     }
 
+    
+    /**
+     * <summary>
+     * Represent the items.
+     * </summary>
+     */
     [Serializable]
     public struct InventoryItem
     {
+        #region Variables
+
         public int quantity;
         public Items item;
+
+        #endregion
+
+        #region Properties
+
         public bool IsEmpty => item == null;
 
+        #endregion
+
+        #region Constructors Methods
+
+        /**
+         * <summary>
+         * Initialize the Inventory Item.
+         * </summary>
+         */
         public InventoryItem ChangeQuantity(int itemQuantity)
         {
             return new InventoryItem
@@ -203,11 +323,19 @@ namespace _Scripts.Scriptables
             };
         }
 
+        
+        /**
+         * <summary>
+         * Empty the inventory item.
+         * </summary>
+         */
         public static InventoryItem GetEmptyItem()
             => new InventoryItem
             {
                 item = null,
                 quantity = 0,
             };
+
+        #endregion
     }
 }
