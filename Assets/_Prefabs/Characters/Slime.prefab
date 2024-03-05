@@ -13,12 +13,12 @@ GameObject:
   - component: {fileID: 7137906168022665456}
   - component: {fileID: 1556617526175409567}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Health
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8480756383855315006
 RectTransform:
   m_ObjectHideFlags: 0
@@ -475,7 +475,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemiesScriptable: {fileID: 11400000, guid: 6de1bf72200912647a5ea373a560ce31, type: 2}
-  healthBar: {fileID: 7094950767231018780}
+  healthUI: {fileID: 7094950767231018780}
+  healthBar: {fileID: 188695851362508915}
 --- !u!1 &4746536462562807769
 GameObject:
   m_ObjectHideFlags: 0
@@ -581,7 +582,7 @@ RectTransform:
   m_Father: {fileID: 3477518962581776810}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -744,7 +745,7 @@ RectTransform:
   m_Father: {fileID: 3059328718915064299}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

@@ -13,7 +13,9 @@ namespace _Scripts.Gameplay
         [SerializeField] protected Enemies enemiesScriptable;
 
         [Header("Scripts")]
-        [SerializeField] private HealthBar healthBar;
+        [SerializeField] private HealthBar healthUI;
+
+        [SerializeField] private GameObject healthBar;
 
         //Enemy Stats
         private int _currentEnemyHP;
@@ -32,7 +34,7 @@ namespace _Scripts.Gameplay
             _currentEnemyHP = enemiesScriptable.EnemyMaxHealth;
 
             //Update the maximum size of gauges
-            healthBar.SetHealthBarMax(enemiesScriptable.EnemyMaxHealth);
+            healthUI.SetHealthBarMax(enemiesScriptable.EnemyMaxHealth);
         }
         
         /**
@@ -57,8 +59,10 @@ namespace _Scripts.Gameplay
          */
         public void TakeDamage(int damage)
         {
+            healthBar.SetActive(true);
+
             _currentEnemyHP -= damage;
-            healthBar.UpdateHealthBar(_currentEnemyHP);
+            healthUI.UpdateHealthBar(_currentEnemyHP);
 
             if (_currentEnemyHP == 0)
             {

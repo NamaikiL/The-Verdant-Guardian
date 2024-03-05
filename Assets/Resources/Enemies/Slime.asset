@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf9f682a1b9572e45971e0e9b6be871f, type: 3}
   m_Name: Slime
   m_EditorClassIdentifier: 
-  npcName: 
-  npcType: 0
-  npcModel: {fileID: 0}
-  npcMaxHealth: 0
+  enemyName: Slime
+  enemyModel: {fileID: 4036292502586289214, guid: 207e8507341e91b44b385b8fcf8b45d7,
+    type: 3}
+  enemyMaxHealth: 100
   damage: 0
   attackSpeed: 0

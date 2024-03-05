@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf9f682a1b9572e45971e0e9b6be871f, type: 3}
   m_Name: Dragon
   m_EditorClassIdentifier: 
-  enemyName: 
+  enemyName: Dragon
   enemyModel: {fileID: 0}
-  enemyMaxHealth: 0
-  damage: 0
-  attackSpeed: 0
+  enemyMaxHealth: 500
+  damage: 20
+  attackSpeed: 10
