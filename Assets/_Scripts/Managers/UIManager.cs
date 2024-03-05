@@ -5,6 +5,7 @@ using _Scripts.Scriptables;
 using _Scripts.UI;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Screen = UnityEngine.Device.Screen;
 
 namespace _Scripts.Managers
@@ -152,7 +153,7 @@ namespace _Scripts.Managers
 
         #endregion
 
-        #region Stamina Management
+        #region Stamina Methods
 
         /**
          * <summary>
@@ -179,7 +180,7 @@ namespace _Scripts.Managers
 
         #endregion
 
-        #region Quest Management
+        #region Quest Methods
 
         /**
          * <summary>
@@ -416,7 +417,7 @@ namespace _Scripts.Managers
          * <param name="playerStamina">The current player stamina.</param>
          * <param name="maxPlayerStamina">The max stamina the player can have.</param>
          */
-        public void UpdatePlayerStats(int playerHp, int maxPlayerHp, float playerStamina, float maxPlayerStamina)
+        public void UpdatePlayerStats(float playerHp, float maxPlayerHp, float playerStamina, float maxPlayerStamina)
         {
             txtPlayerHpUI.text = $"Health {playerHp}/{maxPlayerHp}";
             txtPlayerEnduranceUI.text = $"Stamina {playerStamina}/{maxPlayerStamina}";

@@ -132,12 +132,12 @@ namespace _Scripts.Gameplay
             _uiManager = UIManager.Instance;
             
             // Player stats.
-            _currentPlayerHp = maxPlayerHP;
+            _currentPlayerHP = maxPlayerHP;
             _currentPlayerStamina = maxPlayerStamina;
 
             //Update the maximum size of gauges
             healthBar.SetHealthBarMax(maxPlayerHP);
-            uiManager.SetStaminaBarMax(maxPlayerStamina);
+            _uiManager.SetStaminaBarMax(maxPlayerStamina);
         }
 
         /**
@@ -219,7 +219,7 @@ namespace _Scripts.Gameplay
 
         #endregion
 
-        #region Health Management
+        #region Health Methods
 
         /**
          * <summary>
@@ -289,7 +289,7 @@ namespace _Scripts.Gameplay
 
         #endregion
 
-        #region Stamina Management
+        #region Stamina Methods
 
         /**
          * <summary>
@@ -306,7 +306,7 @@ namespace _Scripts.Gameplay
                     _regenStamina = null;
                 }
                 _currentPlayerStamina = Mathf.Clamp(_currentPlayerStamina - sprintStaminaCost * Time.deltaTime, 0f, maxPlayerStamina);
-                uiManager.UpdateStaminaBar(_currentPlayerStamina);
+                _uiManager.UpdateStaminaBar(_currentPlayerStamina);
             }
             
             if (_currentPlayerStamina == 0)
@@ -333,7 +333,7 @@ namespace _Scripts.Gameplay
             }
             
             _currentPlayerStamina = Mathf.Clamp(_currentPlayerStamina - rollStaminaCost, 0f, maxPlayerStamina);
-            uiManager.UpdateStaminaBar(_currentPlayerStamina);
+            _uiManager.UpdateStaminaBar(_currentPlayerStamina);
             _regenStamina = RegenerateStamina();
             StartCoroutine(_regenStamina);
         }
@@ -354,7 +354,7 @@ namespace _Scripts.Gameplay
             }
             
             _currentPlayerStamina = Mathf.Clamp(_currentPlayerStamina - amount, 0f, maxPlayerStamina);
-            uiManager.UpdateStaminaBar(_currentPlayerStamina);
+            _uiManager.UpdateStaminaBar(_currentPlayerStamina);
             _regenStamina = RegenerateStamina();
             StartCoroutine(_regenStamina);
         }
@@ -372,7 +372,7 @@ namespace _Scripts.Gameplay
             while (_currentPlayerStamina < maxPlayerStamina)
             {
                 _currentPlayerStamina = Mathf.Clamp(_currentPlayerStamina + staminaRegenRate * Time.deltaTime, 0f, maxPlayerStamina);
-                uiManager.UpdateStaminaBar(_currentPlayerStamina);
+                _uiManager.UpdateStaminaBar(_currentPlayerStamina);
                 yield return null;
             }
         }
@@ -434,8 +434,7 @@ namespace _Scripts.Gameplay
         private void LoadSkillsAndStatsValues()
         {
             // Health.
-            float playerHealthUpdate = maxPlayerHP * Mathf.Pow(1f + 0.025f, _constitutionPoints);
-            maxPlayerHP = (int)playerHealthUpdate;
+            maxPlayerHP *= Mathf.Pow(1f + 0.025f, _constitutionPoints);
             
             // Attack.
             maxPlayerAttack *= Mathf.Pow(1f + 0.025f, _strengthPoints);
@@ -463,7 +462,7 @@ namespace _Scripts.Gameplay
         private void UpdateSkillsAndStats()
         {
             _uiManager.UpdatePlayerStats(
-                _currentPlayerHp, 
+                _currentPlayerHP, 
                 maxPlayerHP, 
                 _currentPlayerStamina, 
                 maxPlayerStamina
@@ -495,8 +494,7 @@ namespace _Scripts.Gameplay
                 {
                     case "Constitution": 
                         _constitutionPoints++; 
-                        float healthFloatValue = maxPlayerHP * 1.025f; 
-                        maxPlayerHP = Mathf.RoundToInt(healthFloatValue); 
+                        maxPlayerHP *= 1.025f; 
                         break;
                     case "Strength": 
                         _strengthPoints++; 
@@ -523,8 +521,7 @@ namespace _Scripts.Gameplay
                 if (skill == "Constitution" && _constitutionPoints > 0)
                 {
                     _constitutionPoints--;
-                    float healthFloatValue = maxPlayerHP / 1.025f;
-                    maxPlayerHP = Mathf.RoundToInt(healthFloatValue);
+                    maxPlayerHP /= 1.025f;
                     _skillPoints++;
                 }
                 if (skill == "Strength" && _strengthPoints > 0)
