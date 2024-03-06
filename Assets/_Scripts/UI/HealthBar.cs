@@ -38,7 +38,7 @@ namespace _Scripts.UI
 
         #endregion
 
-        #region Health Management
+        #region Health Method
 
         /**
          * <summary>
