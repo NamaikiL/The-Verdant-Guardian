@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2549859775706447705}
   - component: {fileID: 1291619969510799611}
   - component: {fileID: 1160228281800853608}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Spot Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 2635442826851533562}
   - component: {fileID: 5691535810594632313}
   - component: {fileID: 1946573859377405588}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5025,6 +5025,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Mushroom magic
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8a2d072fdaff6844d84edafaa5c0e900,
+        type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
