@@ -81,7 +81,7 @@ namespace _Scripts.Managers
         private float _minimapRatio;
 
         //Components.
-        private PlayerInputs playerInputs;
+        private PlayerInputs _playerInputs;
 
         // Singleton.
         private static UIManager _instance;
@@ -92,6 +92,14 @@ namespace _Scripts.Managers
 
         // Inventory Management.
         public bool InventoryShowed => _inventoryShowed;
+
+        //Pause Management
+        public GameObject PauseUI => pauseUI;
+        public bool GameIsPaused
+        {
+            get => _gameIsPaused;
+            set => _gameIsPaused = value;
+        }
         
         // Singleton Property.
         public static UIManager Instance => _instance;
@@ -117,7 +125,6 @@ namespace _Scripts.Managers
             CalculateMapRatio();
         }
         
-        
         /**
          * <summary>
          * This function is called when the object becomes enabled and active.
@@ -141,10 +148,10 @@ namespace _Scripts.Managers
          * Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
          * </summary>
          */
-        private void Start()
+        void Start()
         {
             //Components
-            playerInputs = PlayerInputs.Instance;
+            _playerInputs = PlayerInputs.Instance;
         }
 
         /**
@@ -191,19 +198,26 @@ namespace _Scripts.Managers
 
         #region Resume Method
 
+        /**
+         * <summary>
+         * Make the game in pause.
+         * </summary>
+         */
         private void PauseGame()
         {
-            if (playerInputs.Pause)
+            if (_playerInputs.Pause)
             {
                 if (!_gameIsPaused)
                 {
                     pauseUI.SetActive(true);
                     Time.timeScale = 0f;
+                    Cursor.lockState = CursorLockMode.None;
                 }
                 else
                 {
                     pauseUI.SetActive(false);
                     Time.timeScale = 1f;
+                    Cursor.lockState = CursorLockMode.Locked;
                 }
 
                 _gameIsPaused = !_gameIsPaused;
@@ -563,7 +577,7 @@ namespace _Scripts.Managers
          */
         private void MinimapDisplay()
         {
-            if (playerInputs.Map)
+            if (_playerInputs.Map)
             {
                 if (!_minimapShowed)
                 {

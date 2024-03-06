@@ -18,12 +18,25 @@ namespace _Scripts.Managers
         [SerializeField] private GameObject creditsScene;
         [SerializeField] private GameObject menuScene;
 
-        //Condition.
-        private bool _gameIsPaused;
+        //Component.
+        private UIManager _uiManager;
 
         #endregion
 
-        #region Custom Methods
+        #region Built-In Methods
+
+        /**
+         * <summary>
+         * Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
+         * </summary>
+         */
+        private void Start()
+        {
+            _uiManager = UIManager.Instance;
+        }
+        #endregion
+
+        #region Menu Methods
 
         /**
          * <summary>
@@ -40,13 +53,15 @@ namespace _Scripts.Managers
             btnSound.Play();
             yield return new WaitForSeconds(timeBeforeLoad);
             SceneManager.LoadScene("Debug", LoadSceneMode.Single);
+
+            //Game is not paused
             Time.timeScale = 1f;
-            _gameIsPaused = false;
+            _uiManager.GameIsPaused = false;
         }
         
         /**
          * <summary>
-         * Load Credit scene.
+         * Load credit scene.
          * </summary>
          */
         public void LoadCredits()
@@ -64,7 +79,7 @@ namespace _Scripts.Managers
         
         /**
          * <summary>
-         * Load Credit scene.
+         * Load menu scene.
          * </summary>
          */
         public void LoadMenu()
@@ -78,8 +93,10 @@ namespace _Scripts.Managers
             yield return new WaitForSeconds(timeBeforeLoad);
             creditsScene.SetActive(false);
             menuScene.SetActive(true);
+
+            //Game is not paused
             Time.timeScale = 1f;
-            _gameIsPaused = false;
+            _uiManager.GameIsPaused = false;
         }
 
         /**
@@ -90,16 +107,68 @@ namespace _Scripts.Managers
         public void ExitGame()
         {
             StartCoroutine (DelayExitGame());
+
+            //Game is not paused
+            Time.timeScale = 1f;
+            _uiManager.GameIsPaused = false;
         }
 
         private IEnumerator DelayExitGame()
         {
             btnSound.Play();
             yield return new WaitForSeconds(timeBeforeLoad);
-            Debug.Log("Exit Game");
             Application.Quit();
         }
 
+        #endregion
+
+        #region Menu In Game Methods
+
+        /**
+         * <summary>
+         * Load menu scene.
+         * </summary>
+         */
+        public void LoadMenuInGame()
+        {
+            StartCoroutine(DelayLoadMenuInGame());
+
+            //Game is not paused
+            Time.timeScale = 1f;
+            _uiManager.GameIsPaused = false;
+        }
+
+        private IEnumerator DelayLoadMenuInGame()
+        {
+            btnSound.Play();
+            yield return new WaitForSeconds(timeBeforeLoad);
+            SceneManager.LoadScene("Menu", LoadSceneMode.Single);
+        }
+
+        /**
+         * <summary>
+         * Continue to play.
+         * </summary>
+         */
+        public void ContinueGame()
+        {
+            btnSound.Play();
+            StartCoroutine(DelayContinueGame());
+
+            //Game is not paused
+            Time.timeScale = 1f;
+            _uiManager.GameIsPaused = false;
+        }
+
+        private IEnumerator DelayContinueGame()
+        {
+            yield return new WaitForSeconds(timeBeforeLoad);
+            _uiManager.PauseUI.SetActive(false);
+
+            //Game is not paused
+            Time.timeScale = 1f;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
         #endregion
     }
 }
