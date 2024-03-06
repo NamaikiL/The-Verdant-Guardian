@@ -32001,7 +32001,6 @@ Transform:
   - {fileID: 186769157}
   - {fileID: 1040790708}
   - {fileID: 740470272}
-  - {fileID: 8710949552783560905}
   m_Father: {fileID: 1547402378}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1081606283
@@ -65484,7 +65483,7 @@ PrefabInstance:
     - target: {fileID: 9035685842218464060, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.03279609
+      value: -0.032796092
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -69163,80 +69162,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 8335431777006136326}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &8710949552783560904
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1070592914}
-    m_Modifications:
-    - target: {fileID: 8421383416244547223, guid: ddf8e1857652d5342964c11850a16f07,
-        type: 3}
-      propertyPath: m_Name
-      value: Streetlight
-      objectReference: {fileID: 0}
-    - target: {fileID: 9193275336327918637, guid: ddf8e1857652d5342964c11850a16f07,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -86.917366
-      objectReference: {fileID: 0}
-    - target: {fileID: 9193275336327918637, guid: ddf8e1857652d5342964c11850a16f07,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9.83
-      objectReference: {fileID: 0}
-    - target: {fileID: 9193275336327918637, guid: ddf8e1857652d5342964c11850a16f07,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 24.587936
-      objectReference: {fileID: 0}
-    - target: {fileID: 9193275336327918637, guid: ddf8e1857652d5342964c11850a16f07,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9193275336327918637, guid: ddf8e1857652d5342964c11850a16f07,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9193275336327918637, guid: ddf8e1857652d5342964c11850a16f07,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9193275336327918637, guid: ddf8e1857652d5342964c11850a16f07,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9193275336327918637, guid: ddf8e1857652d5342964c11850a16f07,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9193275336327918637, guid: ddf8e1857652d5342964c11850a16f07,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9193275336327918637, guid: ddf8e1857652d5342964c11850a16f07,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: ddf8e1857652d5342964c11850a16f07, type: 3}
---- !u!4 &8710949552783560905 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 9193275336327918637, guid: ddf8e1857652d5342964c11850a16f07,
-    type: 3}
-  m_PrefabInstance: {fileID: 8710949552783560904}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8784721985953960346
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -69316,8 +69241,8 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 2046045920}
+  - {fileID: 1547402378}
   - {fileID: 2071277382}
   - {fileID: 357304573576096582}
-  - {fileID: 1547402378}
   - {fileID: 1436792902}
   - {fileID: 1972437707}
