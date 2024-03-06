@@ -26,7 +26,9 @@ namespace _Scripts.Gameplay
         [SerializeField] private KeyCode attack = KeyCode.Mouse0;
         [SerializeField] private KeyCode interaction = KeyCode.E;
         [SerializeField] private KeyCode inventory = KeyCode.I;
-        
+        [SerializeField] private KeyCode map = KeyCode.Semicolon;
+        [SerializeField] private KeyCode pause = KeyCode.Escape;
+
         // Conditions.
         private bool _jumped;
         private bool _attack;
@@ -35,6 +37,8 @@ namespace _Scripts.Gameplay
         private bool _crouch;
         private bool _dodge;
         private bool _inventory;
+        private bool _map;
+        private bool _pause;
 
         // Player movements.
         private float _horizontal;
@@ -65,6 +69,8 @@ namespace _Scripts.Gameplay
         }
 
         public bool Inventory => _inventory;
+        public bool Map => _map;
+        public bool Pause => _pause;
 
         // Player movements.
         public Vector2 Movement => _movement;
@@ -102,6 +108,8 @@ namespace _Scripts.Gameplay
             _attack = Input.GetKey(attack);
             _interaction = Input.GetKeyDown(interaction);
             _inventory = Input.GetKeyDown(inventory);
+            _map = Input.GetKeyDown(map);
+            _pause = Input.GetKeyDown(pause);
             _crouch = Input.GetKeyDown(crouchKey);
 
             // Sprint.

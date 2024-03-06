@@ -19,6 +19,9 @@ namespace _Scripts.Managers
     {
         #region Variables
 
+        [Header("Pause")]
+        [SerializeField] private GameObject pauseUI;
+
         [Header("Stamina gauge UI.")]
         [SerializeField] private Slider staminaSlider;
 
@@ -52,6 +55,17 @@ namespace _Scripts.Managers
         [SerializeField] private TMP_Text txtDexPoints;
         [SerializeField] private TMP_Text txtLuckPoints;
 
+        [Header("Mini Map Manager")]
+        [SerializeField] private GameObject minimap;
+        [SerializeField] private RectTransform playerMinimap;
+        [SerializeField] private RectTransform minimapPoint1, minimapPoint2;
+        [SerializeField] private Transform playerWorld;
+        [SerializeField] private Transform worldPoint1, worldPoint2;
+
+
+        //Pause Variables.
+        private bool _gameIsPaused;
+
         // Inventory Variables.
         private int _currentlyDraggedItemIndex = -1;
         private bool _inventoryShowed;
@@ -61,7 +75,14 @@ namespace _Scripts.Managers
         // Inventory Events.
         public event Action<int> OnStartDragging; 
         public event Action<int, int> OnSwapItems;
-        
+
+        //Mini Map Variables.
+        private bool _minimapShowed;
+        private float _minimapRatio;
+
+        //Components.
+        private PlayerInputs playerInputs;
+
         // Singleton.
         private static UIManager _instance;
 
@@ -92,6 +113,8 @@ namespace _Scripts.Managers
 
             _itemTooltipTransform = itemTooltip.GetComponent<RectTransform>();
             _backgroundTooltipTransform = itemTooltip.transform.GetChild(0).GetComponent<RectTransform>();
+
+            CalculateMapRatio();
         }
         
         
@@ -113,6 +136,16 @@ namespace _Scripts.Managers
             }
         }
 
+        /**
+         * <summary>
+         * Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
+         * </summary>
+         */
+        private void Start()
+        {
+            //Components
+            playerInputs = PlayerInputs.Instance;
+        }
 
         /**
          * <summary>
@@ -148,6 +181,32 @@ namespace _Scripts.Managers
                 // Apply the position wanted.
                 _itemTooltipTransform.anchoredPosition =
                     anchoredPosition - new Vector2(Screen.width / 2f, Screen.height / 2f);
+            }
+
+            MinimapDisplay();
+            PauseGame();
+        }
+
+        #endregion
+
+        #region Resume Method
+
+        private void PauseGame()
+        {
+            if (playerInputs.Pause)
+            {
+                if (!_gameIsPaused)
+                {
+                    pauseUI.SetActive(true);
+                    Time.timeScale = 0f;
+                }
+                else
+                {
+                    pauseUI.SetActive(false);
+                    Time.timeScale = 1f;
+                }
+
+                _gameIsPaused = !_gameIsPaused;
             }
         }
 
@@ -491,6 +550,54 @@ namespace _Scripts.Managers
             {
                 playerStats.UpgradeSkill(skill, SkillUpdate.Decrement);
             }
+        }
+
+        #endregion
+
+        #region Mini Map Method
+
+        /**
+         * <summary>
+         * Manage the mini map UI.
+         * </summary>
+         */
+        private void MinimapDisplay()
+        {
+            if (playerInputs.Map)
+            {
+                if (!_minimapShowed)
+                {
+                    minimap.SetActive(true);
+                    playerMinimap.anchoredPosition = minimapPoint1.anchoredPosition + new Vector2((playerWorld.position.x - worldPoint1.position.x) * _minimapRatio,
+                        (playerWorld.position.z - worldPoint1.position.z) * _minimapRatio);
+                }
+                else
+                {
+                    minimap.SetActive(false);
+                }
+
+                _minimapShowed = !_minimapShowed;
+            }
+        }
+
+        /**
+         * <summary>
+         * Calculate player position with referenced points.
+         * </summary>
+         */
+        private void CalculateMapRatio()
+        {
+            //Calculate distance of player in game.
+            Vector3 distanceWorldVector = worldPoint1.position - worldPoint2.position;
+            distanceWorldVector.y = 0f;
+            float distanceWorld = distanceWorldVector.magnitude;
+
+            //Calculate distance of player on the mini map.
+            float distanceMiniMap = Mathf.Sqrt(
+                Mathf.Pow((minimapPoint1.anchoredPosition.x - minimapPoint2.anchoredPosition.x), 2) +
+                Mathf.Pow((minimapPoint1.anchoredPosition.y - minimapPoint2.anchoredPosition.y), 2));
+
+            _minimapRatio = distanceMiniMap / distanceWorld;
         }
 
         #endregion
