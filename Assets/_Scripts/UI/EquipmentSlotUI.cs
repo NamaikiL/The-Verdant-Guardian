@@ -23,6 +23,12 @@ namespace _Scripts.UI
 
         #endregion
 
+        #region Properties
+
+        public Items CurrentItem => _currentItem;
+
+        #endregion
+        
         #region Built-In Methods
 
         /**
@@ -49,8 +55,11 @@ namespace _Scripts.UI
         {
             if (GameObject.FindGameObjectWithTag("Player").TryGetComponent(out PlayerStats playerStats))
             {
-                playerStats.InitializePlayerEquipment(itemSO);
-                EquipItem(itemSO);
+                if(itemSO)
+                {
+                    playerStats.InitializePlayerEquipment(itemSO);
+                    EquipItem(itemSO);
+                }
             }
             
         }

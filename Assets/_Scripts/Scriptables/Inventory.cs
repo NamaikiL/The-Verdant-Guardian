@@ -20,19 +20,39 @@ namespace _Scripts.Scriptables
 
         #endregion
 
+        #region Properties
+
+        // Inventory Properties.
+        public List<InventoryItem> CurrentInventoryItems => inventoryItems;
+
+        #endregion
+        
         #region Initialize Methods
 
         /**
          * <summary>
-         * Initialize the inventory.
+         * Initialize the inventory (Reset Version).
          * </summary>
          */
         public void InitializeInventory()
         {
+            inventoryItems.Clear();
             for (int i = 0; i < inventoryItemCapacity; i++)
             {
                 inventoryItems.Add(InventoryItem.GetEmptyItem());
             }
+        }
+
+
+        /**
+         * <summary>
+         * Initialize the inventory (Apply Version).
+         * </summary>
+         * <param name="currentInventoryItems">The inventory to apply.</param>
+         */
+        public void InitializeInventory(List<InventoryItem> currentInventoryItems)
+        {
+            this.inventoryItems = currentInventoryItems;
         }
 
         #endregion

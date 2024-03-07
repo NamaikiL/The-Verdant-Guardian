@@ -54,8 +54,12 @@ namespace _Scripts.Scriptables
 
         // Objective Conditions.
         public bool IsRequired => isRequired;
-        public bool IsComplete => isComplete;
-        
+        public bool IsComplete
+        {
+            get => isComplete;
+            set => isComplete = value;
+        }
+
         // Objective Information.
         public string ObjectiveName => objectiveName;
         public string ObjectiveDescription => objectiveDescription;

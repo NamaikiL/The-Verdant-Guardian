@@ -92,7 +92,7 @@ namespace _Scripts.Gameplay
         private float _currentPlayerLootRate;
         
         // Player Skill Management.
-        private int _skillPoints = 10;
+        private int _skillPoints;
         private int _constitutionPoints;
         private int _strengthPoints;
         private int _vigorPoints;
@@ -114,6 +114,19 @@ namespace _Scripts.Gameplay
 
         #region Properties
 
+        // Player Level Properties.
+        public int CurrentPlayerLevel => _currentPlayerLevel;
+        public int CurrentPlayerExperience => _currentPlayerExp;
+        
+        // Player Skills Properties.
+        public int CurrentPlayerSkillPoints => _skillPoints;
+        public int CurrentPlayerConstitutionPoints => _constitutionPoints;
+        public int CurrentPlayerStrengthPoints => _strengthPoints;
+        public int CurrentPlayerVigorPoints => _vigorPoints;
+        public int CurrentPlayerDexterityPoints => _dexterityPoints;
+        public int CurrentPlayerLuckPoints => _luckPoints;
+        
+        // Stamina Properties.
         public float CurrentPlayerStamina => _currentPlayerStamina;
         public float RollStaminaCost => rollStaminaCost;
 

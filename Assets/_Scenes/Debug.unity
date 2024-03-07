@@ -1417,6 +1417,73 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &1057976083
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1057976084}
+  - component: {fileID: 1057976085}
+  m_Layer: 0
+  m_Name: SaveManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1057976084
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057976083}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1814411837}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1057976085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057976083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c4e2c622568e0c45bfcd20a84c8bb67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  armorSlotUI: {fileID: 4707075794027202887}
+  weaponSlotUI: {fileID: 8312777865199938573}
+  configData:
+    hasSaved: 0
+  playerData:
+    playerPosition: {x: 0, y: 0, z: 0}
+    playerRotation: {x: 0, y: 0, z: 0}
+    playerLevel: 0
+    playerExperience: 0
+    playerSkillPoints: 0
+    playerConstitutionPoints: 0
+    playerStrengthPoints: 0
+    playerVigorPoints: 0
+    playerDexterityPoints: 0
+    playerLuckPoints: 0
+  inventoryData:
+    inventoryItems: []
+    armorSO: {fileID: 0}
+    weaponSO: {fileID: 0}
+  questsData:
+    questsParametersData: []
+  objectivesData:
+    objectiveParametersData: []
 --- !u!4 &1201888799 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5492640644781209917, guid: 207e8507341e91b44b385b8fcf8b45d7,
@@ -1890,6 +1957,7 @@ Transform:
   m_Children:
   - {fileID: 7815696670382695122}
   - {fileID: 4983606708778635470}
+  - {fileID: 1057976084}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1996955300 stripped
@@ -8038,7 +8106,7 @@ GameObject:
   - component: {fileID: 8312777865199938573}
   m_Layer: 5
   m_Name: WeaponItemCase
-  m_TagString: Untagged
+  m_TagString: WeaponSlot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16864,10 +16932,55 @@ PrefabInstance:
       propertyPath: healthBar
       value: 
       objectReference: {fileID: 2105925034}
+    - target: {fileID: 2416125067247940365, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
+        type: 3}
+      propertyPath: playerLevels.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416125067247940365, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
+        type: 3}
+      propertyPath: playerLevels.Array.data[0].level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416125067247940365, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
+        type: 3}
+      propertyPath: playerLevels.Array.data[1].level
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416125067247940365, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
+        type: 3}
+      propertyPath: playerLevels.Array.data[2].level
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416125067247940365, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
+        type: 3}
+      propertyPath: playerLevels.Array.data[1].expRequired
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416125067247940365, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
+        type: 3}
+      propertyPath: playerLevels.Array.data[2].expRequired
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 4932860218766226007, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7386197055365572710, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7947301374678680269, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
+        type: 3}
+      propertyPath: collisionLayers.m_Bits
+      value: 95
+      objectReference: {fileID: 0}
+    - target: {fileID: 8748657717824169658, guid: 969b8e9ac949b5b4dbecba9af4ee6450,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17386,7 +17499,7 @@ GameObject:
   - component: {fileID: 4707075794027202887}
   m_Layer: 5
   m_Name: ArmorItemCase
-  m_TagString: Untagged
+  m_TagString: ArmorSlot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

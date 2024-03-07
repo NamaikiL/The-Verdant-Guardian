@@ -8,39 +8,39 @@ namespace _Scripts.Gameplay
         [SerializeField] private Transform target;
 
         [Header("Camera Properties")]
-        [SerializeField] private float smoothSpeed = 0.2f;
+        [SerializeField] private float positionSmoothTime = 0.1f;
+        private Vector3 positionVelocity = Vector3.zero;
+
         [SerializeField] private Vector3 cameraOffset = new Vector3(0f, 2f, -7f);
 
         [Header("Camera Rotation Properties")]
         [SerializeField] private float mouseSensitivity = 150f;
         [SerializeField] private float pitchMin = -30f;
         [SerializeField] private float pitchMax = 60f;
-
-        [Header("Camera Movement Following")]
-        [SerializeField] private float movementSensitivity = 2f; // Adjust this value to control how much the camera's yaw changes with player movement
+        [SerializeField] private float rotationSmoothTime = 0.1f;
+        private Vector2 rotationVelocity;
+        private Vector2 currentRotation;
 
         [Header("Collision Properties")]
         [SerializeField] private float collisionOffset = 1.5f;
 
-        private float _pitch;
-        private float _yaw;
-
         void Start()
         {
             Cursor.lockState = CursorLockMode.Locked;
-            _yaw = transform.eulerAngles.y;
-            _pitch = transform.eulerAngles.x;
+            currentRotation.x = transform.eulerAngles.y;
+            currentRotation.y = transform.eulerAngles.x;
         }
 
-        void LateUpdate()
+        void FixedUpdate()
         {
             if (!target) return;
 
             HandleCameraRotation();
 
-            Vector3 desiredCameraPosition = target.position + Quaternion.Euler(_pitch, _yaw, 0) * cameraOffset;
+            Vector3 desiredCameraPosition = target.position + Quaternion.Euler(currentRotation.y, currentRotation.x, 0) * cameraOffset;
             Vector3 collisionAdjustedPosition = CameraCollisionAdjustment(target.position, desiredCameraPosition);
-            transform.position = Vector3.Lerp(transform.position, collisionAdjustedPosition, smoothSpeed * Time.deltaTime);
+            transform.position = Vector3.SmoothDamp(transform.position, collisionAdjustedPosition, ref positionVelocity, positionSmoothTime);
+
             transform.LookAt(target);
         }
 
@@ -48,11 +48,13 @@ namespace _Scripts.Gameplay
         {
             float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
             float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
-            float playerMovementDirection = Input.GetAxis("Horizontal"); // Assuming "Horizontal" maps to player's left/right movement
 
-            _yaw += mouseX + (playerMovementDirection * movementSensitivity); // Modify yaw based on player movement as well as mouse input
-            _pitch -= mouseY;
-            _pitch = Mathf.Clamp(_pitch, pitchMin, pitchMax);
+            currentRotation.x += mouseX;
+            currentRotation.y -= mouseY;
+            currentRotation.y = Mathf.Clamp(currentRotation.y, pitchMin, pitchMax);
+
+            var rotation = Quaternion.Euler(currentRotation.y, currentRotation.x, 0);
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, rotationSmoothTime);
         }
 
         private Vector3 CameraCollisionAdjustment(Vector3 fromPosition, Vector3 toPosition)
