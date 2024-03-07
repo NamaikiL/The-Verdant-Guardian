@@ -9942,7 +9942,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 4.34e-43, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 3.030571e-39, y: 0, z: 0, w: 1e-45}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -10081,6 +10081,8 @@ MonoBehaviour:
   attack: 323
   interaction: 101
   inventory: 105
+  map: 59
+  pause: 27
 --- !u!114 &2593018477815755810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10118,6 +10120,7 @@ MonoBehaviour:
   maxPlayerHP: 100
   healthRegenRate: 5
   healthRegenDelay: 5
+  healthAlert: 15
   durationHealVFX: 2
   healVFX: {fileID: 5041991792393152033}
   healthBar: {fileID: 0}
