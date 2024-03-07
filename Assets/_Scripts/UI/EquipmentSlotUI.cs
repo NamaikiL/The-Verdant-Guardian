@@ -25,12 +25,24 @@ namespace _Scripts.UI
 
         #region Properties
 
+        // Item Property.
         public Items CurrentItem => _currentItem;
 
         #endregion
         
         #region Built-In Methods
 
+        /**
+         * <summary>
+         * Unity calls Awake when an enabled script instance is being loaded.
+         * </summary>
+         */
+        void Awake()
+        {
+            ClearSlotUI();
+        }
+        
+        
         /**
          * <summary>
          * Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
@@ -90,7 +102,20 @@ namespace _Scripts.UI
          */
         private void UpdateUISlot()
         {
+            transform.GetChild(0).gameObject.SetActive(true);
             transform.GetChild(0).GetComponent<Image>().sprite = _currentItem.ItemImage;
+        }
+
+
+        /**
+         * <summary>
+         * Clear the UI Slot.
+         * </summary>
+         */
+        private void ClearSlotUI()
+        {
+            transform.GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(0).GetComponent<Image>().sprite = null;
         }
 
         #endregion

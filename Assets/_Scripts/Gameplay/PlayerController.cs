@@ -85,6 +85,10 @@ namespace _Scripts.Gameplay
         public Vector3 CurrentPlayerPosition => gameObject.transform.localPosition;
         public Vector3 CurrentPlayerRotation => gameObject.transform.eulerAngles;
         
+        // Conditions.
+        public bool IsCrouching => _isCrouching;
+        public bool IsDodging => _isDodging;
+        
         // Quest Property.
         public List<Quest> PlayerQuestsList => _playerQuestsList;
 
@@ -176,7 +180,6 @@ namespace _Scripts.Gameplay
          */
         public void InitializePlayerCoordinates(Vector3 playerPosition, Vector3 playerRotation)
         {
-            Debug.Log($"Initializing Player Coordinates to Position: {playerPosition}, Rotation: {playerRotation}");
             _characterController.enabled = false;
             transform.position = playerPosition;
             transform.eulerAngles = playerRotation;
