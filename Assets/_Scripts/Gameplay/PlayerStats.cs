@@ -236,6 +236,11 @@ namespace _Scripts.Gameplay
             healthBar.UpdateHealthBar(_currentPlayerHP);
             StartCoroutine(RegenerateHealth());
 
+            if(_currentPlayerHP == 0)
+            {
+                _audioManager.PlayerDeathSFX.Play();
+            }
+
             //SFX to alert the low life of the player.
             if (_currentPlayerHP < healthAlert)
             {
@@ -275,6 +280,7 @@ namespace _Scripts.Gameplay
         private IEnumerator HealEffectDuration()
         {
             healVFX.SetActive(true);
+            _audioManager.PlayerHealedSFX.Play();
             yield return new WaitForSeconds(durationHealVFX);
             healVFX.SetActive(false);
         }

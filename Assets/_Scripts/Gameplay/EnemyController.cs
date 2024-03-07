@@ -22,6 +22,8 @@ namespace _Scripts.Gameplay
         [Header("Patrol")]
         [SerializeField] private Transform[] patrolPoints;
         [SerializeField] private float speedPatrol = 0.5f;
+        public Transform _model;
+
 
         //Enemy Stats.
         private int _currentEnemyHP;
@@ -31,7 +33,7 @@ namespace _Scripts.Gameplay
 
         //Patrol features.
         private int _targetPoint;
-        private Transform _model;
+        //private Transform _model;
 
         //Component.
         private AudioManager _audioManager;
@@ -56,7 +58,7 @@ namespace _Scripts.Gameplay
 
             //Patrol set up.
             _targetPoint = 0;
-            _model = this.gameObject.transform.GetChild(0);
+            //_model = this.gameObject.transform.GetChild(0);
         }
         
         /**

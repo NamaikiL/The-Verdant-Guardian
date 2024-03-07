@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf9f682a1b9572e45971e0e9b6be871f, type: 3}
-  m_Name: Slime
+  m_Name: Simpleton
   m_EditorClassIdentifier: 
-  enemyName: Slime
-  enemyModel: {fileID: 2339420007618816169, guid: 207e8507341e91b44b385b8fcf8b45d7,
-    type: 3}
+  enemyName: Jules le Simple
+  enemyModel: {fileID: 0}
   enemyMaxHealth: 100
   damage: 0
   attackSpeed: 0

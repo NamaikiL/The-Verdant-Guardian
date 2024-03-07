@@ -19,12 +19,18 @@ namespace _Scripts.Managers
 
         [Header("UI SFX")]
         [SerializeField] private AudioSource btnSFX;
+        [SerializeField] private AudioSource questCompletSFX;
 
         [Header("Player SFX")]
+        [SerializeField] private AudioSource playerHealedSFX;
         [SerializeField] private AudioSource playerDyingSFX;
+        [SerializeField] private AudioSource playerDeathSFX;
+        [SerializeField] private AudioSource playerAttackSFX;
 
-        [Header("Enemies SFX")]
+        [Header("Enemies/NPC SFX")]
         [SerializeField] private AudioSource enemyDeathSFX;
+        [SerializeField] private AudioSource enemyIdleSFX;
+        [SerializeField] private AudioSource enemyAttackSFX;
 
         //Singleton.
         private static AudioManager _instance;
@@ -35,12 +41,18 @@ namespace _Scripts.Managers
 
         //User Interface SFX.
         public AudioSource BtnSFX => btnSFX;
+        public AudioSource QuestCompletSFX => questCompletSFX;
 
         //Player SFX.
+        public AudioSource PlayerHealedSFX => playerHealedSFX;
         public AudioSource PlayerDyingSFX => playerDyingSFX;
+        public AudioSource PlayerDeathSFX => playerDeathSFX;
+        public AudioSource PlayerAttackSFX => playerAttackSFX;
 
-        //Ennemies SFX.
+        //Ennemies/NPC SFX.
         public AudioSource EnemyDeathSFX => enemyDeathSFX;
+        public AudioSource EnemyIdleSFX => enemyIdleSFX;
+        public AudioSource EnemyAttackSFX => enemyAttackSFX;
 
         // Singleton Property.
         public static AudioManager Instance => _instance;
