@@ -54,7 +54,7 @@ namespace _Scripts.Managers
 
         private IEnumerator DelayLoadGame()
         {
-            _audioManager.BtnSound.Play();
+            _audioManager.BtnSFX.Play();
             yield return new WaitForSeconds(timeBeforeLoad);
             SceneManager.LoadScene("Debug", LoadSceneMode.Single);
         }
@@ -71,7 +71,7 @@ namespace _Scripts.Managers
 
         private IEnumerator DelayLoadCredits()
         {
-            _audioManager.BtnSound.Play();
+            _audioManager.BtnSFX.Play();
             yield return new WaitForSeconds(timeBeforeLoad);
             creditsScene.SetActive(true);
             menuScene.SetActive(false);
@@ -89,14 +89,10 @@ namespace _Scripts.Managers
 
         private IEnumerator DelayLoadMenu()
         {
-            _audioManager.BtnSound.Play();
+            _audioManager.BtnSFX.Play();
             yield return new WaitForSeconds(timeBeforeLoad);
             creditsScene.SetActive(false);
             menuScene.SetActive(true);
-
-            //Game is not paused
-            /*Time.timeScale = 1f;
-            _uiManager.GameIsPaused = false;*/
         }
 
         /**
@@ -114,7 +110,7 @@ namespace _Scripts.Managers
 
         private IEnumerator DelayExitGame()
         {
-            _audioManager.BtnSound.Play();
+            _audioManager.BtnSFX.Play();
             yield return new WaitForSeconds(timeBeforeLoad);
             Application.Quit();
         }
@@ -139,7 +135,7 @@ namespace _Scripts.Managers
 
         private IEnumerator DelayLoadMenuInGame()
         {
-            _audioManager.BtnSound.Play();
+            _audioManager.BtnSFX.Play();
             yield return new WaitForSeconds(timeBeforeLoad);
             SceneManager.LoadScene("Menu", LoadSceneMode.Single);
         }
@@ -151,7 +147,7 @@ namespace _Scripts.Managers
          */
         public void ContinueGame()
         {
-            _audioManager.BtnSound.Play();
+            _audioManager.BtnSFX.Play();
             StartCoroutine(DelayContinueGame());
 
             //Game is not paused

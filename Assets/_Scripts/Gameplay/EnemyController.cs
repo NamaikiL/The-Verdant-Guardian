@@ -1,4 +1,5 @@
 using System.Collections;
+using _Scripts.Managers;
 using _Scripts.Scriptables;
 using _Scripts.UI;
 using UnityEngine;
@@ -22,15 +23,18 @@ namespace _Scripts.Gameplay
         [SerializeField] private Transform[] patrolPoints;
         [SerializeField] private float speedPatrol = 0.5f;
 
-        //Enemy Stats
+        //Enemy Stats.
         private int _currentEnemyHP;
 
-        //Health display
+        //Health display.
         private bool _healthIsActive = false;
 
-        //Patrol features
+        //Patrol features.
         private int _targetPoint;
         private Transform _model;
+
+        //Component.
+        private AudioManager _audioManager;
 
         #endregion
 
@@ -43,12 +47,14 @@ namespace _Scripts.Gameplay
         */
         void Start()
         {
+            //Components.
+            _audioManager = AudioManager.Instance;
             _currentEnemyHP = enemiesScriptable.EnemyMaxHealth;
 
-            //Update the maximum size of gauges
+            //Update the maximum size of gauges.
             healthUI.SetHealthBarMax(enemiesScriptable.EnemyMaxHealth);
 
-            //Patrol set up
+            //Patrol set up.
             _targetPoint = 0;
             _model = this.gameObject.transform.GetChild(0);
         }
@@ -62,6 +68,10 @@ namespace _Scripts.Gameplay
         {
             _currentEnemyHP = Mathf.Clamp(_currentEnemyHP, 0, enemiesScriptable.EnemyMaxHealth);
 
+            if(Input.GetKeyDown(KeyCode.P))
+            {
+                TakeDamage(10);
+            }
             Patrol();
         }
 
@@ -77,7 +87,7 @@ namespace _Scripts.Gameplay
          */
         public void TakeDamage(int damage)
         {
-            //Display health
+            //Display health.
             healthBar.SetActive(true);
             _healthIsActive = true;
 
@@ -86,23 +96,25 @@ namespace _Scripts.Gameplay
                 StartCoroutine(HealthDisplayTime());
             }
 
-            //Take damage and update UI
+            //Take damage and update UI.
             _currentEnemyHP -= damage;
             healthUI.UpdateHealthBar(_currentEnemyHP);
 
             if (_currentEnemyHP == 0)
             {
-                EnemyDeath();
+                StartCoroutine(DelayEnemyDeath());
             }
         }
 
         /**
          * <summary>
-         * Give the behaviour to the object when he dies.
+         * Coroutine for giving the behaviour to the object when he dies.
          * </summary>
          */
-        private void EnemyDeath()
+        private IEnumerator DelayEnemyDeath()
         {
+            _audioManager.EnemyDeathSFX.Play();
+            yield return new WaitForSeconds(0.5f);
             Destroy(this.gameObject);
         }
 

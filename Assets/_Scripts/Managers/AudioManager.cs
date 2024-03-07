@@ -18,17 +18,29 @@ namespace _Scripts.Managers
         [SerializeField] private AudioSource ambientSound;
 
         [Header("UI SFX")]
-        [SerializeField] private AudioSource btnSound;
+        [SerializeField] private AudioSource btnSFX;
 
-        //Singleton
+        [Header("Player SFX")]
+        [SerializeField] private AudioSource playerDyingSFX;
+
+        [Header("Enemies SFX")]
+        [SerializeField] private AudioSource enemyDeathSFX;
+
+        //Singleton.
         private static AudioManager _instance;
 
         #endregion
 
         #region Properties
 
-        //User Interface SFX
-        public AudioSource BtnSound => btnSound;
+        //User Interface SFX.
+        public AudioSource BtnSFX => btnSFX;
+
+        //Player SFX.
+        public AudioSource PlayerDyingSFX => playerDyingSFX;
+
+        //Ennemies SFX.
+        public AudioSource EnemyDeathSFX => enemyDeathSFX;
 
         // Singleton Property.
         public static AudioManager Instance => _instance;
@@ -61,6 +73,7 @@ namespace _Scripts.Managers
                 ambientSound.Play();
             }
         }
+
         #endregion
     }
 }

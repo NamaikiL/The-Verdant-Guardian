@@ -170,7 +170,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ambientSound: {fileID: 13767912}
-  btnSound: {fileID: 13767911}
+  btnSFX: {fileID: 13767911}
+  playerDyingSFX: {fileID: 0}
 --- !u!82 &13767911
 AudioSource:
   m_ObjectHideFlags: 0

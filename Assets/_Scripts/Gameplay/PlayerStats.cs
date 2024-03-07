@@ -62,6 +62,7 @@ namespace _Scripts.Gameplay
         [SerializeField] private float maxPlayerHP = 100f;
         [SerializeField] private float healthRegenRate = 5f;
         [SerializeField] private float healthRegenDelay = 5f;
+        [SerializeField] private float healthAlert = 15f;
         [SerializeField] private float durationHealVFX = 2f;
         [SerializeField] private GameObject healVFX;
         [SerializeField] private HealthBar healthBar;
@@ -109,6 +110,7 @@ namespace _Scripts.Gameplay
         
         // Components.
         private UIManager _uiManager;
+        private AudioManager _audioManager;
 
         #endregion
 
@@ -130,7 +132,8 @@ namespace _Scripts.Gameplay
         {
             // Components.
             _uiManager = UIManager.Instance;
-            
+            _audioManager = AudioManager.Instance;
+
             // Player stats.
             _currentPlayerHP = maxPlayerHP;
             _currentPlayerStamina = maxPlayerStamina;
@@ -232,6 +235,12 @@ namespace _Scripts.Gameplay
             _currentPlayerHP -= damage;
             healthBar.UpdateHealthBar(_currentPlayerHP);
             StartCoroutine(RegenerateHealth());
+
+            //SFX to alert the low life of the player.
+            if (_currentPlayerHP < healthAlert)
+            {
+                _audioManager.PlayerDyingSFX.Play();
+            }
         }
 
         /**
