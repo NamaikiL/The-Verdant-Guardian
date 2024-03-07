@@ -43,10 +43,12 @@ namespace _Scripts.Managers
         [Header("Inventory Stats & Skills")] 
         // Player Stats.
         [SerializeField] private TMP_Text txtPlayerHpUI;
+        [SerializeField] private Image imgPlayerHpBarUI;
         [SerializeField] private TMP_Text txtPlayerEnduranceUI;
+        [SerializeField] private Image imgPlayerEnduranceBarUI;
         // Player Level.
         [SerializeField] private TMP_Text txtPlayerLevelUI;
-        [SerializeField] private TMP_Text txtPlayerExpUI;
+        [SerializeField] private Image imgExperienceBarUI;
         [SerializeField] private TMP_Text txtPlayerSkillPoints;
         // Player Skill Points.
         [SerializeField] private TMP_Text txtConsPoints;
@@ -492,8 +494,10 @@ namespace _Scripts.Managers
          */
         public void UpdatePlayerStats(float playerHp, float maxPlayerHp, float playerStamina, float maxPlayerStamina)
         {
-            txtPlayerHpUI.text = $"Health {playerHp}/{maxPlayerHp}";
-            txtPlayerEnduranceUI.text = $"Stamina {playerStamina}/{maxPlayerStamina}";
+            txtPlayerHpUI.text = $"Hp {Mathf.RoundToInt(playerHp)}/{Mathf.RoundToInt(maxPlayerHp)}";
+            imgPlayerHpBarUI.fillAmount = playerHp / maxPlayerHp;
+            txtPlayerEnduranceUI.text = $"End {Mathf.RoundToInt(playerStamina)}/{Mathf.RoundToInt(maxPlayerStamina)}";
+            imgPlayerEnduranceBarUI.fillAmount = playerStamina / maxPlayerStamina;
         }
 
 
@@ -510,7 +514,7 @@ namespace _Scripts.Managers
          */
         public void UpdatePlayerSkillPoints(int skillPoints, int consPoint, int strPoint, int vigPoint, int dexPoint, int luckPoint)
         {
-            txtPlayerSkillPoints.text = $"Skill points: {skillPoints}";
+            txtPlayerSkillPoints.text = $"Attribute Points: {skillPoints}";
             
             txtConsPoints.text = consPoint.ToString();
             txtStrPoints.text = strPoint.ToString();
@@ -532,7 +536,7 @@ namespace _Scripts.Managers
         public void UpdatePlayerLevelAndExperienceUI(int playerLevel, int playerExperience, int experienceRequired, int playerSkillPoints)
         {
             txtPlayerLevelUI.text = $"Level {playerLevel}";
-            txtPlayerExpUI.text = $"{playerExperience}/{experienceRequired}";
+            imgExperienceBarUI.fillAmount = (float)playerExperience / experienceRequired;
             txtPlayerSkillPoints.text = $"Skill points: {playerSkillPoints}";
         }
         

@@ -80,9 +80,14 @@ namespace _Scripts.Gameplay
         #endregion
 
         #region Properties
-
-        // Movement Property.
-        public Vector3 Direction => _direction;
+        
+        // Player Coordinates Properties.
+        public Vector3 CurrentPlayerPosition => gameObject.transform.localPosition;
+        public Vector3 CurrentPlayerRotation => gameObject.transform.eulerAngles;
+        
+        // Conditions.
+        public bool IsCrouching => _isCrouching;
+        public bool IsDodging => _isDodging;
         
         // Quest Property.
         public List<Quest> PlayerQuestsList => _playerQuestsList;
@@ -164,6 +169,25 @@ namespace _Scripts.Gameplay
 
         #endregion
 
+        #region Initialize Methods
+
+        /**
+         * <summary>
+         * Initialize the player position.
+         * </summary>
+         * <param name="playerPosition">The player spawn position.</param>
+         * <param name="playerRotation">The player spawn rotation.</param>
+         */
+        public void InitializePlayerCoordinates(Vector3 playerPosition, Vector3 playerRotation)
+        {
+            _characterController.enabled = false;
+            transform.position = playerPosition;
+            transform.eulerAngles = playerRotation;
+            _characterController.enabled = true;
+        }
+
+        #endregion
+        
         #region Custom Methods
 
         /**

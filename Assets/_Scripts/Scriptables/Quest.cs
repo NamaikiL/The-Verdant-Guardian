@@ -34,7 +34,14 @@ namespace _Scripts.Scriptables
         // Conditions.
         public bool IsActive
         {
+            get => isActive;
             set => isActive = value;
+        }
+
+        public bool IsComplete
+        {
+            get => isComplete;
+            set => isComplete = value;
         }
 
         // Information.
