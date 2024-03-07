@@ -4,22 +4,25 @@ using UnityEngine.SceneManagement;
 
 namespace _Scripts.Managers
 {
-    [RequireComponent(typeof(AudioSource))]
-
+    /**
+     * <summary>
+     * Manage the menu in general.
+     * </summary>
+     */
     public class MenuManager : MonoBehaviour
     {
         #region Variable
 
         [Header("Button manager")]
         [SerializeField] private float timeBeforeLoad = 0.5f;
-        [SerializeField] private AudioSource btnSound;
 
         [Header("Scene Manager")]
         [SerializeField] private GameObject creditsScene;
         [SerializeField] private GameObject menuScene;
 
-        //Component.
+        //Components.
         private UIManager _uiManager;
+        private AudioManager _audioManager;
 
         #endregion
 
@@ -33,6 +36,7 @@ namespace _Scripts.Managers
         private void Start()
         {
             _uiManager = UIManager.Instance;
+            _audioManager = AudioManager.Instance;
         }
         #endregion
 
@@ -50,13 +54,9 @@ namespace _Scripts.Managers
 
         private IEnumerator DelayLoadGame()
         {
-            btnSound.Play();
+            _audioManager.BtnSound.Play();
             yield return new WaitForSeconds(timeBeforeLoad);
             SceneManager.LoadScene("Debug", LoadSceneMode.Single);
-
-            //Game is not paused
-            Time.timeScale = 1f;
-            _uiManager.GameIsPaused = false;
         }
         
         /**
@@ -71,7 +71,7 @@ namespace _Scripts.Managers
 
         private IEnumerator DelayLoadCredits()
         {
-            btnSound.Play();
+            _audioManager.BtnSound.Play();
             yield return new WaitForSeconds(timeBeforeLoad);
             creditsScene.SetActive(true);
             menuScene.SetActive(false);
@@ -89,14 +89,14 @@ namespace _Scripts.Managers
 
         private IEnumerator DelayLoadMenu()
         {
-            btnSound.Play();
+            _audioManager.BtnSound.Play();
             yield return new WaitForSeconds(timeBeforeLoad);
             creditsScene.SetActive(false);
             menuScene.SetActive(true);
 
             //Game is not paused
-            Time.timeScale = 1f;
-            _uiManager.GameIsPaused = false;
+            /*Time.timeScale = 1f;
+            _uiManager.GameIsPaused = false;*/
         }
 
         /**
@@ -110,12 +110,11 @@ namespace _Scripts.Managers
 
             //Game is not paused
             Time.timeScale = 1f;
-            _uiManager.GameIsPaused = false;
         }
 
         private IEnumerator DelayExitGame()
         {
-            btnSound.Play();
+            _audioManager.BtnSound.Play();
             yield return new WaitForSeconds(timeBeforeLoad);
             Application.Quit();
         }
@@ -140,7 +139,7 @@ namespace _Scripts.Managers
 
         private IEnumerator DelayLoadMenuInGame()
         {
-            btnSound.Play();
+            _audioManager.BtnSound.Play();
             yield return new WaitForSeconds(timeBeforeLoad);
             SceneManager.LoadScene("Menu", LoadSceneMode.Single);
         }
@@ -152,7 +151,7 @@ namespace _Scripts.Managers
          */
         public void ContinueGame()
         {
-            btnSound.Play();
+            _audioManager.BtnSound.Play();
             StartCoroutine(DelayContinueGame());
 
             //Game is not paused
@@ -164,9 +163,6 @@ namespace _Scripts.Managers
         {
             yield return new WaitForSeconds(timeBeforeLoad);
             _uiManager.PauseUI.SetActive(false);
-
-            //Game is not paused
-            Time.timeScale = 1f;
             Cursor.lockState = CursorLockMode.Locked;
         }
         #endregion
