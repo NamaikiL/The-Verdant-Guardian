@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using _Scripts.Gameplay;
 using _Scripts.Scriptables;
@@ -64,6 +65,10 @@ namespace _Scripts.Managers
         [SerializeField] private Transform playerWorld;
         [SerializeField] private Transform worldPoint1, worldPoint2;
 
+        [Header("Dragon UI")] 
+        [SerializeField] private CanvasGroup dragonGroupUI;
+        [SerializeField] private Image dragonLifeBar;
+        [SerializeField] private float uiFadeDuraction = 2f;
 
         //Pause Variables.
         private bool _gameIsPaused;
@@ -568,6 +573,48 @@ namespace _Scripts.Managers
             {
                 playerStats.UpgradeSkill(skill, SkillUpdate.Decrement);
             }
+        }
+
+        #endregion
+
+        #region Dragon UI Methods
+
+        /**
+         * <summary>
+         * Method to fade in the UI Boss elements.
+         * </summary>
+         */
+        public IEnumerator DragonGroupFade(bool inOut)
+        {
+            float currentTime = 0f;
+
+            while (currentTime < uiFadeDuraction)
+            {
+                currentTime += Time.deltaTime;
+                
+                // Fading animation.
+                if (inOut) dragonGroupUI.alpha = Mathf.Lerp(0f, 1f, currentTime / uiFadeDuraction);
+                else dragonGroupUI.alpha = Mathf.Lerp(1f, 0f, currentTime / uiFadeDuraction);
+
+                yield return null;
+            }
+
+            // Ensure it's fully done.
+            if (inOut) dragonGroupUI.alpha = 1f;
+            else dragonGroupUI.alpha = 0f;
+        }
+
+
+        /**
+         * <summary>
+         * Update the dragon boss life bar.
+         * </summary>
+         * <param name="dragonHp">The actual dragon hp.</param>
+         * <param name="dragonMaxHp">The dragon max hp.</param>
+         */
+        public void DragonLifeBarUpdate(int dragonHp, int dragonMaxHp)
+        {
+            dragonLifeBar.fillAmount = (float)dragonHp / dragonMaxHp;
         }
 
         #endregion
