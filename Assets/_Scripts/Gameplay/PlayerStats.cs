@@ -107,10 +107,15 @@ namespace _Scripts.Gameplay
         
         // Stamina Conditions.
         private IEnumerator _regenStamina;
-        
+
+        // EVENT.
+        public static event Action<PlayerStats> OnInteraction;
+
         // Components.
         private UIManager _uiManager;
         private AudioManager _audioManager;
+        private PlayerInputs _playerInputs;
+        private PlayerController _playerController;
 
         #endregion
 
@@ -146,6 +151,8 @@ namespace _Scripts.Gameplay
             // Components.
             _uiManager = UIManager.Instance;
             _audioManager = AudioManager.Instance;
+            _playerInputs = PlayerInputs.Instance;
+            _playerController = PlayerController.Instance;
 
             // Player stats.
             _currentPlayerHP = maxPlayerHP;
@@ -164,6 +171,17 @@ namespace _Scripts.Gameplay
         void Update()
         {
             _currentPlayerHP = Mathf.Clamp(_currentPlayerHP, 0f, maxPlayerHP);
+
+            // Event.
+            if (_playerInputs.Interaction)
+            {
+                OnInteraction?.Invoke(this);
+                RegenAllHealth();
+            }
+            if(Input.GetKeyDown(KeyCode.P))
+            {
+                TakeDamage(10);
+            }
         }
 
         #endregion
@@ -249,9 +267,10 @@ namespace _Scripts.Gameplay
             healthBar.UpdateHealthBar(_currentPlayerHP);
             StartCoroutine(RegenerateHealth());
 
+            //Active the death behaviour.
             if(_currentPlayerHP == 0)
             {
-                _audioManager.PlayerDeathSFX.Play();
+                PlayerDeath();
             }
 
             //SFX to alert the low life of the player.
@@ -259,6 +278,18 @@ namespace _Scripts.Gameplay
             {
                 _audioManager.PlayerDyingSFX.Play();
             }
+        }
+
+        /**
+         * <summary>
+         * Player death behaviour.
+         * </summary>
+         */
+        private void PlayerDeath()
+        {
+            StopCoroutine(RegenerateHealth());
+            _audioManager.PlayerDeathSFX.Play();
+            //To-Do: Function to reload game
         }
 
         /**
@@ -279,7 +310,7 @@ namespace _Scripts.Gameplay
          * Regen all the player HP.
          * </summary>
          */
-        public void RegenAllHealth()
+        private void RegenAllHealth()
         {
             _currentPlayerHP += maxPlayerHP;
             healthBar.UpdateHealthBar(_currentPlayerHP);

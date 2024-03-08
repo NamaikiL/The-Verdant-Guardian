@@ -26,6 +26,7 @@ namespace _Scripts.Managers
         [SerializeField] private AudioSource playerDyingSFX;
         [SerializeField] private AudioSource playerDeathSFX;
         [SerializeField] private AudioSource playerAttackSFX;
+        [SerializeField] private AudioSource playerSleepSFX;
 
         [Header("Enemies/NPC SFX")]
         [SerializeField] private AudioSource enemyDeathSFX;
@@ -48,6 +49,7 @@ namespace _Scripts.Managers
         public AudioSource PlayerDyingSFX => playerDyingSFX;
         public AudioSource PlayerDeathSFX => playerDeathSFX;
         public AudioSource PlayerAttackSFX => playerAttackSFX;
+        public AudioSource PlayerSleepSFX => playerSleepSFX;
 
         //Ennemies/NPC SFX.
         public AudioSource EnemyDeathSFX => enemyDeathSFX;

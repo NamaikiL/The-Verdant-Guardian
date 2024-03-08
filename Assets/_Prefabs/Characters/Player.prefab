@@ -9841,7 +9841,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7386197055365572710}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9965,7 +9965,7 @@ MonoBehaviour:
   - level: 3
     expRequired: 300
   maxPlayerHP: 100
-  healthRegenRate: 5
+  healthRegenRate: 0.1
   healthRegenDelay: 5
   healthAlert: 15
   durationHealVFX: 2
