@@ -28,6 +28,7 @@ namespace _Scripts.Gameplay
         [SerializeField] private KeyCode inventory = KeyCode.I;
         [SerializeField] private KeyCode map = KeyCode.Semicolon;
         [SerializeField] private KeyCode pause = KeyCode.Escape;
+        [SerializeField] private KeyCode questUI = KeyCode.Tab;
 
         // Conditions.
         private bool _jumped;
@@ -39,6 +40,7 @@ namespace _Scripts.Gameplay
         private bool _inventory;
         private bool _map;
         private bool _pause;
+        private bool _questUI;
 
         // Player movements.
         private float _horizontal;
@@ -71,6 +73,7 @@ namespace _Scripts.Gameplay
         public bool Inventory => _inventory;
         public bool Map => _map;
         public bool Pause => _pause;
+        public bool QuestUI => _questUI;
 
         // Player movements.
         public Vector2 Movement => _movement;
@@ -110,6 +113,7 @@ namespace _Scripts.Gameplay
             _inventory = Input.GetKeyDown(inventory);
             _map = Input.GetKeyDown(map);
             _pause = Input.GetKeyDown(pause);
+            _questUI = Input.GetKeyDown(questUI);
             _crouch = Input.GetKeyDown(crouchKey);
 
             // Sprint.

@@ -1,4 +1,3 @@
-using _Scripts.UI;
 using UnityEngine;
 
 namespace _Scripts.Managers
@@ -30,7 +29,9 @@ namespace _Scripts.Managers
 
         [Header("Enemies/NPC SFX")]
         [SerializeField] private AudioSource enemyDeathSFX;
-        [SerializeField] private AudioSource enemyIdleSFX;
+        [SerializeField] private AudioSource[] enemyIdleSFX;
+        [SerializeField] private float minRadomTimeIdleSFX = 5f;
+        [SerializeField] private float maxRadomTimeIdleSFX = 30f;
         [SerializeField] private AudioSource enemyAttackSFX;
 
         //Singleton.
@@ -53,7 +54,9 @@ namespace _Scripts.Managers
 
         //Ennemies/NPC SFX.
         public AudioSource EnemyDeathSFX => enemyDeathSFX;
-        public AudioSource EnemyIdleSFX => enemyIdleSFX;
+        public AudioSource[] EnemyIdleSFX => enemyIdleSFX;
+        public float MinRadomTimeIdleSFX => minRadomTimeIdleSFX;
+        public float MaxRadomTimeIdleSFX => maxRadomTimeIdleSFX;
         public AudioSource EnemyAttackSFX => enemyAttackSFX;
 
         // Singleton Property.

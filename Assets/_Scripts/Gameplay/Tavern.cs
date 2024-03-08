@@ -14,6 +14,9 @@ namespace _Scripts.Gameplay
         [Header("Sleep")]
         [SerializeField] private GameObject sleepAnimation;
 
+        //Coroutine Variable.
+        private float _sleepingTime = 5f;
+
         // Component.
         private AudioManager _audioManager;
 
@@ -89,7 +92,7 @@ namespace _Scripts.Gameplay
             sleepAnimation.SetActive(true);
             interactionUI.SetActive(false);
 
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(_sleepingTime);
             sleepAnimation.SetActive(false);
         }
 

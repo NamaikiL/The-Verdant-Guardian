@@ -178,10 +178,6 @@ namespace _Scripts.Gameplay
                 OnInteraction?.Invoke(this);
                 RegenAllHealth();
             }
-            if(Input.GetKeyDown(KeyCode.P))
-            {
-                TakeDamage(10);
-            }
         }
 
         #endregion

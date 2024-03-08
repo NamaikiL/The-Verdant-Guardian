@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using _Scripts.Gameplay;
 using _Scripts.Scriptables;
@@ -26,9 +27,11 @@ namespace _Scripts.Managers
         [SerializeField] private Slider staminaSlider;
 
         [Header("Quest UI.")]
+        [SerializeField] private GameObject questHolder;
         [SerializeField] private Transform panQuestHolder;
         [SerializeField] private GameObject panQuest;
-        
+        [SerializeField] private float newQuestDislpayTime = 7f;
+
         [Header("Inventory")]
         // Panels.
         [SerializeField] private GameObject panInventory;
@@ -64,6 +67,8 @@ namespace _Scripts.Managers
         [SerializeField] private Transform playerWorld;
         [SerializeField] private Transform worldPoint1, worldPoint2;
 
+        //Quest Variables
+        private bool _questShowed;
 
         //Pause Variables.
         private bool _gameIsPaused;
@@ -194,11 +199,12 @@ namespace _Scripts.Managers
 
             MinimapDisplay();
             PauseGame();
+            DisplayQuestUI();
         }
 
         #endregion
 
-        #region Resume Method
+        #region Pause Method
 
         /**
          * <summary>
@@ -266,11 +272,12 @@ namespace _Scripts.Managers
          */
         public void AddNewQuest(string title, string description)
         {
+            StartCoroutine(DisplayNewQuest());
+
             GameObject quest = Instantiate(panQuest, panQuestHolder);
             quest.transform.GetChild(0).GetComponent<TMP_Text>().text = title;
             quest.transform.GetChild(1).GetComponent<TMP_Text>().text = description;
         }
-
 
         /**
          * <summary>
@@ -280,6 +287,41 @@ namespace _Scripts.Managers
         public void RemoveQuest()
         {
             Destroy(panQuestHolder.transform.GetChild(0).gameObject);
+        }
+
+        /**
+         * <summary>
+         * Hide or show quest panel.
+         * </summary>
+         */
+        private void DisplayQuestUI()
+        {
+            if (_playerInputs.QuestUI)
+            {
+                if (!_questShowed)
+                {
+                    questHolder.SetActive(true);
+                }
+                else
+                {
+                    questHolder.SetActive(false);
+                }
+
+                _questShowed = !_questShowed;
+            }
+        }
+
+        /**
+         * <summary>
+         * Coroutine to display a new quest after a decided time.
+         * </summary>
+         */
+        private IEnumerator DisplayNewQuest()
+        {
+            questHolder.SetActive(true);
+            yield return new WaitForSeconds(newQuestDislpayTime);
+
+            questHolder.SetActive(false);
         }
 
         #endregion
