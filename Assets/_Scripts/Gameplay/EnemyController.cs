@@ -20,10 +20,9 @@ namespace _Scripts.Gameplay
         [SerializeField] private float healthDisplayTime = 15f;
 
         [Header("Patrol")]
+        [SerializeField] private Transform modelManager;
         [SerializeField] private Transform[] patrolPoints;
         [SerializeField] private float speedPatrol = 0.5f;
-        public Transform _model;
-
 
         //Enemy Stats.
         private int _currentEnemyHP;
@@ -33,10 +32,11 @@ namespace _Scripts.Gameplay
 
         //Patrol features.
         private int _targetPoint;
-        //private Transform _model;
+        private bool _isSfxPlaying;
 
         //Component.
         private AudioManager _audioManager;
+
 
         #endregion
 
@@ -58,9 +58,10 @@ namespace _Scripts.Gameplay
 
             //Patrol set up.
             _targetPoint = 0;
-            //_model = this.gameObject.transform.GetChild(0);
+
+            IdleSFX();
         }
-        
+
         /**
          * <summary>
          * Update is called once per frame.
@@ -70,10 +71,6 @@ namespace _Scripts.Gameplay
         {
             _currentEnemyHP = Mathf.Clamp(_currentEnemyHP, 0, enemiesScriptable.EnemyMaxHealth);
 
-            if(Input.GetKeyDown(KeyCode.P))
-            {
-                TakeDamage(10);
-            }
             Patrol();
         }
 
@@ -142,7 +139,7 @@ namespace _Scripts.Gameplay
          */
         private void Patrol()
         {
-            if(_model.transform.position == patrolPoints[_targetPoint].position)
+            if(modelManager.transform.position == patrolPoints[_targetPoint].position)
             {
                 _targetPoint++;
 
@@ -152,7 +149,46 @@ namespace _Scripts.Gameplay
                 }
             }
 
-            _model.transform.position = Vector3.MoveTowards(_model.transform.position, patrolPoints[_targetPoint].position, speedPatrol * Time.deltaTime);
+            modelManager.transform.position = Vector3.MoveTowards(modelManager.transform.position,
+                patrolPoints[_targetPoint].position, speedPatrol * Time.deltaTime);
+
+        }
+
+        /**
+         * <summary>
+         * Play idle SFX.
+         * </summary>
+         */
+        private void IdleSFX()
+        {
+            StartCoroutine(Delay());
+        }
+
+        /**
+         * <summary>
+         * Coroutine to play random SFX at random time.
+         * </summary>
+         */
+        private IEnumerator Delay()
+        {
+            _isSfxPlaying = true;
+
+            if(_isSfxPlaying == true)
+            {
+                //Choose random SFX.
+                AudioSource idleSFX = _audioManager.EnemyIdleSFX[Random.Range(0, _audioManager.EnemyIdleSFX.Length)];
+                idleSFX.Play();
+                _isSfxPlaying = false;
+
+                if(_isSfxPlaying == false)
+                {
+                    //Play SFX at random time.
+                    float randomTime = Random.Range(_audioManager.MinRadomTimeIdleSFX, _audioManager.MaxRadomTimeIdleSFX);
+                    yield return new WaitForSeconds(randomTime);
+
+                    IdleSFX();
+                }   //Allows the SFX to be play more than one time.
+            }
         }
 
         #endregion

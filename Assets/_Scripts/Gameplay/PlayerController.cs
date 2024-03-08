@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using _Scripts.Managers;
 using _Scripts.Scriptables;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace _Scripts.Gameplay
@@ -56,6 +57,9 @@ namespace _Scripts.Gameplay
         private bool _canDodge = true;
         private bool _isDodging;
         private Vector3 dodgeDirection;
+
+        //Attack
+        private bool _isAttacking;
         
         // NPC Interaction.
         private bool _isNpcHere;
@@ -76,11 +80,15 @@ namespace _Scripts.Gameplay
         
         private PlayerInputs _playerInputs;
         private UIManager _uiManager;
-        
+        private AudioManager _audioManager;
+
+        //Singleton
+        private static PlayerController _instance;
+
         #endregion
 
         #region Properties
-        
+
         // Player Coordinates Properties.
         public Vector3 CurrentPlayerPosition => gameObject.transform.localPosition;
         public Vector3 CurrentPlayerRotation => gameObject.transform.eulerAngles;
@@ -92,9 +100,24 @@ namespace _Scripts.Gameplay
         // Quest Property.
         public List<Quest> PlayerQuestsList => _playerQuestsList;
 
+        // Singleton Property.
+        public static PlayerController Instance => _instance;
+
         #endregion
 
-        #region Builtin Methods
+        #region Built_In Methods
+
+        /**
+         * <summary>
+         * Unity calls Awake when an enabled script instance is being loaded.
+         * </summary>
+         */
+        void Awake()
+        {
+            // Singleton.
+            if (_instance) Destroy(gameObject);
+            _instance = this;
+        }
 
         /**
          * <summary>
@@ -106,6 +129,7 @@ namespace _Scripts.Gameplay
             // Component by instance.
             _playerInputs = PlayerInputs.Instance;
             _uiManager = UIManager.Instance;
+            _audioManager = AudioManager.Instance;
 
             // Component in object.
             _characterController = GetComponent<CharacterController>();
@@ -397,9 +421,39 @@ namespace _Scripts.Gameplay
                 _moveDirection = Vector3.zero;
             }
         }
-        
+
         #endregion
-        
+
+        #region Attack Methods
+
+        /**
+         * <summary>
+         * Attack behaviour of the player.
+         * </summary>
+         */
+        private void Attack()
+        {
+            if (_playerInputs.Attack)
+            {
+                if (!_isAttacking)
+                {
+                    Cursor.lockState = CursorLockMode.None;
+                    _audioManager.PlayerAttackSFX.Play();
+                    Debug.Log("ee");
+                }
+                else
+                {
+
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Debug.Log("elllle");
+                }
+
+                _isAttacking = !_isAttacking;
+            }
+        }
+
+        #endregion
+
         #region Quest Management
 
         /**
