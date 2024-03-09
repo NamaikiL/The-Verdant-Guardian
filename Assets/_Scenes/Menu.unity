@@ -171,7 +171,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ambientSound: {fileID: 13767912}
   btnSFX: {fileID: 13767911}
+  questCompletSFX: {fileID: 0}
+  playerHealedSFX: {fileID: 0}
   playerDyingSFX: {fileID: 0}
+  playerDeathSFX: {fileID: 0}
+  playerAttackSFX: {fileID: 0}
+  playerSleepSFX: {fileID: 0}
+  enemyDeathSFX: {fileID: 0}
+  enemyIdleSFX: []
+  minRadomTimeIdleSFX: 5
+  maxRadomTimeIdleSFX: 30
+  enemyAttackSFX: {fileID: 0}
 --- !u!82 &13767911
 AudioSource:
   m_ObjectHideFlags: 0
@@ -377,7 +387,7 @@ GameObject:
   - component: {fileID: 19654760}
   - component: {fileID: 19654763}
   m_Layer: 5
-  m_Name: Btn_Play
+  m_Name: BtnPlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -494,7 +504,7 @@ GameObject:
   - component: {fileID: 81273507}
   - component: {fileID: 81273506}
   m_Layer: 5
-  m_Name: Txt_Play
+  m_Name: TxtPlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -630,7 +640,7 @@ GameObject:
   - component: {fileID: 183662649}
   - component: {fileID: 183662648}
   m_Layer: 5
-  m_Name: Btn_Menu
+  m_Name: BtnMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -747,7 +757,7 @@ GameObject:
   - component: {fileID: 247579046}
   - component: {fileID: 247579045}
   m_Layer: 5
-  m_Name: Img_Background
+  m_Name: ImgBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -822,7 +832,7 @@ GameObject:
   - component: {fileID: 266125707}
   - component: {fileID: 266125706}
   m_Layer: 5
-  m_Name: Img_Logo
+  m_Name: ImgMenuInterface
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -867,7 +877,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f28787c9c55b41d4183bde4f50280699, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0cf446a148d37944fac96eb4b7946405, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -897,7 +907,7 @@ GameObject:
   - component: {fileID: 290135800}
   - component: {fileID: 290135799}
   m_Layer: 5
-  m_Name: Img_Logo
+  m_Name: ImgMenuInterface
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -942,7 +952,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f28787c9c55b41d4183bde4f50280699, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0cf446a148d37944fac96eb4b7946405, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1217,7 +1227,7 @@ GameObject:
   - component: {fileID: 866954641}
   - component: {fileID: 866954640}
   m_Layer: 5
-  m_Name: Txt_Exit
+  m_Name: TxtExit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1352,7 +1362,7 @@ GameObject:
   - component: {fileID: 940896314}
   - component: {fileID: 940896313}
   m_Layer: 5
-  m_Name: Txt_Menu
+  m_Name: TxtMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1520,7 +1530,7 @@ GameObject:
   - component: {fileID: 1241663338}
   - component: {fileID: 1241663341}
   m_Layer: 5
-  m_Name: Btn_Exit
+  m_Name: BtnExit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1637,7 +1647,7 @@ GameObject:
   - component: {fileID: 1247035380}
   - component: {fileID: 1247035379}
   m_Layer: 5
-  m_Name: Img_Background
+  m_Name: ImgBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1967,7 +1977,7 @@ GameObject:
   - component: {fileID: 1722381576}
   - component: {fileID: 1722381574}
   m_Layer: 5
-  m_Name: Btn_Credits
+  m_Name: BtnCredits
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2084,7 +2094,7 @@ GameObject:
   - component: {fileID: 1779571943}
   - component: {fileID: 1779571942}
   m_Layer: 5
-  m_Name: Txt_Credits
+  m_Name: TxtCredits
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2461,7 +2471,7 @@ GameObject:
   - component: {fileID: 2039171740}
   - component: {fileID: 2039171739}
   m_Layer: 5
-  m_Name: Txt_Credits
+  m_Name: TxtCredits
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
