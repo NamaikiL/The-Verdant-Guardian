@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8572409912204154693}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonTail1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4206118680551740165}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonHeadBone001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,7 +74,7 @@ GameObject:
   m_Component:
   - component: {fileID: 972825444699754366}
   - component: {fileID: 1559303564769885681}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonRArmPalm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1894749315013174139}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonPelvis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,7 +162,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6256657830845627371}
   - component: {fileID: 5418718046711137118}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonRLeg1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -218,7 +218,7 @@ GameObject:
   m_Component:
   - component: {fileID: 895262621361615551}
   - component: {fileID: 2987087576827776515}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonRLegPalm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -275,9 +275,9 @@ GameObject:
   - component: {fileID: 7315702641176537739}
   - component: {fileID: 186148405606217310}
   - component: {fileID: 5095960044874507335}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: DragonSave
-  m_TagString: Untagged
+  m_TagString: Dragon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -357,9 +357,9 @@ MonoBehaviour:
   maximumDistance: 20
   dragonSO: {fileID: 11400000, guid: e7a2e05670b5b914aa30bf4c4f3686ab, type: 2}
   attackInterval: 5
-  fireBreathRange: 20
-  fireBreathDuration: 3
-  stompAnimationDuration: 2
+  fireBreathRange: 10
+  fireBreathAnimation: {fileID: 7400000, guid: 0a14d3faa3263e64388be2cbb790410b, type: 2}
+  stompAnimation: {fileID: 7400000, guid: 6501c2c9f0988e54fa3e19449e12752d, type: 2}
 --- !u!1 &1455807589724763657
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,7 +370,7 @@ GameObject:
   m_Component:
   - component: {fileID: 654237967893473883}
   - component: {fileID: 2222473688362012966}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonLLegPalm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -425,7 +425,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1523399554753720805}
   - component: {fileID: 6372678714013920404}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonLArm1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -479,7 +479,7 @@ GameObject:
   m_Component:
   - component: {fileID: 86760159813555582}
   - component: {fileID: 8436359579545648541}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonTail4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -534,7 +534,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3359845504690545971}
   - component: {fileID: 5860051724245734847}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Object005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -658,7 +658,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7773008814019853806}
   - component: {fileID: 5803378845451111316}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonLLeg1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -714,7 +714,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4887855630500535843}
   - component: {fileID: 4417203776048572645}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonSpine3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -770,7 +770,7 @@ GameObject:
   m_Component:
   - component: {fileID: 739629039717252614}
   - component: {fileID: 1537676883946903817}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonRArm2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -824,7 +824,7 @@ GameObject:
   m_Component:
   - component: {fileID: 803697539892314170}
   - component: {fileID: 2526559672425913577}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonSpine1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -879,7 +879,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 387722273406711410}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonRLegCollarbone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -912,7 +912,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4247705254776325128}
   - component: {fileID: 2762365143112473902}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonTail2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -968,7 +968,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7031605576022843475}
   - component: {fileID: 5063216068802815276}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonHead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1024,7 +1024,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2559997813877903575}
   - component: {fileID: 5205176920370253680}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonRArm1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1078,7 +1078,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2852661246227439595}
   - component: {fileID: 3287580932672422110}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonRLeg3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1134,7 +1134,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7670164989581708394}
   - component: {fileID: 8668813535125630508}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonLArmPalm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1186,7 +1186,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 568463306405307552}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English Dragon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1217,7 +1217,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1821426594451417515}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonSpine1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1250,7 +1250,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4744199624449374014}
   - component: {fileID: 1080960103791930080}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonLLegPalm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1305,7 +1305,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3151736590673034246}
   - component: {fileID: 5579396626287699728}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonRLeg1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1360,7 +1360,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4419681334390862128}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1376,7 +1376,7 @@ Transform:
   m_GameObject: {fileID: 6975692147874701901}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1395,7 +1395,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5879068384555413434}
   - component: {fileID: 2271516399822856222}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonLLeg3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1451,7 +1451,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2462590228090548985}
   - component: {fileID: 6037092657505392849}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonLLeg2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1507,7 +1507,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6680500312969450929}
   - component: {fileID: 3023732485648952381}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonRLegPalm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1562,7 +1562,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3260786914907545630}
   - component: {fileID: 2021441661910516278}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonRLeg3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1618,7 +1618,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6929839079189696619}
   - component: {fileID: 7994413731059539689}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonTail3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1674,7 +1674,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2153184913215339284}
   - component: {fileID: 3701003113930659812}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonRLeg2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1730,7 +1730,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1081748176090451563}
   - component: {fileID: 6547114439386901775}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonRLeg2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1785,7 +1785,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4484135474799328279}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonLArmCollarbone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1818,7 +1818,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5588052941956164743}
   - component: {fileID: 7287718290442318154}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonSpine2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1874,7 +1874,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1277392540996956818}
   - component: {fileID: 4949245807171018586}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonSpine2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1929,7 +1929,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1545740538666090557}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonRArmCollarbone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1962,7 +1962,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5568473048109874918}
   - component: {fileID: 7128041519866126037}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonLLeg1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2018,7 +2018,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6101565920270322710}
   - component: {fileID: 1262001701163902971}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonLLeg2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2074,7 +2074,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5724050952768409583}
   - component: {fileID: 8400483004624070270}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonLLeg3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2129,7 +2129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2364220042279836705}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonLLegCollarbone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2162,7 +2162,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7883419033784290403}
   - component: {fileID: 3003616715112316720}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonLArm2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2215,7 +2215,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4720577157083006642}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: English DragonRibcage
   m_TagString: Untagged
   m_Icon: {fileID: 0}

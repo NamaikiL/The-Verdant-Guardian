@@ -4859,7 +4859,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2339638258871233322}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4959,11 +4959,11 @@ MonoBehaviour:
   turnSmoothSpeed: 0.2
   moveSpeedSprint: 7
   moveSpeedCrouch: 1
-  dodgeSpeed: 10
-  dodgeDuration: 0.5
+  dodgeSpeed: 5
+  dodgeDuration: 2
   timeBetweenDodge: 1
   jumpForce: 0.05
-  gravity: -6
+  gravity: -1
 --- !u!114 &6181080965646152086
 MonoBehaviour:
   m_ObjectHideFlags: 0
