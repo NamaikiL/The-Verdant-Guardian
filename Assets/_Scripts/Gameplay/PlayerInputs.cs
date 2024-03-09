@@ -1,4 +1,3 @@
-using _Scripts.Managers;
 using UnityEngine;
 
 namespace _Scripts.Gameplay
@@ -18,24 +17,35 @@ namespace _Scripts.Gameplay
         [SerializeField] private KeyCode horizontalRight = KeyCode.D;
         [SerializeField] private KeyCode verticalUp = KeyCode.W;
         [SerializeField] private KeyCode verticalDown = KeyCode.S;
+        [SerializeField] private KeyCode sprintKey = KeyCode.LeftShift;
+        [SerializeField] private KeyCode crouchKey = KeyCode.C;
+        [SerializeField] private KeyCode dodgeKey = KeyCode.LeftControl;
         
         [Header("Player Interactions")]
         [SerializeField] private KeyCode jump = KeyCode.Space;
         [SerializeField] private KeyCode attack = KeyCode.Mouse0;
         [SerializeField] private KeyCode interaction = KeyCode.E;
-        
+        [SerializeField] private KeyCode inventory = KeyCode.I;
+        [SerializeField] private KeyCode map = KeyCode.Semicolon;
+        [SerializeField] private KeyCode pause = KeyCode.Escape;
+        [SerializeField] private KeyCode questUI = KeyCode.Tab;
+
         // Conditions.
         private bool _jumped;
         private bool _attack;
         private bool _interaction;
+        private bool _sprint;
+        private bool _crouch;
+        private bool _dodge;
+        private bool _inventory;
+        private bool _map;
+        private bool _pause;
+        private bool _questUI;
 
         // Player movements.
         private float _horizontal;
         private float _vertical;
         private Vector2 _movement = Vector2.zero;
-
-        // Components.
-        private UIManager _uiManager;
         
         // Singleton.
         private static PlayerInputs _instance;
@@ -48,6 +58,22 @@ namespace _Scripts.Gameplay
         public bool Attack => _attack;
         public bool Jumped => _jumped;
         public bool Interaction => _interaction;
+        public bool Sprint
+        {
+            get => _sprint;
+            set => _sprint = value;
+        }
+        public bool Crouch => _crouch;
+        public bool Dodge
+        {
+            get => _dodge;
+            set => _dodge = value;
+        }
+
+        public bool Inventory => _inventory;
+        public bool Map => _map;
+        public bool Pause => _pause;
+        public bool QuestUI => _questUI;
 
         // Player movements.
         public Vector2 Movement => _movement;
@@ -69,16 +95,12 @@ namespace _Scripts.Gameplay
             // Singleton.
             if(_instance) Destroy(gameObject);
             _instance = this;
-            
-            // Components Initialization.
-            _uiManager = UIManager.Instance;
         }
 
 
         /**
          * <summary>
          * Update is called once per frame.
-         * TO-DO: Change the save spot and the inventory spot.
          * </summary>
          */
         void Update()
@@ -88,18 +110,24 @@ namespace _Scripts.Gameplay
             _jumped = Input.GetKey(jump);
             _attack = Input.GetKey(attack);
             _interaction = Input.GetKeyDown(interaction);
+            _inventory = Input.GetKeyDown(inventory);
+            _map = Input.GetKeyDown(map);
+            _pause = Input.GetKeyDown(pause);
+            _questUI = Input.GetKeyDown(questUI);
+            _crouch = Input.GetKeyDown(crouchKey);
+
+            // Sprint.
+            if (Input.GetKeyDown(sprintKey)) _sprint = true;
+            else if(Input.GetKeyUp(sprintKey)) _sprint = false;
             
-            // TO-DO: Change that to a function(In mb the inventory component).
-            if (_interaction)
-            {
-                _uiManager.ManageInventory();
-            }
+            // Dodge.
+            if(Input.GetKeyDown(dodgeKey)) _dodge = true;
             
         }
 
         #endregion
 
-        #region Movements
+        #region Movements Methods
         
         /**
          * <summary>

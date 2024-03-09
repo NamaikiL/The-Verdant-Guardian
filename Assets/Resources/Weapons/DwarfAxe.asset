@@ -12,14 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 015f397173eb5a745b84ac50cbc394f5, type: 3}
   m_Name: DwarfAxe
   m_EditorClassIdentifier: 
-  weight: 8
   itemName: DwarfAxe
-  description: An old weapon used by Dwarfs.
-  cost: 0
-  sellCost: 0
-  rarity: 0
-  image: {fileID: 21300000, guid: cf7051456719c6946be03f1332e04985, type: 3}
-  model: {fileID: 868225742684298475, guid: 86d7b8639a649294e9761761086f63e1, type: 3}
+  itemDescription: 
+  itemRarity: 0
+  itemWeight: 0
+  itemCost: 0
+  itemSellCost: 0
+  itemImage: {fileID: 21300000, guid: cf7051456719c6946be03f1332e04985, type: 3}
+  itemModel: {fileID: 868225742684298475, guid: 86d7b8639a649294e9761761086f63e1,
+    type: 3}
+  isStackable: 0
+  maxStack: 1
   damage: 10
   attackSpeed: 5
   durability: 500

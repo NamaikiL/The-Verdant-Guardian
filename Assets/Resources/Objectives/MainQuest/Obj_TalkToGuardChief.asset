@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9af5d535f76ae740837c81db135d2ff, type: 3}
+  m_Name: Obj_TalkToGuardChief
+  m_EditorClassIdentifier: 
+  parentQuest: {fileID: 0}
+  isRequired: 0
+  isComplete: 0
+  objectiveName: "Parler \xE0 la Cheffe de guarde"
+  objectiveDescription: Trouver Elo la Cheffe de guarde et lui parler.
+  objectiveType: 2
+  nbToCollect: 0
+  nbCollected: 0
+  itemType: 0
+  nbToFight: 0
+  nbFighted: 0
+  npcToTalk: {fileID: 0}

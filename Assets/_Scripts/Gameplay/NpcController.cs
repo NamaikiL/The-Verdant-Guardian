@@ -1,4 +1,5 @@
 using _Scripts.Scriptables;
+using _Scripts.UI;
 using UnityEngine;
 
 namespace _Scripts.Gameplay
@@ -9,15 +10,15 @@ namespace _Scripts.Gameplay
      * Handler of the NPC.
      * </summary>
      */
-    [RequireComponent(typeof(SphereCollider))]
-    public class NpcController : MonoBehaviour
+    //[RequireComponent(typeof(SphereCollider))]
+    public class NpcController : EnemyController
     {
         #region Variables
-
-        [Header("Interaction")] 
+        
+        [Header("Interaction")]
         [SerializeField] private GameObject interactionUI;
         [SerializeField] private Quest quest;
-    
+
         // Interaction.
         private SphereCollider _trigger;
 
@@ -27,14 +28,13 @@ namespace _Scripts.Gameplay
 
         /**
          * <summary>
-         * Start is called before the first frame update.
+         * Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
          * </summary>
          */
-        void Start()
+        void Start ()
         {
             InitializeSphereCollider();
         }
-    
 
         /**
          * <summary>
@@ -44,16 +44,15 @@ namespace _Scripts.Gameplay
          */
         void OnTriggerEnter(Collider other)
         {
-            if(other.CompareTag("Player"))      // If player is near.
-                if(interactionUI)
+            if (other.CompareTag("Player"))      // If player is near.
+                if (interactionUI)
                 {
                     interactionUI.SetActive(true);
                     //EVENT
                     PlayerController.OnInteraction += GiveQuest;
                 }       // If NPC can interact.
         }
-
-
+        
         /**
          * <summary>
          * OnTriggerExit is called when the Collider other has stopped touching the trigger.
@@ -72,7 +71,7 @@ namespace _Scripts.Gameplay
 
         #endregion
 
-        #region Custom Methods
+        #region Quest Management
 
         /**
          * <summary>
@@ -97,7 +96,7 @@ namespace _Scripts.Gameplay
         {
             playerController.ReceiveNewQuest(quest);
         }
-
         #endregion
+        
     }
 }

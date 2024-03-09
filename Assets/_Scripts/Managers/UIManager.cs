@@ -1,11 +1,16 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using _Scripts.Gameplay;
 using _Scripts.Scriptables;
+using _Scripts.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Screen = UnityEngine.Device.Screen;
 
 namespace _Scripts.Managers
 {
-    
     /**
      * <summary>
      * Manager of the UI in general.
@@ -15,30 +20,81 @@ namespace _Scripts.Managers
     {
         #region Variables
 
+        [Header("Pause")]
+        [SerializeField] private GameObject pauseUI;
+
+        [Header("Stamina gauge UI.")]
+        [SerializeField] private Slider staminaSlider;
+
         [Header("Quest UI.")]
+        [SerializeField] private GameObject questHolder;
         [SerializeField] private Transform panQuestHolder;
         [SerializeField] private GameObject panQuest;
-        
+        [SerializeField] private float newQuestDislpayTime = 7f;
+
         [Header("Inventory")]
         // Panels.
         [SerializeField] private GameObject panInventory;
         // Items UI Assets.
-        [SerializeField] private GameObject btnItem;
-        // Item UI Information
-        [SerializeField] private Image imgItem;
-        [SerializeField] private TMP_Text txtName;
-        [SerializeField] private TMP_Text txtPrice;
-        [SerializeField] private Button btnDrop;
+        [SerializeField] private List<InventorySlotUI> inventorySlots;
+        // Mouse Controller.
+        [SerializeField] private MouseFollower mouseFollower;
+        // ToolTip Controller.
+        [SerializeField] private ItemTooltip itemTooltip;
+        [SerializeField] private ItemActionTooltip itemActionTooltip;
 
-        // Base variable for item case in inventory.
-        private GameObject _itemCase;
+        [Header("Inventory Stats & Skills")] 
+        // Player Stats.
+        [SerializeField] private TMP_Text txtPlayerHpUI;
+        [SerializeField] private Image imgPlayerHpBarUI;
+        [SerializeField] private TMP_Text txtPlayerEnduranceUI;
+        [SerializeField] private Image imgPlayerEnduranceBarUI;
+        // Player Level.
+        [SerializeField] private TMP_Text txtPlayerLevelUI;
+        [SerializeField] private Image imgExperienceBarUI;
+        [SerializeField] private TMP_Text txtPlayerSkillPoints;
+        // Player Skill Points.
+        [SerializeField] private TMP_Text txtConsPoints;
+        [SerializeField] private TMP_Text txtStrPoints;
+        [SerializeField] private TMP_Text txtVigPoints;
+        [SerializeField] private TMP_Text txtDexPoints;
+        [SerializeField] private TMP_Text txtLuckPoints;
+
+        [Header("Mini Map Manager")]
+        [SerializeField] private GameObject minimap;
+        [SerializeField] private RectTransform playerMinimap;
+        [SerializeField] private RectTransform minimapPoint1, minimapPoint2;
+        [SerializeField] private Transform playerWorld;
+        [SerializeField] private Transform worldPoint1, worldPoint2;
+
+        [Header("Dragon UI")] 
+        [SerializeField] private CanvasGroup dragonGroupUI;
+        [SerializeField] private Image dragonLifeBar;
+        [SerializeField] private float uiFadeDuraction = 2f;
+
+        //Quest Variables
+        private bool _questShowed;
+
+        //Pause Variables.
+        private bool _gameIsPaused;
 
         // Inventory Variables.
+        private int _currentlyDraggedItemIndex = -1;
         private bool _inventoryShowed;
+        private RectTransform _itemTooltipTransform;
+        private RectTransform _backgroundTooltipTransform;
         
-        // Components.
-        private InventoryManager _inventoryManager;
-        
+        // Inventory Events.
+        public event Action<int> OnStartDragging; 
+        public event Action<int, int> OnSwapItems;
+
+        //Mini Map Variables.
+        private bool _minimapShowed;
+        private float _minimapRatio;
+
+        //Components.
+        private PlayerInputs _playerInputs;
+
         // Singleton.
         private static UIManager _instance;
 
@@ -46,6 +102,17 @@ namespace _Scripts.Managers
 
         #region Properties
 
+        // Inventory Management.
+        public bool InventoryShowed => _inventoryShowed;
+
+        //Pause Management
+        public GameObject PauseUI => pauseUI;
+        public bool GameIsPaused
+        {
+            get => _gameIsPaused;
+            set => _gameIsPaused = value;
+        }
+        
         // Singleton Property.
         public static UIManager Instance => _instance;
 
@@ -63,14 +130,143 @@ namespace _Scripts.Managers
             // Singleton.
             if (_instance) Destroy(this);
             _instance = this;
-            
-            // Components.
-            _inventoryManager = InventoryManager.Instance;
+
+            _itemTooltipTransform = itemTooltip.GetComponent<RectTransform>();
+            _backgroundTooltipTransform = itemTooltip.transform.GetChild(0).GetComponent<RectTransform>();
+
+            CalculateMapRatio();
+        }
+        
+        /**
+         * <summary>
+         * This function is called when the object becomes enabled and active.
+         * </summary>
+         */
+        void OnEnable()
+        {
+            foreach (InventorySlotUI inventorySlotUI in inventorySlots)
+            {   // Initialize the events.
+                inventorySlotUI.OnItemBeginDrag += HandleBeginDrag;
+                inventorySlotUI.OnItemDroppedOn += HandleSwap;
+                inventorySlotUI.OnItemEndDrag += HandleEndDrag;
+                inventorySlotUI.OnItemRightClicked += HandleShowItemsActions;
+                inventorySlotUI.OnItemHoverBegin += HandleHoverItemBegin;
+                inventorySlotUI.OnItemHoverEnd += HandleHoverItemEnd;
+            }
+        }
+
+        /**
+         * <summary>
+         * Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
+         * </summary>
+         */
+        void Start()
+        {
+            //Components
+            _playerInputs = PlayerInputs.Instance;
+        }
+
+        /**
+         * <summary>
+         * Update is called every frame, if the MonoBehaviour is enabled.
+         * </summary>
+         */
+        void Update()
+        {
+            if (itemTooltip.isActiveAndEnabled)
+            {
+                Vector2 mousePosition = Input.mousePosition;    // Getting the mouse position.
+
+                // Calculation of the offsets based on the RectTransform of the tooltip.
+                float pivotOffsetX = _backgroundTooltipTransform.rect.width * _backgroundTooltipTransform.pivot.x;
+                float pivotOffsetY =
+                    _backgroundTooltipTransform.rect.height * (1f - _backgroundTooltipTransform.pivot.y);
+
+                // Blocking the Tooltip on screen by Calculating the anchored position
+                // by adjusting the position of the mouse with the pivot offsets.
+                Vector2 anchoredPosition = new Vector2(
+                    Mathf.Clamp(
+                        mousePosition.x - pivotOffsetX, 
+                        0,
+                        Screen.width - _backgroundTooltipTransform.rect.width
+                        ),
+                    Mathf.Clamp(
+                        mousePosition.y + pivotOffsetY, 
+                        _backgroundTooltipTransform.rect.height, 
+                        Screen.height
+                        )
+                );
+
+                // Apply the position wanted.
+                _itemTooltipTransform.anchoredPosition =
+                    anchoredPosition - new Vector2(Screen.width / 2f, Screen.height / 2f);
+            }
+
+            MinimapDisplay();
+            PauseGame();
+            DisplayQuestUI();
         }
 
         #endregion
 
-        #region Custom Methods
+        #region Pause Method
+
+        /**
+         * <summary>
+         * Make the game in pause.
+         * </summary>
+         */
+        private void PauseGame()
+        {
+            if (_playerInputs.Pause)
+            {
+                if (!_gameIsPaused)
+                {
+                    pauseUI.SetActive(true);
+                    Time.timeScale = 0f;
+                    Cursor.lockState = CursorLockMode.None;
+                }
+                else
+                {
+                    pauseUI.SetActive(false);
+                    Time.timeScale = 1f;
+                    Cursor.lockState = CursorLockMode.Locked;
+                }
+
+                _gameIsPaused = !_gameIsPaused;
+            }
+        }
+
+        #endregion
+
+        #region Stamina Methods
+
+        /**
+         * <summary>
+         * Update the size of the gauge based on the maximum stamina.
+         * </summary>
+         * <param name="maxStamina">The maximum stamina disponible. </param>
+         */
+        public void SetStaminaBarMax(float maxStamina)
+        {
+            staminaSlider.maxValue = maxStamina;
+            UpdateStaminaBar(maxStamina);
+        }
+
+        /**
+         * <summary>
+         * Update stamina bar.
+         * </summary>
+         * <param name="currentStamina">The actual stamina value. </param>
+         */
+        public void UpdateStaminaBar(float currentStamina)
+        {
+            staminaSlider.value = currentStamina;
+        }
+
+        #endregion
+
+        #region Quest Methods
 
         /**
          * <summary>
@@ -81,11 +277,12 @@ namespace _Scripts.Managers
          */
         public void AddNewQuest(string title, string description)
         {
+            StartCoroutine(DisplayNewQuest());
+
             GameObject quest = Instantiate(panQuest, panQuestHolder);
             quest.transform.GetChild(0).GetComponent<TMP_Text>().text = title;
             quest.transform.GetChild(1).GetComponent<TMP_Text>().text = description;
         }
-
 
         /**
          * <summary>
@@ -99,6 +296,45 @@ namespace _Scripts.Managers
 
         /**
          * <summary>
+         * Hide or show quest panel.
+         * </summary>
+         */
+        private void DisplayQuestUI()
+        {
+            if (_playerInputs.QuestUI)
+            {
+                if (!_questShowed)
+                {
+                    questHolder.SetActive(true);
+                }
+                else
+                {
+                    questHolder.SetActive(false);
+                }
+
+                _questShowed = !_questShowed;
+            }
+        }
+
+        /**
+         * <summary>
+         * Coroutine to display a new quest after a decided time.
+         * </summary>
+         */
+        private IEnumerator DisplayNewQuest()
+        {
+            questHolder.SetActive(true);
+            yield return new WaitForSeconds(newQuestDislpayTime);
+
+            questHolder.SetActive(false);
+        }
+
+        #endregion
+
+        #region Inventory Item Methods
+
+        /**
+         * <summary>
          * Manage the inventory.
          * </summary>
          */
@@ -107,10 +343,14 @@ namespace _Scripts.Managers
             if (!_inventoryShowed)
             {
                 panInventory.SetActive(true);
+                Cursor.lockState = CursorLockMode.None;
             }
             else
             {
                 panInventory.SetActive(false);
+                CloseTooltip();
+                CloseActionTooltip();
+                Cursor.lockState = CursorLockMode.Locked;
             }
 
             _inventoryShowed = !_inventoryShowed;
@@ -119,46 +359,354 @@ namespace _Scripts.Managers
         
         /**
          * <summary>
-         * Create an item case in the inventory.
+         * Update the information of the Item on its Slot
          * </summary>
-         * <param name="item">The actual item.</param>
+         * <param name="itemId">The current instance ID of the Item.</param>
+         * <param name="itemSO">The Item data.</param>
+         * <param name="itemQuantity">The quantity of the item.</param>
          */
-        public void CreateItemInventory(Items item)
+        public void UpdateInventorySlotUI(int itemId, Items itemSO, int itemQuantity)
         {
-            _itemCase = Instantiate(btnItem, panInventory.transform.GetChild(0).transform);
-            _itemCase.GetComponent<Image>().sprite = item.ItemImage;
-            _itemCase.GetComponent<Button>().onClick.AddListener(() => ManageItemInfo(item));       // Add a listener to the button.
+            if (inventorySlots.Count > itemId)
+            {
+                inventorySlots[itemId].UpdateSlot(itemSO, itemQuantity);
+            }
+        }
+        
+        
+        /**
+         * <summary>
+         * Reset all the inventory slots UI content.
+         * </summary>
+         */
+        public void ResetAllItems()
+        {
+            foreach (InventorySlotUI inventorySlot in inventorySlots)
+            {
+                inventorySlot.ClearSlot();
+            }
         }
 
         
         /**
          * <summary>
-         * Manage the information of the item.
+         * Close the tooltip and reset its values.
          * </summary>
-         * <param name="item">The actual item.</param>
          */
-        private void ManageItemInfo(Items item)
+        private void CloseTooltip()
         {
-            imgItem.sprite = item.ItemImage;
-            txtName.text = item.ItemName;
-            txtPrice.text = item.ItemSellCost.ToString();
-            btnDrop.GetComponent<Button>().onClick.AddListener(() => DropItem(item));
+            itemTooltip.ResetToolTip();
+            itemTooltip.gameObject.SetActive(false);
         }
 
         
         /**
          * <summary>
-         * Drop the item from the player inventory.
+         * Close the action tooltip.
          * </summary>
-         * <param name="item">The actual item.</param>
          */
-        private void DropItem(Items item)
+        private void CloseActionTooltip()
         {
-            _inventoryManager.RemoveItemFromInventory(item);
-            Destroy(_itemCase);
-        } 
+            itemActionTooltip.gameObject.SetActive(false);
+        }
+        
+        
+        /**
+         * <summary>
+         * Create a dragged item.
+         * </summary>
+         * <param name="itemSO">The item data.</param>
+         * <param name="itemQuantity">The quantity of the item.</param>
+         */
+        public void CreateDraggedItem(Items itemSO, int itemQuantity)
+        {
+            mouseFollower.Toggle(true);
+            mouseFollower.UpdateMouseFollowerSlot(itemSO, itemQuantity);
+        }
+
+
+        /**
+         * <summary>
+         * Reset the dragged item.
+         * </summary>
+         */
+        private void ResetDraggedItem()
+        {
+            mouseFollower.Toggle(false);
+            _currentlyDraggedItemIndex = -1;
+        }
+        
+        #endregion
+
+        #region Inventory Item Event Methods
+
+        // EVENTS
+        
+        /**
+         * <summary>
+         * Handle the items actions when the player right click on an Inventory Slot.
+         * </summary>
+         * <param name="eventData">Custom event class storing the inventorySlot and the PointerEventData.</param>
+         */
+        private void HandleShowItemsActions(ItemEventData eventData)
+        {
+            int indexInventorySlot = inventorySlots.IndexOf(eventData.InventorySlotUI); // Get the Inventory Slot ID.
+            
+            // Initialize the Action tooltip.
+            itemActionTooltip.InitializeActionTooltip(indexInventorySlot, eventData.InventorySlotUI.CurrentItem);
+            itemActionTooltip.transform.position = eventData.PointerData.position;
+            itemActionTooltip.gameObject.SetActive(true);
+        }
+
+        
+        /**
+         * <summary>
+         * When the player start dragging an object on its inventory.
+         * </summary>
+         * <param name="inventorySlotUI">The actual inventory slot.</param>
+         */
+        private void HandleBeginDrag(InventorySlotUI inventorySlotUI)
+        {
+            int indexInventorySlot = inventorySlots.IndexOf(inventorySlotUI);   // Storing the inventory slot.
+            if (indexInventorySlot == -1) return;    // If there's no inventory slot.
+            _currentlyDraggedItemIndex = indexInventorySlot;
+            
+            OnStartDragging?.Invoke(indexInventorySlot);    // Start Dragging if there's an inventory slot and an item.
+        }
+        
+        
+        /**
+         * <summary>
+         * When the player release the drag when the mouse isn't on another slot.
+         * </summary>
+         * <param name="inventorySlotUI">The actual inventory slot.</param>
+         */
+        private void HandleEndDrag(InventorySlotUI inventorySlotUI)
+        {
+            ResetDraggedItem();
+        }
+
+        
+        /**
+         * <summary>
+         * Handle the swap movement.
+         * </summary>
+         * <param name="inventorySlotUI">The current inventory slot.</param>
+         */
+        private void HandleSwap(InventorySlotUI inventorySlotUI)
+        {
+            int index = inventorySlots.IndexOf(inventorySlotUI);
+            if (index == -1) return;
+
+            OnSwapItems ?.Invoke(_currentlyDraggedItemIndex, index);
+        }
+        
+        
+        /**
+         * <summary>
+         * Show the tooltip of the item when mouse over the slot.
+         * </summary>
+         * <param name="eventData">The custom event data.</param>
+         */
+        private void HandleHoverItemBegin(ItemEventData eventData)
+        {
+            itemTooltip.gameObject.SetActive(true);
+            itemTooltip.transform.position = eventData.PointerData.position;
+            itemTooltip.InitializeTooltip(eventData.InventorySlotUI.CurrentItem);
+        }
+        
+        
+        /**
+         * <summary>
+         * Hide the tooltip of the item when mouse goes outside its slot.
+         * </summary>
+         */
+        private void HandleHoverItemEnd(InventorySlotUI inventorySlotUI)
+        {
+            CloseTooltip();
+        }
 
         #endregion
 
+        #region Inventory Stats Methods
+
+        /**
+         * <summary>
+         * Update the player stats on the Inventory UI.
+         * </summary>
+         * <param name="playerHp">The current player hp.</param>
+         * <param name="maxPlayerHp">The max Hp the player can have.</param>
+         * <param name="playerStamina">The current player stamina.</param>
+         * <param name="maxPlayerStamina">The max stamina the player can have.</param>
+         */
+        public void UpdatePlayerStats(float playerHp, float maxPlayerHp, float playerStamina, float maxPlayerStamina)
+        {
+            txtPlayerHpUI.text = $"Hp {Mathf.RoundToInt(playerHp)}/{Mathf.RoundToInt(maxPlayerHp)}";
+            imgPlayerHpBarUI.fillAmount = playerHp / maxPlayerHp;
+            txtPlayerEnduranceUI.text = $"End {Mathf.RoundToInt(playerStamina)}/{Mathf.RoundToInt(maxPlayerStamina)}";
+            imgPlayerEnduranceBarUI.fillAmount = playerStamina / maxPlayerStamina;
+        }
+
+
+        /**
+         * <summary>
+         * Update the player skills on the UI.
+         * </summary>
+         * <param name="skillPoints">The current number of skill point the player have.</param>
+         * <param name="consPoint">The current number of constitution point the player have.</param>
+         * <param name="strPoint">The current number of strength point the player have.</param>
+         * <param name="vigPoint">The current number of vigor point the player have.</param>
+         * <param name="dexPoint">The current number of dexterity point the player have.</param>
+         * <param name="luckPoint">The current number of luck point the player have.</param>
+         */
+        public void UpdatePlayerSkillPoints(int skillPoints, int consPoint, int strPoint, int vigPoint, int dexPoint, int luckPoint)
+        {
+            txtPlayerSkillPoints.text = $"Attribute Points: {skillPoints}";
+            
+            txtConsPoints.text = consPoint.ToString();
+            txtStrPoints.text = strPoint.ToString();
+            txtVigPoints.text = vigPoint.ToString();
+            txtDexPoints.text = dexPoint.ToString();
+            txtLuckPoints.text = luckPoint.ToString();
+        }
+        
+        
+        /**
+         * <summary>
+         * Update the player level and experience on the UI.
+         * </summary>
+         * <param name="playerLevel">The current player level.</param>
+         * <param name="playerExperience">The current player experience.</param>
+         * <param name="experienceRequired">The experience required for the next level.</param>
+         * <param name="playerSkillPoints">The current player skill points.</param>
+         */
+        public void UpdatePlayerLevelAndExperienceUI(int playerLevel, int playerExperience, int experienceRequired, int playerSkillPoints)
+        {
+            txtPlayerLevelUI.text = $"Level {playerLevel}";
+            imgExperienceBarUI.fillAmount = (float)playerExperience / experienceRequired;
+            txtPlayerSkillPoints.text = $"Skill points: {playerSkillPoints}";
+        }
+        
+        
+        /**
+         * <summary>
+         * Button that increase the player skill.
+         * </summary>
+         * <param name="skill">The skill to upgrade.</param>
+         */
+        public void BtnStatsIncrement(String skill)
+        {
+            if (GameObject.FindWithTag("Player").TryGetComponent(out PlayerStats playerStats))
+            {
+                playerStats.UpgradeSkill(skill, SkillUpdate.Increment);
+            }
+        }
+
+
+        /**
+         * <summary>
+         * Button that decrease the player skill.
+         * </summary>
+         * <param name="skill">The skill to upgrade.</param>
+         */
+        public void BtnStatsDecrement(String skill)
+        {
+            if (GameObject.FindWithTag("Player").TryGetComponent(out PlayerStats playerStats))
+            {
+                playerStats.UpgradeSkill(skill, SkillUpdate.Decrement);
+            }
+        }
+
+        #endregion
+
+        #region Dragon UI Methods
+
+        /**
+         * <summary>
+         * Method to fade in the UI Boss elements.
+         * </summary>
+         */
+        public IEnumerator DragonGroupFade(bool inOut)
+        {
+            float currentTime = 0f;
+
+            while (currentTime < uiFadeDuraction)
+            {
+                currentTime += Time.deltaTime;
+                
+                // Fading animation.
+                if (inOut) dragonGroupUI.alpha = Mathf.Lerp(0f, 1f, currentTime / uiFadeDuraction);
+                else dragonGroupUI.alpha = Mathf.Lerp(1f, 0f, currentTime / uiFadeDuraction);
+
+                yield return null;
+            }
+
+            // Ensure it's fully done.
+            if (inOut) dragonGroupUI.alpha = 1f;
+            else dragonGroupUI.alpha = 0f;
+        }
+
+
+        /**
+         * <summary>
+         * Update the dragon boss life bar.
+         * </summary>
+         * <param name="dragonHp">The actual dragon hp.</param>
+         * <param name="dragonMaxHp">The dragon max hp.</param>
+         */
+        public void DragonLifeBarUpdate(int dragonHp, int dragonMaxHp)
+        {
+            dragonLifeBar.fillAmount = (float)dragonHp / dragonMaxHp;
+        }
+
+        #endregion
+
+        #region Mini Map Method
+
+        /**
+         * <summary>
+         * Manage the mini map UI.
+         * </summary>
+         */
+        private void MinimapDisplay()
+        {
+            if (_playerInputs.Map)
+            {
+                if (!_minimapShowed)
+                {
+                    minimap.SetActive(true);
+                    playerMinimap.anchoredPosition = minimapPoint1.anchoredPosition + new Vector2((playerWorld.position.x - worldPoint1.position.x) * _minimapRatio,
+                        (playerWorld.position.z - worldPoint1.position.z) * _minimapRatio);
+                }
+                else
+                {
+                    minimap.SetActive(false);
+                }
+
+                _minimapShowed = !_minimapShowed;
+            }
+        }
+
+        /**
+         * <summary>
+         * Calculate player position with referenced points.
+         * </summary>
+         */
+        private void CalculateMapRatio()
+        {
+            //Calculate distance of player in game.
+            Vector3 distanceWorldVector = worldPoint1.position - worldPoint2.position;
+            distanceWorldVector.y = 0f;
+            float distanceWorld = distanceWorldVector.magnitude;
+
+            //Calculate distance of player on the mini map.
+            float distanceMiniMap = Mathf.Sqrt(
+                Mathf.Pow((minimapPoint1.anchoredPosition.x - minimapPoint2.anchoredPosition.x), 2) +
+                Mathf.Pow((minimapPoint1.anchoredPosition.y - minimapPoint2.anchoredPosition.y), 2));
+
+            _minimapRatio = distanceMiniMap / distanceWorld;
+        }
+
+        #endregion
     }
 }

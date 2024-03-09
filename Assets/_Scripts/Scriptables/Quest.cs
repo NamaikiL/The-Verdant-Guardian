@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using _Scripts.UI;
 using UnityEngine;
 
 namespace _Scripts.Scriptables
@@ -25,8 +26,8 @@ namespace _Scripts.Scriptables
         [SerializeField] private List<Objectives> questObjectives = new List<Objectives>();
 
         // Event.
-        public event Action<Quest> OnQuestComplete; 
-        
+        public event Action<Quest> OnQuestComplete;
+
         #endregion
 
         #region Properties
@@ -34,7 +35,14 @@ namespace _Scripts.Scriptables
         // Conditions.
         public bool IsActive
         {
+            get => isActive;
             set => isActive = value;
+        }
+
+        public bool IsComplete
+        {
+            get => isComplete;
+            set => isComplete = value;
         }
 
         // Information.

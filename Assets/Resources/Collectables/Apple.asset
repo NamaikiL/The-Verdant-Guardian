@@ -12,4 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bc7da3b49962ca4f881c21540b00217, type: 3}
   m_Name: Apple
   m_EditorClassIdentifier: 
+  itemName: Apple
+  itemDescription: A fruit that everybody love.
+  itemRarity: 0
+  itemWeight: 0
+  itemCost: 0
+  itemSellCost: 0
+  itemImage: {fileID: 0}
+  itemModel: {fileID: 0}
+  isStackable: 1
+  maxStack: 26
   collectableName: Apple

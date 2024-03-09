@@ -14,18 +14,18 @@ namespace _Scripts.Scriptables
         #region Variables
 
         [Header("Weapon Properties")]
-        [SerializeField] private int damage;
-        [SerializeField] private float attackSpeed;
-        [SerializeField] private float durability;
+        [SerializeField] private int weaponDamage;
+        [SerializeField] private float weaponAttackSpeed;
+        [SerializeField] private float weaponDurability;
 
         #endregion
 
         #region Properties
 
         // Weapon Properties.
-        public int Damage => damage;
-        public float AttackSpeed => attackSpeed;
-        public float Durability => durability;
+        public int WeaponDamage => weaponDamage;
+        public float WeaponAttackSpeed => weaponAttackSpeed;
+        public float WeaponDurability => weaponDurability;
 
         #endregion
     }

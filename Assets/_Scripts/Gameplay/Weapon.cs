@@ -1,4 +1,5 @@
 using _Scripts.Scriptables;
+using UnityEngine;
 
 namespace _Scripts.Gameplay
 {
@@ -23,7 +24,7 @@ namespace _Scripts.Gameplay
         #endregion
 
         #region Properties
-        
+
         // Weapon Stats Properties.
         public int WeaponDamage => _weaponDamage;
 
@@ -48,8 +49,9 @@ namespace _Scripts.Gameplay
          * Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
          * </summary>
          */
-        void Start()
+        protected override void Start()
         {
+            base.Start();
             InitializeWeaponStats(ItemScriptable);      // Initialize the weapon Stats
         }
 
@@ -61,17 +63,18 @@ namespace _Scripts.Gameplay
          * <summary>
          * Initialize the weapon stats by taking data from Scriptable Object.
          * </summary>
+         * <param name="itemSO">The item data.</param>
          */
-        private void InitializeWeaponStats(Items itemsScriptable)
+        private void InitializeWeaponStats(Items itemSO)
         {
-            if(itemsScriptable is Weapons weaponScriptable)
+            if(itemSO is Weapons weaponScriptable)
             {   // If the scriptable data is a weapon scriptable.
-                _weaponDamage = weaponScriptable.Damage;
-                _weaponAttackSpeed = weaponScriptable.AttackSpeed;
+                _weaponDamage = weaponScriptable.WeaponDamage;
+                _weaponAttackSpeed = weaponScriptable.WeaponAttackSpeed;
                 _weaponWeight = weaponScriptable.ItemWeight;
                 _weaponCost = weaponScriptable.ItemCost;
                 _weaponSellCost = weaponScriptable.ItemSellCost;
-                _weaponDurability = weaponScriptable.Durability;
+                _weaponDurability = weaponScriptable.WeaponDurability;
                 _weaponRarity = weaponScriptable.ItemRarity;
             }
             else
@@ -87,6 +90,6 @@ namespace _Scripts.Gameplay
         }
 
         #endregion
-        
+
     }
 }
