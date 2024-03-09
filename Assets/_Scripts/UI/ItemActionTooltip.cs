@@ -1,3 +1,4 @@
+using _Scripts.Gameplay;
 using _Scripts.Managers;
 using _Scripts.Scriptables;
 using TMPro;
@@ -72,6 +73,8 @@ namespace _Scripts.UI
             InitializeDropButton();
             if(_currentItem is Weapons || _currentItem is Armors)
                 InitializeEquipButton();
+            if (_currentItem is Consumables)
+                InitializeUseConsumableButton();
         }
 
         
@@ -98,6 +101,19 @@ namespace _Scripts.UI
             GameObject btnEquip = Instantiate(btnExample, panelButtons.transform);
             btnEquip.transform.GetChild(0).GetComponent<TMP_Text>().text = "Equip";
             btnEquip.GetComponent<Button>().onClick.AddListener(EquipItem);
+        }
+
+
+        /**
+         * <summary>
+         * Initialize the Use Consumable button.
+         * </summary>
+         */
+        private void InitializeUseConsumableButton()
+        {
+            GameObject btnUseConsumable = Instantiate(btnExample, panelButtons.transform);
+            btnUseConsumable.transform.GetChild(0).GetComponent<TMP_Text>().text = "Use Consumable";
+            btnUseConsumable.GetComponent<Button>().onClick.AddListener(UseConsumable);
         }
 
         #endregion
@@ -134,6 +150,33 @@ namespace _Scripts.UI
             
             
             gameObject.SetActive(false);    // Dis-activate the tooltip.
+        }
+
+
+        /**
+         * <summary>
+         * Use Consumable of the item given.
+         * </summary>
+         */
+        private void UseConsumable()
+        {
+            // Inventory Management.
+            _inventoryManager.InventoryScriptable.RemoveItemWithAmount(_currentInventorySlotIndex, 1);
+            if (_currentItem is Consumables consumablesSO
+                && GameObject.FindWithTag("Player").TryGetComponent(out PlayerStats playerStats))
+            {
+                switch (consumablesSO.CurrentConsumableType)
+                {
+                    case ConsumableType.health:
+                        playerStats.RegenHealth(consumablesSO.ConsumableRegen);
+                        break;
+                    case ConsumableType.stamina:
+                        playerStats.RegenerateStaminaWithAmount(consumablesSO.ConsumableRegen);
+                        break;
+                }
+            }
+
+            gameObject.SetActive(false);
         }
 
         #endregion

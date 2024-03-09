@@ -158,6 +158,29 @@ namespace _Scripts.Scriptables
             }
         }
         
+        
+        /**
+         * <summary>
+         * Remove the items with an amount given from a slot.
+         * </summary>
+         * <param name="itemInventoySlotIndex">The id of the inventory slot.</param>
+         * <param name="amount">The amount of item to remove.</param>
+         */
+        public void RemoveItemWithAmount(int itemInventoySlotIndex, int amount)
+        {
+            if (inventoryItems.Count > itemInventoySlotIndex)
+            {
+                int reminder = inventoryItems[itemInventoySlotIndex].quantity - amount;
+                if (reminder <= 0)
+                    inventoryItems[itemInventoySlotIndex] = InventoryItem.GetEmptyItem();
+                else
+                    inventoryItems[itemInventoySlotIndex] = inventoryItems[itemInventoySlotIndex]
+                        .ChangeQuantity(reminder);
+
+                InformAboutChange();
+            }
+        }
+        
 
         /**
          * <summary>
@@ -231,7 +254,7 @@ namespace _Scripts.Scriptables
             return 0;
         }
 
-        #endregion
+        #endregion  
 
         #region Conditions Methods
 

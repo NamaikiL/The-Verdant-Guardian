@@ -457,8 +457,8 @@ namespace _Scripts.Managers
         {
             // Defining the default state of PlayerData.
             playerData = new PlayerData(
-                new Vector3(0f, 0f, 0f), 
-                new Vector3(0f, 0f, 0f),
+                new Vector3(236f, 41f, -222f), 
+                new Vector3(0f, -49f, 0f),
                 1, 
                 0,
                 0, 

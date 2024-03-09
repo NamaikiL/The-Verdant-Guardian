@@ -260,7 +260,7 @@ namespace _Scripts.Gameplay
         public void TakeDamage(float damage)
         {
             _currentPlayerHP -= damage;
-            healthBar.UpdateHealthBar(_currentPlayerHP);
+            UpdateAllHealthUI();
             StartCoroutine(RegenerateHealth());
 
             //Active the death behaviour.
@@ -276,6 +276,7 @@ namespace _Scripts.Gameplay
             }
         }
 
+        
         /**
          * <summary>
          * Player death behaviour.
@@ -297,7 +298,7 @@ namespace _Scripts.Gameplay
         public void RegenHealth(float quantity)
         {
             _currentPlayerHP += quantity;
-            healthBar.UpdateHealthBar(_currentPlayerHP);
+            UpdateAllHealthUI();
             StartCoroutine(HealEffectDuration());
         }
 
@@ -308,8 +309,8 @@ namespace _Scripts.Gameplay
          */
         private void RegenAllHealth()
         {
-            _currentPlayerHP += maxPlayerHP;
-            healthBar.UpdateHealthBar(_currentPlayerHP);
+            _currentPlayerHP = maxPlayerHP;
+            UpdateAllHealthUI();
         }
 
         /**
@@ -337,9 +338,21 @@ namespace _Scripts.Gameplay
             while (_currentPlayerHP < maxPlayerHP)
             {
                 _currentPlayerHP = Mathf.Clamp(_currentPlayerHP + healthRegenRate * Time.deltaTime, 0f, maxPlayerHP);
-                healthBar.UpdateHealthBar(_currentPlayerHP);
+                UpdateAllHealthUI();
                 yield return null;
             }
+        }
+        
+        
+        /**
+         * <summary>
+         * Update all the UI where Heatlh is needed.
+         * </summary>
+         */
+        private void UpdateAllHealthUI()
+        {
+            healthBar.UpdateHealthBar(_currentPlayerHP);
+            _uiManager.UpdatePlayerStats(_currentPlayerHP, maxPlayerHP, _currentPlayerStamina, maxPlayerStamina);
         }
 
         #endregion
@@ -361,7 +374,7 @@ namespace _Scripts.Gameplay
                     _regenStamina = null;
                 }
                 _currentPlayerStamina = Mathf.Clamp(_currentPlayerStamina - sprintStaminaCost * Time.deltaTime, 0f, maxPlayerStamina);
-                _uiManager.UpdateStaminaBar(_currentPlayerStamina);
+                UpdateAllStaminaUI();
             }
             
             if (_currentPlayerStamina == 0)
@@ -388,7 +401,7 @@ namespace _Scripts.Gameplay
             }
             
             _currentPlayerStamina = Mathf.Clamp(_currentPlayerStamina - rollStaminaCost, 0f, maxPlayerStamina);
-            _uiManager.UpdateStaminaBar(_currentPlayerStamina);
+            UpdateAllStaminaUI();
             _regenStamina = RegenerateStamina();
             StartCoroutine(_regenStamina);
         }
@@ -409,7 +422,7 @@ namespace _Scripts.Gameplay
             }
             
             _currentPlayerStamina = Mathf.Clamp(_currentPlayerStamina - amount, 0f, maxPlayerStamina);
-            _uiManager.UpdateStaminaBar(_currentPlayerStamina);
+            UpdateAllStaminaUI();
             _regenStamina = RegenerateStamina();
             StartCoroutine(_regenStamina);
         }
@@ -427,9 +440,34 @@ namespace _Scripts.Gameplay
             while (_currentPlayerStamina < maxPlayerStamina)
             {
                 _currentPlayerStamina = Mathf.Clamp(_currentPlayerStamina + staminaRegenRate * Time.deltaTime, 0f, maxPlayerStamina);
-                _uiManager.UpdateStaminaBar(_currentPlayerStamina);
+                UpdateAllStaminaUI();
                 yield return null;
             }
+        }
+
+
+        /**
+         * <summary>
+         * Regenerate Stamina with quantity given.
+         * </summary>
+         * <param name="quantity">The quantity to regenerate.</param>
+         */
+        public void RegenerateStaminaWithAmount(float quantity)
+        {
+            _currentPlayerStamina = Mathf.Clamp(_currentPlayerStamina + quantity, 0f, maxPlayerStamina);
+            UpdateAllStaminaUI();
+        }
+
+
+        /**
+         * <summary>
+         * Update all the UI where Stamina is needed.
+         * </summary>
+         */
+        private void UpdateAllStaminaUI()
+        {
+            _uiManager.UpdateStaminaBar(_currentPlayerStamina);
+            _uiManager.UpdatePlayerStats(_currentPlayerHP, maxPlayerHP, _currentPlayerStamina, maxPlayerStamina);
         }
 
         #endregion

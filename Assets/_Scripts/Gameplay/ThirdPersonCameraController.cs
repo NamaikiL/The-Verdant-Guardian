@@ -154,9 +154,13 @@ namespace _Scripts.Gameplay
         private void HandleDynamicFOV()
         {
             if(target.parent.TryGetComponent(out PlayerController playerController)
-               && target.parent.TryGetComponent(out PlayerInputs playerInputs))
+               && target.parent.TryGetComponent(out PlayerInputs playerInputs)
+               && target.parent.TryGetComponent(out PlayerStats playerStats))
             {
-                if (playerInputs.Sprint)
+                if (playerInputs.Sprint 
+                    && playerController.MoveDirection.normalized.magnitude > .1f 
+                    && playerStats.CurrentPlayerStamina > 0f 
+                    && !playerController.IsCrouching)
                 {
                     _currentOffset = cameraOffset;
                     _targetFOV = runningFOV;
