@@ -113,18 +113,6 @@ namespace _Scripts.Gameplay
 
         /**
          * <summary>
-         * Unity calls Awake when an enabled script instance is being loaded.
-         * </summary>
-         */
-        void Start()
-        {
-            // Singleton.
-            if (_instance) Destroy(gameObject);
-            _instance = this;
-        }
-
-        /**
-         * <summary>
          * Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
          * </summary>
          */
