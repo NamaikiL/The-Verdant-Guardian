@@ -260,8 +260,7 @@ namespace _Scripts.Gameplay
         public void TakeDamage(float damage)
         {
             _currentPlayerHP -= damage;
-            healthBar.UpdateHealthBar(_currentPlayerHP);
-            _uiManager.UpdatePlayerStats(_currentPlayerHP, maxPlayerHP, _currentPlayerStamina, maxPlayerStamina);
+            UpdateAllHealthUI();
             StartCoroutine(RegenerateHealth());
 
             //Active the death behaviour.
@@ -277,6 +276,7 @@ namespace _Scripts.Gameplay
             }
         }
 
+        
         /**
          * <summary>
          * Player death behaviour.

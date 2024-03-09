@@ -81,6 +81,7 @@ namespace _Scripts.Gameplay
         private PlayerInputs _playerInputs;
         private UIManager _uiManager;
         private AudioManager _audioManager;
+        private AnimationManager _animationManager;
 
         //Singleton
         private static PlayerController _instance;
@@ -89,6 +90,9 @@ namespace _Scripts.Gameplay
 
         #region Properties
 
+        // Player Movements Values.
+        public Vector3 MoveDirection => _moveDirection;
+        
         // Player Coordinates Properties.
         public Vector3 CurrentPlayerPosition => gameObject.transform.localPosition;
         public Vector3 CurrentPlayerRotation => gameObject.transform.eulerAngles;
@@ -130,6 +134,7 @@ namespace _Scripts.Gameplay
             _playerInputs = PlayerInputs.Instance;
             _uiManager = UIManager.Instance;
             _audioManager = AudioManager.Instance;
+            _animationManager = AnimationManager.Instance;
 
             // Component in object.
             _characterController = GetComponent<CharacterController>();
@@ -140,6 +145,8 @@ namespace _Scripts.Gameplay
 
             _currentMoveSpeed = moveSpeed;  // Apply the moveSpeed value.
             _baseHeight = _characterController.height;
+            
+            _animationManager.InitializePlayerAnimator(GetComponent<Animator>());
         }
 
 
@@ -189,6 +196,32 @@ namespace _Scripts.Gameplay
                 MoveSpeedBehavior();
                 Crouch();
             }
+        }
+
+
+        /**
+         * <summary>
+         * When a GameObject collides with another GameObject, Unity calls OnTriggerEnter.
+         * </summary>
+         * <param name="other">The other Collider involved in this collision.</param>
+         */
+        void OnTriggerEnter(Collider other)
+        {
+            if(other.gameObject.layer == LayerMask.NameToLayer($"Dragon")) 
+                _playerStats.TakeDamage(GameObject.FindWithTag("Dragon").GetComponent<DragonController>().DragonSO.Damage);
+        }
+        
+        
+        /**
+         * <summary>
+         * OnControllerColliderHit is called when the controller hits a collider while performing a Move.
+         * </summary>
+         * <param name="hit">The other Hit involved in this collision.</param>
+         */
+        void OnControllerColliderHit(ControllerColliderHit hit)
+        {
+            if (hit.gameObject.layer == LayerMask.NameToLayer($"Dragon"))
+                _playerStats.TakeDamage(1f);
         }
 
         #endregion
@@ -259,7 +292,7 @@ namespace _Scripts.Gameplay
             {
                 _verticalSpeed += gravity * Time.deltaTime;
                 
-                if (_playerInputs.Jumped && _canMove)
+                if (_playerInputs.Jumped && _canMove && !_isCrouching)
                 {
                     _verticalSpeed = Mathf.Sqrt(jumpForce * -3f * gravity);     // Jump.
                 }
@@ -285,7 +318,6 @@ namespace _Scripts.Gameplay
             {
                 _currentMoveSpeed = moveSpeedSprint;
                 _playerStats.UseStaminaSprint();
-                // TO-DO: Update the animation.
             }
             else if (_isCrouching)
             {
@@ -294,7 +326,6 @@ namespace _Scripts.Gameplay
             else
             {
                 _currentMoveSpeed = moveSpeed;
-                // TO-DO: Update the animation.
             }
         }
 
@@ -307,11 +338,7 @@ namespace _Scripts.Gameplay
         private void Crouch()
         {
             if (_playerInputs.Crouch)
-            {
                 _isCrouching = !_isCrouching;
-                _characterController.height = _isCrouching ? _baseHeight / 2f : _baseHeight;
-                // TO-DO: Update the animation.
-            }
         }
 
 
@@ -330,8 +357,20 @@ namespace _Scripts.Gameplay
                 _playerStats.UseStaminaRoll();
 
                 _isDodging = true;
-                dodgeDirection = transform.TransformDirection(_direction.normalized);
+                _animationManager.UpdateDodgingAnimation(_isDodging, dodgeDuration);
+                Vector3 inputDirection = new Vector3(_playerInputs.Movement.x, 0, _playerInputs.Movement.y).normalized;
+                if (inputDirection == Vector3.zero)
+                {
+                    dodgeDirection = transform.forward;
+                }
+                else
+                {
+                    inputDirection = inputDirection.normalized;
+                    dodgeDirection = _camera.transform.forward * inputDirection.z + _camera.transform.right * inputDirection.x;
+                    dodgeDirection.y = 0;
+                }
                 
+                dodgeDirection = dodgeDirection.normalized;
                 Invoke("EndDodge", dodgeDuration);
             }
         }
@@ -379,25 +418,19 @@ namespace _Scripts.Gameplay
          */
         private void UpdateAnimation()
         {
-            if(moveSpeed != 0f)     // In case the player doesn't have a move speed.
-                _animator.SetFloat($"Locomotion", _moveDirection.normalized.magnitude);
-
             if (!_characterController.isGrounded)
             {
-                _animator.SetBool($"IsGrounded", false);
-                //_animator.SetFloat("VerticalSpeed", _verticalSpeed);
+                _animationManager.UpdateJumpingAnimation(_verticalSpeed, _characterController.isGrounded);
             }
             else
             {
-                _animator.SetBool($"IsGrounded", true);
-                /*if (_inputs.Attack)
-                {
-                    _animator.SetTrigger("Attack");
-                }
-                else
-                {
-                    _animator.ResetTrigger("Attack");
-                }*/
+                _animationManager.UpdateJumpingAnimation(_verticalSpeed, _characterController.isGrounded);
+                
+                bool isSprinting = _playerInputs.Sprint && _playerStats.CurrentPlayerStamina > 0f;
+                if (moveSpeed != 0f) // In case the player doesn't have a move speed.
+                    _animationManager.UpdateLocomotionAnimation(_moveDirection.normalized.magnitude, isSprinting);
+                
+                _animationManager.UpdateCrouchingAnimation(_isCrouching);
             }
                 
         }

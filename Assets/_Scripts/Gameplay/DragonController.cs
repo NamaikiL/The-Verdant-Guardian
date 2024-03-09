@@ -23,10 +23,12 @@ namespace _Scripts.Gameplay
         [SerializeField] private Enemies dragonSO;
         
         [Header("Attack Properties")]
-        [SerializeField] private float attackInterval = 40f; // Time between attacks
-        [SerializeField] private float fireBreathRange = 10f; // Adjust as needed
-        [SerializeField] private float fireBreathDuration = 8f; 
-        [SerializeField] private float stompAnimationDuration = 2f;
+        [SerializeField] private float attackInterval = 40f;
+        [SerializeField] private float fireBreathRange = 5f;
+
+        [Header("Animations")] 
+        [SerializeField] private AnimationClip fireBreathAnimation;
+        [SerializeField] private AnimationClip stompAnimation;
         
         // Dragon Stats.
         private int _maxDragonHealth;
@@ -38,22 +40,39 @@ namespace _Scripts.Gameplay
         // Dragon Attack.
         private bool _isAttacking;
         
+        // Animations Length.
+        private float _fireBreathAnimationLength;
+        private float _stompAnimationLength;
+        
         // Player Find.
         private Transform _playerTransform;
         
         // Components.
         private NavMeshAgent _navMeshAgent;
         private UIManager _uiManager;
+        private AnimationManager _animationManager;
 
         #endregion
 
+        #region Properties
+
+        public Enemies DragonSO => dragonSO;
+
+        #endregion
+        
         #region Built-In Methods
 
+        /**
+         * <summary>
+         * Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
+         * </summary>
+         */
         void Start()
         {
             // Components.
             _navMeshAgent = GetComponent<NavMeshAgent>();
             _uiManager = UIManager.Instance;
+            _animationManager = AnimationManager.Instance;
             
             // Initializing Methods.
             InitializeDragonStats();
@@ -61,12 +80,30 @@ namespace _Scripts.Gameplay
             // Player Find.
             _playerTransform = GameObject.FindWithTag("Player").GetComponent<Transform>();
             
+            // Give Animator.
+            _animationManager.InitializeDragonAnimator(GetComponent<Animator>());
+            
+            // Get Animation Length.
+            _fireBreathAnimationLength = fireBreathAnimation.length;
+            _stompAnimationLength = stompAnimation.length;
+            
             // Show the UI.
             StartCoroutine(_uiManager.DragonGroupFade(true));
             
             // Start the dragon behavior.
             StartCoroutine(UpdatePathRoutine());
             StartCoroutine(AttackRoutine());
+        }
+
+
+        /**
+         * <summary>
+         * Update is called every frame, if the MonoBehaviour is enabled.
+         * </summary>
+         */
+        void Update()
+        {
+            UpdateAnimation();
         }
 
         #endregion
@@ -166,8 +203,7 @@ namespace _Scripts.Gameplay
                     yield return new WaitForSeconds(attackInterval); // Wait for the attack interval
 
                     _isAttacking = true;
-                    //DragonAttackType selectedAttack = (DragonAttackType)Random.Range(0, 3); // Choose an attack
-                    DragonAttackType selectedAttack = DragonAttackType.FireBreath;
+                    DragonAttackType selectedAttack = (DragonAttackType)Random.Range(0, 3); // Choose an attack
                     PerformAttack(selectedAttack);
                 }
 
@@ -193,7 +229,7 @@ namespace _Scripts.Gameplay
                     StartCoroutine(FireBreathAttack());
                     break;
                 case DragonAttackType.Stomp:
-                    // TailSwipeAttack();
+                    StartCoroutine(StompAttack());
                     break;
             }
         }
@@ -213,7 +249,7 @@ namespace _Scripts.Gameplay
 
             // Get the original speed and apply the new one.
             float originalSpeed = _navMeshAgent.speed;
-            _navMeshAgent.speed *= 2f;
+            _navMeshAgent.speed = 30f;
 
             StartCoroutine(PerformCharge(chargePoint, originalSpeed));
         }
@@ -230,9 +266,9 @@ namespace _Scripts.Gameplay
         {
             // Set the path.
             _navMeshAgent.SetDestination(chargePoint);
-    
+            
             // Run until close to the end of the charge.
-            while (Vector3.Distance(transform.position, chargePoint) > 5f)
+            while (Vector3.Distance(transform.position, _navMeshAgent.destination) > 20f)
             {
                 yield return null;
             }
@@ -240,7 +276,7 @@ namespace _Scripts.Gameplay
             // Decrease its speed gradually.
             while (_navMeshAgent.speed > originalSpeed)
             {
-                _navMeshAgent.speed -= Time.deltaTime * 2;
+                _navMeshAgent.speed -= Time.deltaTime * 20f;
                 yield return null;
             }
 
@@ -270,12 +306,13 @@ namespace _Scripts.Gameplay
 
             // Stop and perform the fire breath.
             _navMeshAgent.isStopped = true;
-            // TODO: Trigger fire breath animation and effects here.
+            _animationManager.UpdateDragonFireBreathAnimation(true);
 
-            yield return new WaitForSeconds(fireBreathDuration); // Wait for the duration of the fire breath.
+            yield return new WaitForSeconds(_fireBreathAnimationLength); // Wait for the duration of the fire breath.
 
             // Then resume its AI Behavior.
             _navMeshAgent.isStopped = false;
+            _animationManager.UpdateDragonFireBreathAnimation(false);
             _isAttacking = false; // Allow for new attacks
             StartCoroutine(UpdatePathRoutine());
         }
@@ -290,16 +327,16 @@ namespace _Scripts.Gameplay
         {
             // Stop its movements.
             _navMeshAgent.isStopped = true;
+            _animationManager.UpdateDragonStompAnimation(true);
             
             // Face the player
             transform.LookAt(new Vector3(_playerTransform.position.x, transform.position.y, _playerTransform.position.z));
 
-            // TODO: Trigger stomp animation here.
-
-            yield return new WaitForSeconds(stompAnimationDuration);
+            yield return new WaitForSeconds(_stompAnimationLength);
 
             // Make that he can move again.
             _navMeshAgent.isStopped = false;
+            _animationManager.UpdateDragonStompAnimation(false);
             _isAttacking = false;
         }
 
@@ -340,6 +377,31 @@ namespace _Scripts.Gameplay
             // TODO: Play death Animation and change the seconds by the animation seconds.
             yield return new WaitForSeconds(1f);
             Destroy(gameObject);
+        }
+
+        #endregion
+
+        #region Animation Methods
+
+        /**
+         * <summary>
+         * Update the animations.
+         * </summary>
+         */
+        private void UpdateAnimation()
+        {
+            _animationManager.UpdateDragonLocomotion(_navMeshAgent.speed);
+        }
+        
+        
+        /**
+         * <summary>
+         * Event Trigger for the shock wave.
+         * </summary>
+         */
+        public void CallShockWaveEvent()
+        {
+            StartCoroutine(_animationManager.ShockWave(6f, transform.position));
         }
 
         #endregion
