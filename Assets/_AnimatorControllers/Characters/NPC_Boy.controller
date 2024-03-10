@@ -75,7 +75,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New StateMachine
+  m_Name: IdleSM
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 5773838851948435214}
@@ -168,7 +168,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Walk
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
