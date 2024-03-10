@@ -1,5 +1,6 @@
+using System.Collections;
+using _Scripts.Managers;
 using _Scripts.Scriptables;
-using _Scripts.UI;
 using UnityEngine;
 
 namespace _Scripts.Gameplay
@@ -22,6 +23,12 @@ namespace _Scripts.Gameplay
         // Interaction.
         private SphereCollider _trigger;
 
+        //Idle SFX.
+        private bool _isSfxPlaying;
+
+        //Component.
+        private AudioManager _audioManager;
+
         #endregion
 
         #region Built-In Methods
@@ -33,7 +40,11 @@ namespace _Scripts.Gameplay
          */
         void Start ()
         {
+            //Components.
+            _audioManager = AudioManager.Instance;
+
             InitializeSphereCollider();
+            IdleSFX();
         }
 
         /**
@@ -69,6 +80,46 @@ namespace _Scripts.Gameplay
         
         }
 
+        #endregion
+
+        #region Behaviour Methods
+
+        /**
+         * <summary>
+         * Play idle SFX.
+         * </summary>
+         */
+        private void IdleSFX()
+        {
+            StartCoroutine(DelayIdleSFX());
+        }
+
+        /**
+         * <summary>
+         * Coroutine to play random SFX at random time.
+         * </summary>
+         */
+        private IEnumerator DelayIdleSFX()
+        {
+            _isSfxPlaying = true;
+
+            if (_isSfxPlaying == true)
+            {
+                //Choose random SFX.
+                AudioSource idleSFX = _audioManager.NpcIdleSFX[Random.Range(0, _audioManager.NpcIdleSFX.Length)];
+                idleSFX.Play();
+                _isSfxPlaying = false;
+
+                if (_isSfxPlaying == false)
+                {
+                    //Play SFX at random time.
+                    float randomTime = Random.Range(_audioManager.MinRadomTimeIdleSFX, _audioManager.MaxRadomTimeIdleSFX);
+                    yield return new WaitForSeconds(randomTime);
+
+                    IdleSFX();
+                }   //Allows the SFX to be play more than one time.
+            }
+        }
         #endregion
 
         #region Quest Management

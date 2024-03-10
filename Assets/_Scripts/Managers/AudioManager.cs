@@ -28,8 +28,7 @@ namespace _Scripts.Managers
         [SerializeField] private AudioSource playerSleepSFX;
 
         [Header("Enemies/NPC SFX")]
-        [SerializeField] private AudioSource enemyDeathSFX;
-        [SerializeField] private AudioSource[] enemyIdleSFX;
+        [SerializeField] private AudioSource[] npcIdleSFX;
         [SerializeField] private float minRadomTimeIdleSFX = 5f;
         [SerializeField] private float maxRadomTimeIdleSFX = 30f;
         [SerializeField] private AudioSource enemyAttackSFX;
@@ -53,8 +52,7 @@ namespace _Scripts.Managers
         public AudioSource PlayerSleepSFX => playerSleepSFX;
 
         //Ennemies/NPC SFX.
-        public AudioSource EnemyDeathSFX => enemyDeathSFX;
-        public AudioSource[] EnemyIdleSFX => enemyIdleSFX;
+        public AudioSource[] NpcIdleSFX => npcIdleSFX;
         public float MinRadomTimeIdleSFX => minRadomTimeIdleSFX;
         public float MaxRadomTimeIdleSFX => maxRadomTimeIdleSFX;
         public AudioSource EnemyAttackSFX => enemyAttackSFX;

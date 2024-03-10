@@ -56,7 +56,7 @@ namespace _Scripts.Managers
         {
             _audioManager.BtnSFX.Play();
             yield return new WaitForSeconds(timeBeforeLoad);
-            SceneManager.LoadScene("Debug", LoadSceneMode.Single);
+            SceneManager.LoadScene("Map", LoadSceneMode.Single);
         }
         
         /**

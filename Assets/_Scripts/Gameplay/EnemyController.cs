@@ -32,11 +32,6 @@ namespace _Scripts.Gameplay
 
         //Patrol features.
         private int _targetPoint;
-        private bool _isSfxPlaying;
-
-        //Component.
-        private AudioManager _audioManager;
-
 
         #endregion
 
@@ -50,7 +45,6 @@ namespace _Scripts.Gameplay
         void Start()
         {
             //Components.
-            _audioManager = AudioManager.Instance;
             _currentEnemyHP = enemiesScriptable.EnemyMaxHealth;
 
             //Update the maximum size of gauges.
@@ -58,8 +52,6 @@ namespace _Scripts.Gameplay
 
             //Patrol set up.
             _targetPoint = 0;
-
-            IdleSFX();
         }
 
         /**
@@ -112,7 +104,6 @@ namespace _Scripts.Gameplay
          */
         private IEnumerator DelayEnemyDeath()
         {
-            _audioManager.EnemyDeathSFX.Play();
             yield return new WaitForSeconds(0.5f);
             Destroy(this.gameObject);
         }
@@ -152,43 +143,6 @@ namespace _Scripts.Gameplay
             modelManager.transform.position = Vector3.MoveTowards(modelManager.transform.position,
                 patrolPoints[_targetPoint].position, speedPatrol * Time.deltaTime);
 
-        }
-
-        /**
-         * <summary>
-         * Play idle SFX.
-         * </summary>
-         */
-        private void IdleSFX()
-        {
-            StartCoroutine(Delay());
-        }
-
-        /**
-         * <summary>
-         * Coroutine to play random SFX at random time.
-         * </summary>
-         */
-        private IEnumerator Delay()
-        {
-            _isSfxPlaying = true;
-
-            if(_isSfxPlaying == true)
-            {
-                //Choose random SFX.
-                AudioSource idleSFX = _audioManager.EnemyIdleSFX[Random.Range(0, _audioManager.EnemyIdleSFX.Length)];
-                idleSFX.Play();
-                _isSfxPlaying = false;
-
-                if(_isSfxPlaying == false)
-                {
-                    //Play SFX at random time.
-                    float randomTime = Random.Range(_audioManager.MinRadomTimeIdleSFX, _audioManager.MaxRadomTimeIdleSFX);
-                    yield return new WaitForSeconds(randomTime);
-
-                    IdleSFX();
-                }   //Allows the SFX to be play more than one time.
-            }
         }
 
         #endregion
