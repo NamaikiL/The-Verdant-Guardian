@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bc7da3b49962ca4f881c21540b00217, type: 3}
+  m_Name: Corn
+  m_EditorClassIdentifier: 
+  itemName: Corn
+  itemDescription: Golden grains sought after for crafting and alchemical uses.
+  itemRarity: 0
+  itemWeight: 0.3
+  itemCost: 25
+  itemSellCost: 12
+  itemImage: {fileID: 21300000, guid: b73794b5d5009554b95b2697077c7af0, type: 3}
+  itemModel: {fileID: 1000012087161104, guid: 8490d29919917de4ca0c5297d93090d7, type: 3}
+  isStackable: 1
+  maxStack: 30
+  collectableName: Corn

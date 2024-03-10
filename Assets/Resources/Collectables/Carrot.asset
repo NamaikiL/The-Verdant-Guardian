@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bc7da3b49962ca4f881c21540b00217, type: 3}
+  m_Name: Carrot
+  m_EditorClassIdentifier: 
+  itemName: Carrot
+  itemDescription: A sturdy vegetable prized for its use in various recipes and potions.
+  itemRarity: 0
+  itemWeight: 0.1
+  itemCost: 15
+  itemSellCost: 7
+  itemImage: {fileID: 21300000, guid: f5b1841bc40ba024ab8b6f2ae7e50efe, type: 3}
+  itemModel: {fileID: 1000014111768446, guid: 2cf13a738fc434c46bda5ebf7ca44756, type: 3}
+  isStackable: 1
+  maxStack: 50
+  collectableName: Carrot

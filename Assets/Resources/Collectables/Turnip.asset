@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bc7da3b49962ca4f881c21540b00217, type: 3}
+  m_Name: Turnip
+  m_EditorClassIdentifier: 
+  itemName: Turnip
+  itemDescription: A hardy root vegetable known for its mystical qualities and versatility
+    in both culinary and alchemical applications.
+  itemRarity: 1
+  itemWeight: 0.5
+  itemCost: 12
+  itemSellCost: 6
+  itemImage: {fileID: 0}
+  itemModel: {fileID: 1000013984154124, guid: 9c0476b14d8c518499bcc0adff155ff8, type: 3}
+  isStackable: 1
+  maxStack: 40
+  collectableName: Turnip

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bc7da3b49962ca4f881c21540b00217, type: 3}
+  m_Name: Pumpkin
+  m_EditorClassIdentifier: 
+  itemName: Pumpkin
+  itemDescription: A large vegetable that can be carved, cooked, or use in fetive
+    decorations. Its presence is especially noted during certain seasonal festivites.
+  itemRarity: 1
+  itemWeight: 1
+  itemCost: 100
+  itemSellCost: 50
+  itemImage: {fileID: 0}
+  itemModel: {fileID: 1000012003911730, guid: 0adfa404918648e42a1fb073ef9010d3, type: 3}
+  isStackable: 0
+  maxStack: 1
+  collectableName: Pumpkin

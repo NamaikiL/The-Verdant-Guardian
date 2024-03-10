@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 015f397173eb5a745b84ac50cbc394f5, type: 3}
+  m_Name: Lucelar Sword
+  m_EditorClassIdentifier: 
+  itemName: Lucelar Sword
+  itemDescription: Assembled from its ancient components, the Lucelar Sword shines
+    with a light that pierces darkness. Its full power unlocks the potential to reshape
+    destinies.
+  itemRarity: 5
+  itemWeight: 4
+  itemCost: 0
+  itemSellCost: 0
+  itemImage: {fileID: 21300000, guid: 831bd53ea3325c04d940855765766fc9, type: 3}
+  itemModel: {fileID: 9171604959857359711, guid: 8f357a5335033a147ab870e9a7fae74f,
+    type: 3}
+  isStackable: 0
+  maxStack: 1
+  weaponDamage: 20
+  weaponAttackSpeed: 1.5
+  weaponDurability: 0

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bc7da3b49962ca4f881c21540b00217, type: 3}
+  m_Name: Tomato
+  m_EditorClassIdentifier: 
+  itemName: Tomato
+  itemDescription: A versatile fruit used in countless recipes. Its vibrant color
+    is said to have magical properties.
+  itemRarity: 0
+  itemWeight: 0.2
+  itemCost: 8
+  itemSellCost: 4
+  itemImage: {fileID: 21300000, guid: ad40ad4aa460be44d843ecce574502e1, type: 3}
+  itemModel: {fileID: 1000010004241426, guid: ad3b2f45225bb0c4f8f80eacd5111af1, type: 3}
+  isStackable: 1
+  maxStack: 50
+  collectableName: Tomato

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bc7da3b49962ca4f881c21540b00217, type: 3}
+  m_Name: Purse
+  m_EditorClassIdentifier: 
+  itemName: Purse
+  itemDescription: A small leather pouch that holds currency. Its enchanted seams
+    seem to stretch to accommodate more coins than it should.
+  itemRarity: 0
+  itemWeight: 0.2
+  itemCost: 50
+  itemSellCost: 25
+  itemImage: {fileID: 0}
+  itemModel: {fileID: 5215627701275209159, guid: b30d7245e56ac0f4fbd2d05c6ba941d1,
+    type: 3}
+  isStackable: 0
+  maxStack: 1
+  collectableName: Purse

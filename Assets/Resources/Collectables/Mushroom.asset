@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bc7da3b49962ca4f881c21540b00217, type: 3}
+  m_Name: Mushroom
+  m_EditorClassIdentifier: 
+  itemName: Mushroom
+  itemDescription: A mysterious fungus found in dark places. Used in alchemy, cooking,
+    and sometimes carries magical properties.
+  itemRarity: 0
+  itemWeight: 0.1
+  itemCost: 20
+  itemSellCost: 10
+  itemImage: {fileID: 21300000, guid: 09f9dee270eca1a4e93cfaf0046c0e97, type: 3}
+  itemModel: {fileID: 6724933445918745971, guid: f44342348c5bb6c4880f8e2278528ba0,
+    type: 3}
+  isStackable: 1
+  maxStack: 50
+  collectableName: Mushroom

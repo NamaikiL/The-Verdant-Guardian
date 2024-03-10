@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 015f397173eb5a745b84ac50cbc394f5, type: 3}
+  m_Name: Bow
+  m_EditorClassIdentifier: 
+  itemName: Bow
+  itemDescription: A sturdy wooden bow capable of launching arrows over great distances.
+    Ideal for those who prefer to keep their enemies at bay.
+  itemRarity: 0
+  itemWeight: 1.5
+  itemCost: 250
+  itemSellCost: 125
+  itemImage: {fileID: 21300000, guid: 038b2a03ad3f70842a7a9d59110b957d, type: 3}
+  itemModel: {fileID: 8172783173748709382, guid: 5e2a4d1305dbca041910e9611c710900,
+    type: 3}
+  isStackable: 0
+  maxStack: 1
+  weaponDamage: 10
+  weaponAttackSpeed: 0.8
+  weaponDurability: 0

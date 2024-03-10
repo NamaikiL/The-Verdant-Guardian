@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 9026764190654662972}
   - component: {fileID: 1086188513081191989}
   - component: {fileID: 8130417936955577030}
-  - component: {fileID: 3482677987058392414}
-  - component: {fileID: 5058876904475632414}
   m_Layer: 0
   m_Name: BarbarianAxe
   m_TagString: Untagged
@@ -86,43 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &3482677987058392414
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3217701718403848604}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.45998642
-  m_Center: {x: -0.000000028065518, y: 0.45964906, z: 0.094562486}
---- !u!114 &5058876904475632414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3217701718403848604}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 794014c491be2cc4b8f96ff94a74a3c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isQuestConnected: 0
-  itemScriptable: {fileID: 11400000, guid: 1dd90b00a2eb1d940b50aa89266775b5, type: 2}
-  itemType: 1
-  interactionUI: {fileID: 1302842908663199472}
 --- !u!1001 &4838153365160256526
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -251,12 +212,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2efa859fec10304ebdf4c6aad876d36, type: 3}
---- !u!1 &1302842908663199472 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5850231317177651966, guid: b2efa859fec10304ebdf4c6aad876d36,
-    type: 3}
-  m_PrefabInstance: {fileID: 4838153365160256526}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &3698275260707969468 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8103799936587529650, guid: b2efa859fec10304ebdf4c6aad876d36,

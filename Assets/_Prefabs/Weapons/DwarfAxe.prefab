@@ -11,9 +11,6 @@ GameObject:
   - component: {fileID: 3109632593193909083}
   - component: {fileID: 6619722705054191214}
   - component: {fileID: 3239405523005886094}
-  - component: {fileID: 5622870957818966089}
-  - component: {fileID: 2105014237144747599}
-  - component: {fileID: 946595217535386469}
   m_Layer: 0
   m_Name: DwarfAxe
   m_TagString: Untagged
@@ -87,64 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!95 &5622870957818966089
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 868225742684298475}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 157569141f57d4d46a3d9adcec213d10, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!135 &2105014237144747599
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 868225742684298475}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.54602796
-  m_Center: {x: -0.000000011675414, y: 0.54725397, z: 0.0038301442}
---- !u!114 &946595217535386469
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 868225742684298475}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 794014c491be2cc4b8f96ff94a74a3c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isQuestConnected: 0
-  itemScriptable: {fileID: 11400000, guid: 07862951f6297664fab9a4973a416ac3, type: 2}
-  itemType: 1
-  interactionUI: {fileID: 5121706450623206473}
 --- !u!1001 &1595336957268084407
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -273,12 +212,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2efa859fec10304ebdf4c6aad876d36, type: 3}
---- !u!1 &5121706450623206473 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5850231317177651966, guid: b2efa859fec10304ebdf4c6aad876d36,
-    type: 3}
-  m_PrefabInstance: {fileID: 1595336957268084407}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &7374008433410161413 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8103799936587529650, guid: b2efa859fec10304ebdf4c6aad876d36,

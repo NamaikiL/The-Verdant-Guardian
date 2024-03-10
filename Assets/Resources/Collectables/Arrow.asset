@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bc7da3b49962ca4f881c21540b00217, type: 3}
+  m_Name: Arrow
+  m_EditorClassIdentifier: 
+  itemName: Arrow
+  itemDescription: A basic arrow made of wood and feather, used with bows to deal
+    damage from a distance.
+  itemRarity: 0
+  itemWeight: 0.05
+  itemCost: 2
+  itemSellCost: 1
+  itemImage: {fileID: 21300000, guid: e0fe7061e3c7a6c41829752554cd97d6, type: 3}
+  itemModel: {fileID: 4232771629737138768, guid: f50ed6eae975b424f82e53b7dd1c4c84,
+    type: 3}
+  isStackable: 1
+  maxStack: 100
+  collectableName: Arrow

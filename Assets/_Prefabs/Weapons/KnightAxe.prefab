@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 7835613000213132824}
   - component: {fileID: 6609169866417353705}
   - component: {fileID: 413533245913407186}
-  - component: {fileID: 6477712231431522482}
-  - component: {fileID: -5867817792307036160}
   m_Layer: 0
   m_Name: KnightAxe
   m_TagString: Untagged
@@ -86,43 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &6477712231431522482
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 973534011401184978}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.96487784
-  m_Center: {x: 0.0000013753801, y: 0.96260214, z: 0.029520623}
---- !u!114 &-5867817792307036160
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 973534011401184978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 794014c491be2cc4b8f96ff94a74a3c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isQuestConnected: 0
-  itemScriptable: {fileID: 11400000, guid: 06b69f772b175cf4b84af21194a656c5, type: 2}
-  itemType: 1
-  interactionUI: {fileID: 3306089817138028721}
 --- !u!1001 &8994151689559814735
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -254,12 +215,6 @@ PrefabInstance:
 --- !u!224 &911941903116718077 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8103799936587529650, guid: b2efa859fec10304ebdf4c6aad876d36,
-    type: 3}
-  m_PrefabInstance: {fileID: 8994151689559814735}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &3306089817138028721 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5850231317177651966, guid: b2efa859fec10304ebdf4c6aad876d36,
     type: 3}
   m_PrefabInstance: {fileID: 8994151689559814735}
   m_PrefabAsset: {fileID: 0}

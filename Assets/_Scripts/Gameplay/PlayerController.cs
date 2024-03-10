@@ -206,11 +206,24 @@ namespace _Scripts.Gameplay
          */
         void OnTriggerEnter(Collider other)
         {
-            if(other.gameObject.layer == LayerMask.NameToLayer($"Dragon")) 
+            if(other.gameObject.layer == LayerMask.NameToLayer($"Dragon") && !other.gameObject.CompareTag("DragonBreath")) 
                 _playerStats.TakeDamage(GameObject.FindWithTag("Dragon").GetComponent<DragonController>().DragonSO.Damage);
         }
-        
-        
+
+
+        /**
+         * <summary>
+         * OnTriggerStay is called once per physics update for every Collider other that is touching the trigger.
+         * </summary>
+         * <param name="other">The other Collider involved in this collision.</param>
+         */
+        void OnTriggerStay(Collider other)
+        {
+            if(other.gameObject.layer == LayerMask.NameToLayer($"Dragon") && other.gameObject.CompareTag("DragonBreath")) 
+                _playerStats.TakeDamage(2);
+        }
+
+
         /**
          * <summary>
          * OnControllerColliderHit is called when the controller hits a collider while performing a Move.

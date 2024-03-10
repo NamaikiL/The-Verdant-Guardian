@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d2e398a917a2ea4a8c2ea055432d763, type: 3}
+  m_Name: PotionStamina
+  m_EditorClassIdentifier: 
+  itemName: Stamina Potion
+  itemDescription: An invigorating brew that quickly restores stamina, enabling prolonged
+    physical exertion.
+  itemRarity: 2
+  itemWeight: 0.4
+  itemCost: 80
+  itemSellCost: 40
+  itemImage: {fileID: 21300000, guid: c6aacc47a7ebb33449721b3c9a13bbf8, type: 3}
+  itemModel: {fileID: 7283051319111924372, guid: a817aaddbe22d354fac2ff6449771499,
+    type: 3}
+  isStackable: 1
+  maxStack: 10
+  consumableRegen: 20
+  consumableType: 1

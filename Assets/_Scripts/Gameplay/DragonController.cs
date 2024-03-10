@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq.Expressions;
 using _Scripts.Managers;
 using _Scripts.Scriptables;
 using UnityEngine;
@@ -25,7 +26,8 @@ namespace _Scripts.Gameplay
         [Header("Attack Properties")]
         [SerializeField] private float attackInterval = 40f;
         [SerializeField] private float fireBreathRange = 5f;
-
+        [SerializeField] private GameObject fireBreath;
+            
         [Header("Animations")] 
         [SerializeField] private AnimationClip fireBreathAnimation;
         [SerializeField] private AnimationClip stompAnimation;
@@ -307,12 +309,14 @@ namespace _Scripts.Gameplay
             // Stop and perform the fire breath.
             _navMeshAgent.isStopped = true;
             _animationManager.UpdateDragonFireBreathAnimation(true);
+            fireBreath.SetActive(true);
 
             yield return new WaitForSeconds(_fireBreathAnimationLength); // Wait for the duration of the fire breath.
 
             // Then resume its AI Behavior.
             _navMeshAgent.isStopped = false;
             _animationManager.UpdateDragonFireBreathAnimation(false);
+            fireBreath.SetActive(false);
             _isAttacking = false; // Allow for new attacks
             StartCoroutine(UpdatePathRoutine());
         }

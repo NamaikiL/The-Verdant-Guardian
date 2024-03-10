@@ -12,7 +12,9 @@ namespace _Scripts.Gameplay
     public enum ItemType
     {
         Collectable,
-        Weapon
+        Weapon,
+        Armor,
+        Consumable
     }
     
     

@@ -15,11 +15,12 @@ MonoBehaviour:
   itemName: Apple
   itemDescription: A fruit that everybody love.
   itemRarity: 0
-  itemWeight: 0
-  itemCost: 0
-  itemSellCost: 0
-  itemImage: {fileID: 0}
-  itemModel: {fileID: 0}
+  itemWeight: 0.2
+  itemCost: 10
+  itemSellCost: 5
+  itemImage: {fileID: 21300000, guid: 7902ff3baab82c24dba38f04dba13730, type: 3}
+  itemModel: {fileID: 4168384700613841779, guid: 4553b7b03d48d3e4fbf4a9bf0623ee97,
+    type: 3}
   isStackable: 1
-  maxStack: 26
+  maxStack: 20
   collectableName: Apple
