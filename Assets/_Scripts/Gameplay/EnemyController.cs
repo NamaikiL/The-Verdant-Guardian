@@ -93,19 +93,8 @@ namespace _Scripts.Gameplay
 
             if (_currentEnemyHP == 0)
             {
-                StartCoroutine(DelayEnemyDeath());
+                Destroy(this.gameObject);
             }
-        }
-
-        /**
-         * <summary>
-         * Coroutine for giving the behaviour to the object when he dies.
-         * </summary>
-         */
-        private IEnumerator DelayEnemyDeath()
-        {
-            yield return new WaitForSeconds(0.5f);
-            Destroy(this.gameObject);
         }
 
         /**
@@ -143,6 +132,7 @@ namespace _Scripts.Gameplay
             modelManager.transform.position = Vector3.MoveTowards(modelManager.transform.position,
                 patrolPoints[_targetPoint].position, speedPatrol * Time.deltaTime);
 
+            modelManager.LookAt(patrolPoints[_targetPoint]);
         }
 
         #endregion

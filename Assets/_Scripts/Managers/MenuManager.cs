@@ -19,6 +19,7 @@ namespace _Scripts.Managers
         [Header("Scene Manager")]
         [SerializeField] private GameObject creditsScene;
         [SerializeField] private GameObject menuScene;
+        [SerializeField] private GameObject tutoScene;
 
         //Components.
         private UIManager _uiManager;
@@ -61,6 +62,24 @@ namespace _Scripts.Managers
         
         /**
          * <summary>
+         * Load tuto scene.
+         * </summary>
+         */
+        public void LoadTuto()
+        {
+            StartCoroutine(DelayLoadTuto());
+        }
+
+        private IEnumerator DelayLoadTuto()
+        {
+            _audioManager.BtnSFX.Play();
+            yield return new WaitForSeconds(timeBeforeLoad);
+            tutoScene.SetActive(true);
+            menuScene.SetActive(false);
+        }
+        
+        /**
+         * <summary>
          * Load credit scene.
          * </summary>
          */
@@ -76,7 +95,7 @@ namespace _Scripts.Managers
             creditsScene.SetActive(true);
             menuScene.SetActive(false);
         }
-        
+
         /**
          * <summary>
          * Load menu scene.

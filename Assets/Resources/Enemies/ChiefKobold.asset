@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf9f682a1b9572e45971e0e9b6be871f, type: 3}
-  m_Name: KoboldChief
+  m_Name: ChiefKobold
   m_EditorClassIdentifier: 
-  enemyName: Kobold Chief
-  enemyModel: {fileID: 0}
+  enemyName: Chef Kobold
+  enemyModel: {fileID: 6336697611121922682, guid: 92d279fb5b89cc74e87bc31b8beba2e9,
+    type: 3}
   enemyMaxHealth: 150
   damage: 15
-  attackSpeed: 10
+  attackSpeed: 2
