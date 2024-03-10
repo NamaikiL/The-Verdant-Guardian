@@ -145,7 +145,7 @@ namespace _Scripts.Gameplay
          */
         private void GiveQuest(PlayerController playerController)
         {
-            playerController.ReceiveNewQuest(quest);
+            //playerController.ReceiveNewQuest(quest);
         }
         #endregion
         

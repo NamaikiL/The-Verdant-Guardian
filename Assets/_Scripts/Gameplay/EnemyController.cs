@@ -35,6 +35,8 @@ namespace _Scripts.Gameplay
 
         #endregion
 
+        public float SpeedPatrol => speedPatrol;
+
         #region Built-In Methods
 
         /**

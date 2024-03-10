@@ -24,6 +24,7 @@ namespace _Scripts.Managers
         //Components.
         private UIManager _uiManager;
         private AudioManager _audioManager;
+        private SaveManager _saveManager;
 
         #endregion
 
@@ -36,8 +37,10 @@ namespace _Scripts.Managers
          */
         private void Start()
         {
+            //Components.
             _uiManager = UIManager.Instance;
             _audioManager = AudioManager.Instance;
+            _saveManager = GetComponent<SaveManager>();
         }
         #endregion
 
@@ -157,6 +160,27 @@ namespace _Scripts.Managers
             _audioManager.BtnSFX.Play();
             yield return new WaitForSeconds(timeBeforeLoad);
             SceneManager.LoadScene("Menu", LoadSceneMode.Single);
+        }
+
+        /**
+         * <summary>
+         * Save game data.
+         * </summary>
+         */
+        public void SaveGame()
+        {
+            StartCoroutine(DelaySaveGame());
+
+            //Game is not paused
+            Time.timeScale = 1f;
+            _uiManager.GameIsPaused = false;
+        }
+
+        private IEnumerator DelaySaveGame()
+        {
+            _audioManager.BtnSFX.Play();
+            yield return new WaitForSeconds(timeBeforeLoad);
+            _saveManager.SaveGameData();
         }
 
         /**

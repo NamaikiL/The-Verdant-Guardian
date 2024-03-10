@@ -330,6 +330,9 @@ namespace _Scripts.Managers
         // Components.
         private InventoryManager _inventoryManager;
 
+        //Singleton.
+        private static SaveManager _instance;
+
         #endregion
 
         #region Built-In Methods
@@ -341,6 +344,10 @@ namespace _Scripts.Managers
          */
         void Awake()
         {
+            // Singleton.
+            if (_instance) Destroy(gameObject);
+            _instance = this;
+
             // Initialize Methods.
             InitializePaths();
         }
@@ -382,16 +389,6 @@ namespace _Scripts.Managers
             {
                 Debug.Log("Has saved.");
                 LoadGameData();
-            }
-        }
-
-
-        void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.G))
-            {
-                Debug.Log("Saving...");
-                SaveGameData();
             }
         }
 
