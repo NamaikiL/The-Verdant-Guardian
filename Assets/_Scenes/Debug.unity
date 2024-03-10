@@ -6462,6 +6462,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC_Sarazin
       objectReference: {fileID: 0}
+    - target: {fileID: 1815076602521231380, guid: 8723252000420a54088dd553aebe5126,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 6870344772174344301}
     - target: {fileID: 2467738989473359780, guid: 8723252000420a54088dd553aebe5126,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7058,6 +7063,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7355289840311738955, guid: 99cc9e929e1fe324e9b49b1cb9d7b341,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 6870344772174344301}
     - target: {fileID: 7641767719054268425, guid: 99cc9e929e1fe324e9b49b1cb9d7b341,
         type: 3}
       propertyPath: m_Name
@@ -11058,6 +11068,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3319095143773695961, guid: 4492cc71f6f789144817a39af843ceab,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 6870344772174344301}
     - target: {fileID: 4447439415096679628, guid: 4492cc71f6f789144817a39af843ceab,
         type: 3}
       propertyPath: m_Name
@@ -14209,6 +14224,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 333172550}
     m_Modifications:
+    - target: {fileID: 2864760765490085827, guid: cb6d2f7bb28e02942a8ff281eed6957f,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 6870344772174344301}
     - target: {fileID: 5150359725930160514, guid: cb6d2f7bb28e02942a8ff281eed6957f,
         type: 3}
       propertyPath: m_Name
@@ -14814,6 +14834,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 333172550}
     m_Modifications:
+    - target: {fileID: 2510121433674887898, guid: 0a7099c7a426dc04b8aebef0e70d9848,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 6870344772174344301}
     - target: {fileID: 3980162696021786849, guid: 0a7099c7a426dc04b8aebef0e70d9848,
         type: 3}
       propertyPath: cam
@@ -14996,6 +15021,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4794332532902265111, guid: 6b16c7c0c82944246bebe101aab75b5a,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 6870344772174344301}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -15384,6 +15414,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC_ChiefGuard
       objectReference: {fileID: 0}
+    - target: {fileID: 8197215147816619790, guid: 675d55b3b59ab6246bf10f479eb0d0d3,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 6870344772174344301}
     - target: {fileID: 9084977537204383337, guid: 675d55b3b59ab6246bf10f479eb0d0d3,
         type: 3}
       propertyPath: m_LocalPosition.x
