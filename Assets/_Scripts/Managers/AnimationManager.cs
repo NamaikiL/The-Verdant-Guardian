@@ -13,7 +13,8 @@ namespace _Scripts.Managers
         // Animators.
         private Animator _playerAnimator;
         private Animator _dragonAnimator;
-        
+        private Animator _slimeAnimator;
+
         // Singleton.
         private static AnimationManager _instance;
 
@@ -207,6 +208,20 @@ namespace _Scripts.Managers
             shockWave.transform.localScale = targetScale;
             Destroy(shockWave);
             yield return null;
+        }
+
+        #endregion
+
+        #region Slime Animations
+
+        /**
+         * <summary>
+         * Update the slime locomotion value on animator.
+         * </summary>
+         */
+        public void UpdateSlimeLocomotion(float slimeSpeed)
+        {
+            _slimeAnimator.SetFloat($"Locomotion", slimeSpeed);
         }
 
         #endregion
