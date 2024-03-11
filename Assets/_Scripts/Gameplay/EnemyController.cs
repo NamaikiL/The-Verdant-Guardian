@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Diagnostics;
 using _Scripts.Managers;
 using _Scripts.Scriptables;
 using _Scripts.UI;
@@ -32,10 +33,9 @@ namespace _Scripts.Gameplay
 
         //Patrol features.
         private int _targetPoint;
+        private bool _inInteraction;
 
         #endregion
-
-        public float SpeedPatrol => speedPatrol;
 
         #region Built-In Methods
 
@@ -65,7 +65,7 @@ namespace _Scripts.Gameplay
         {
             _currentEnemyHP = Mathf.Clamp(_currentEnemyHP, 0, enemiesScriptable.EnemyMaxHealth);
 
-            Patrol();
+            Patrol(false);
         }
 
         #endregion
@@ -119,22 +119,33 @@ namespace _Scripts.Gameplay
          * Make the character patrol between points.
          * </summary>
          */
-        private void Patrol()
+        public void Patrol(bool _inInteraction)
         {
-            if(modelManager.transform.position == patrolPoints[_targetPoint].position)
+            if(!_inInteraction)
             {
-                _targetPoint++;
-
-                if (_targetPoint >= patrolPoints.Length)
+                if(modelManager.transform.position == patrolPoints[_targetPoint].position)
                 {
-                    _targetPoint = 0;
+                    _targetPoint++;
+
+                    if (_targetPoint >= patrolPoints.Length)
+                    {
+                        _targetPoint = 0;
+                    }
                 }
+
+                modelManager.transform.position = Vector3.MoveTowards(modelManager.transform.position,
+                    patrolPoints[_targetPoint].position, speedPatrol * Time.deltaTime);
+
+                modelManager.LookAt(patrolPoints[_targetPoint]);
+            }
+            else
+            {
+                UnityEngine.Debug.Log("r");
+                speedPatrol = 0;
             }
 
-            modelManager.transform.position = Vector3.MoveTowards(modelManager.transform.position,
-                patrolPoints[_targetPoint].position, speedPatrol * Time.deltaTime);
+            _inInteraction = !_inInteraction;
 
-            modelManager.LookAt(patrolPoints[_targetPoint]);
         }
 
         #endregion

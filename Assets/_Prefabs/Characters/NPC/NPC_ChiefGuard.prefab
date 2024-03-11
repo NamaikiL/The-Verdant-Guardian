@@ -1812,6 +1812,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9084977537204383337}
   - component: {fileID: 5019498291596403928}
+  - component: {fileID: 843315378256559433}
   - component: {fileID: 5240677242118351826}
   m_Layer: 0
   m_Name: NPC_ChiefGuard
@@ -1864,6 +1865,27 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!135 &843315378256559433
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4139877385856311489}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 2
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &5240677242118351826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1885,7 +1907,7 @@ MonoBehaviour:
   - {fileID: 5163930610648995111}
   - {fileID: 3961122187805234865}
   - {fileID: 3910499788538069937}
-  speedPatrol: 0.5
+  speedPatrol: 0.2
   interactionUI: {fileID: 3972198802709457737}
   quest: {fileID: 0}
 --- !u!1 &4220119593163825261
