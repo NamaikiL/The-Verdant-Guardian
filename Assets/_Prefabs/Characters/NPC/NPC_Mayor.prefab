@@ -2656,6 +2656,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2048777901096667960}
   - component: {fileID: 1244221125278582837}
+  - component: {fileID: 989307113029093782}
   - component: {fileID: 9085491420634122131}
   m_Layer: 0
   m_Name: NPC_Mayor
@@ -2708,6 +2709,27 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!135 &989307113029093782
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7641767719054268425}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 2
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &9085491420634122131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2728,7 +2750,7 @@ MonoBehaviour:
   patrolPoints:
   - {fileID: 4199239308593129795}
   - {fileID: 724140084609060706}
-  speedPatrol: 0.5
+  speedPatrol: 0.2
   interactionUI: {fileID: 2373805331439879692}
   quest: {fileID: 0}
 --- !u!1 &7771551368227833988

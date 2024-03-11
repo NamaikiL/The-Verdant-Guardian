@@ -136,6 +136,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3108072155035548954}
   - component: {fileID: 6305124274412291418}
+  - component: {fileID: 7553091271401092210}
   - component: {fileID: 2324512082706430363}
   m_Layer: 0
   m_Name: NPC_Troubadour
@@ -169,7 +170,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 637270589566407148}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 9000000, guid: 4a4a235bce87462429bf4c59b7b49deb, type: 3}
   m_Controller: {fileID: 9100000, guid: 85d6587cbf284954c88a85c63c1c7b57, type: 2}
   m_CullingMode: 0
@@ -177,11 +178,38 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
+    'mixamorig:LeftHandIndex1'\n\tTransform 'mixamorig:LeftHandPinky2'\n\tTransform
+    'mixamorig:RightHandRing2'\n\tTransform 'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform
+    'mixamorig:RightArm'\n\tTransform 'mixamorig:LeftLeg'\n\tTransform 'mixamorig:LeftShoulder'\n\tand
+    more ...\n\tFrom animation clip 'mixamo.com'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!135 &7553091271401092210
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 637270589566407148}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 2
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &2324512082706430363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,7 +230,7 @@ MonoBehaviour:
   patrolPoints:
   - {fileID: 237353368059866643}
   - {fileID: 2994448625136016380}
-  speedPatrol: 0.5
+  speedPatrol: 0.2
   interactionUI: {fileID: 318254145235068240}
   quest: {fileID: 0}
 --- !u!1 &646180268207588675
@@ -1371,7 +1399,7 @@ Transform:
   m_GameObject: {fileID: 2864682919804110298}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.085}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

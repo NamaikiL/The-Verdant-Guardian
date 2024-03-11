@@ -2,6 +2,7 @@ using System.Collections;
 using _Scripts.Gameplay.CharactersController.Player;
 using _Scripts.Managers;
 using _Scripts.Scriptables;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace _Scripts.Gameplay.CharactersController.Npc
@@ -20,6 +21,7 @@ namespace _Scripts.Gameplay.CharactersController.Npc
         [Header("Interaction")]
         [SerializeField] private GameObject interactionUI;
         [SerializeField] private Quest quest;
+        [SerializeField] private GameObject dialogue;
 
         // Interaction.
         private SphereCollider _trigger;
@@ -29,6 +31,7 @@ namespace _Scripts.Gameplay.CharactersController.Npc
 
         //Component.
         private AudioManager _audioManager;
+        private PlayerInputs _playerInputs;
 
         #endregion
 
@@ -43,6 +46,7 @@ namespace _Scripts.Gameplay.CharactersController.Npc
         {
             //Components.
             _audioManager = AudioManager.Instance;
+            _playerInputs = PlayerInputs.Instance;
 
             InitializeSphereCollider();
             IdleSFX();
@@ -57,13 +61,26 @@ namespace _Scripts.Gameplay.CharactersController.Npc
          */
         void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Player"))      // If player is near.
+            if (other.CompareTag("Player"))
+            {       // If player is near
+                
+                //NPC look at the player.
+                gameObject.transform.LookAt(other.gameObject.transform);
+
                 if (interactionUI)
                 {
                     interactionUI.SetActive(true);
-                    //EVENT
-                    PlayerController.OnInteraction += GiveQuest;
-                }       // If NPC can interact.
+
+                    if (_playerInputs.Interaction)
+                    {
+                        Debug.Log("ddd");
+                        NpcInteraction();
+                    }
+                }
+
+                //EVENT
+                PlayerController.OnInteraction += GiveQuest;
+            }      // If NPC can interact.            
         }
         
         
@@ -78,6 +95,9 @@ namespace _Scripts.Gameplay.CharactersController.Npc
             if(interactionUI)
             {
                 interactionUI.SetActive(false);
+                gameObject.transform.LookAt(this.gameObject.transform);
+                NpcStopInteraction();
+
                 PlayerController.OnInteraction -= GiveQuest;
             }       // If NPC can interact.
         
@@ -138,9 +158,20 @@ namespace _Scripts.Gameplay.CharactersController.Npc
         {
             _trigger = GetComponent<SphereCollider>();
             _trigger.isTrigger = true;
-            _trigger.radius = 1.8f;
+            _trigger.radius = 3f;
         }
 
+        private void NpcInteraction()
+        {
+            GetComponent<EnemyController>().Patrol(true);
+            dialogue.SetActive(true);
+        }
+
+        private void NpcStopInteraction()
+        {
+            GetComponent<EnemyController>().Patrol(false);
+            dialogue.SetActive(false);
+        }
 
         /**
          * <summary>
