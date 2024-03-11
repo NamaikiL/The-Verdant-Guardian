@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9af5d535f76ae740837c81db135d2ff, type: 3}
   m_Name: Obj_ReturnToMayor
   m_EditorClassIdentifier: 
-  parentQuest: {fileID: 0}
+  parentQuest: {fileID: 11400000, guid: 7bf55003240846941bb652c7e6c9f815, type: 2}
   isRequired: 0
   isComplete: 0
   objectiveName: Retourner parler au Maire
@@ -23,4 +23,5 @@ MonoBehaviour:
   itemType: 0
   nbToFight: 0
   nbFighted: 0
-  npcToTalk: {fileID: 0}
+  npcToTalk: {fileID: 7641767719054268425, guid: 99cc9e929e1fe324e9b49b1cb9d7b341,
+    type: 3}
