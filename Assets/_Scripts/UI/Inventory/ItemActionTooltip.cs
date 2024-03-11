@@ -1,13 +1,11 @@
-using _Scripts.Gameplay;
 using _Scripts.Gameplay.CharactersController.Player;
 using _Scripts.Managers;
 using _Scripts.Scriptables;
-using _Scripts.UI.Inventory;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace _Scripts.UI
+namespace _Scripts.UI.Inventory
 {
     /**
      * <summary>

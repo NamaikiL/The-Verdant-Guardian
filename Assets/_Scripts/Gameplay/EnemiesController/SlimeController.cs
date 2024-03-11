@@ -1,7 +1,6 @@
 using _Scripts.Managers;
-using UnityEngine;
 
-namespace _Scripts.Gameplay
+namespace _Scripts.Gameplay.EnemiesController
 {
     public class SlimeController : EnemyController
     {

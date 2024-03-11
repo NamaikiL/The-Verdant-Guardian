@@ -1,11 +1,9 @@
 using System.Collections;
-using System.Diagnostics;
-using _Scripts.Managers;
 using _Scripts.Scriptables;
 using _Scripts.UI;
 using UnityEngine;
 
-namespace _Scripts.Gameplay
+namespace _Scripts.Gameplay.EnemiesController
 {
 
     public class EnemyController : MonoBehaviour

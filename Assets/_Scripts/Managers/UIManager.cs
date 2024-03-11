@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using _Scripts.Gameplay.CharactersController.Player;
 using _Scripts.Scriptables;
-using _Scripts.UI;
 using _Scripts.UI.Inventory;
 using TMPro;
 using UnityEngine;

@@ -2,7 +2,7 @@ using _Scripts.Scriptables;
 using TMPro;
 using UnityEngine;
 
-namespace _Scripts.UI
+namespace _Scripts.UI.Inventory
 {
     /**
      * <summary>

@@ -214,6 +214,8 @@ namespace _Scripts.Gameplay.CharactersController.Player
         {
             if(other.gameObject.layer == LayerMask.NameToLayer($"Dragon") && other.gameObject.CompareTag("DragonBreath")) 
                 _playerStats.TakeDamage(2);
+            if(other.gameObject.CompareTag("DragonSpawn"))
+                other.GetComponent<SpawnDragon>().Spawn();
         }
 
 

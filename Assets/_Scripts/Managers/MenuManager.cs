@@ -35,12 +35,12 @@ namespace _Scripts.Managers
          * Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
          * </summary>
          */
-        private void Start()
+        void Start()
         {
             //Components.
             _uiManager = UIManager.Instance;
             _audioManager = AudioManager.Instance;
-            _saveManager = GetComponent<SaveManager>();
+            _saveManager = SaveManager.Instance;
         }
         
         #endregion

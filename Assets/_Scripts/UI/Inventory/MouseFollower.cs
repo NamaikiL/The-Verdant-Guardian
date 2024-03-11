@@ -1,8 +1,7 @@
 using _Scripts.Scriptables;
-using _Scripts.UI.Inventory;
 using UnityEngine;
 
-namespace _Scripts.UI
+namespace _Scripts.UI.Inventory
 {
     /**
      * <summary>

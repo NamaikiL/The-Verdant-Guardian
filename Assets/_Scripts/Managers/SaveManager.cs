@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using _Scripts.Gameplay.CharactersController.Player;
 using _Scripts.Scriptables;
-using _Scripts.UI;
 using _Scripts.UI.Inventory;
 using UnityEngine;
 
@@ -377,6 +376,13 @@ namespace _Scripts.Managers
 
         #endregion
 
+        #region Properties
+
+        // Singleton.
+        public static SaveManager Instance => _instance;
+
+        #endregion
+        
         #region Built-In Methods
 
         /**
