@@ -1410,6 +1410,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2404004797882593948}
   - component: {fileID: 5896816019655377970}
+  - component: {fileID: 6122392452444022846}
   - component: {fileID: 8907236600506077901}
   m_Layer: 0
   m_Name: NPC_Simpleton
@@ -1443,7 +1444,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4447439415096679628}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 9000000, guid: 4a4a235bce87462429bf4c59b7b49deb, type: 3}
   m_Controller: {fileID: 9100000, guid: 85d6587cbf284954c88a85c63c1c7b57, type: 2}
   m_CullingMode: 0
@@ -1451,11 +1452,38 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
+    'mixamorig:LeftHandIndex1'\n\tTransform 'mixamorig:LeftHandPinky2'\n\tTransform
+    'mixamorig:RightHandRing2'\n\tTransform 'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform
+    'mixamorig:RightArm'\n\tTransform 'mixamorig:LeftLeg'\n\tTransform 'mixamorig:LeftShoulder'\n\tand
+    more ...\n\tFrom animation clip 'mixamo.com'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!135 &6122392452444022846
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4447439415096679628}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 2
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &8907236600506077901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1476,7 +1504,7 @@ MonoBehaviour:
   patrolPoints:
   - {fileID: 3686693650036565596}
   - {fileID: 8516840725324890591}
-  speedPatrol: 0.5
+  speedPatrol: 0.2
   interactionUI: {fileID: 7560845645975636894}
   quest: {fileID: 0}
 --- !u!1 &4530007192550413281
