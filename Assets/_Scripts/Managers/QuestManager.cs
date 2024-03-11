@@ -1,9 +1,13 @@
-using System.Collections.Generic;
-using _Scripts.Scriptables;
 using UnityEngine;
 
 namespace _Scripts.Managers
 {
+    
+    /**
+     * <summary>
+     * The script handling everything about quests.
+     * </summary>
+     */
     public class QuestManager : MonoBehaviour
     {
         #region Variables
@@ -102,7 +106,7 @@ namespace _Scripts.Managers
             }
             _uiManager.RemoveQuest();
 
-            Debug.Log(quest.QuestTitle + "Quête terminé");
+            Debug.Log(quest.QuestTitle + "Quï¿½te terminï¿½");
         }*/
 
         #endregion

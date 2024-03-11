@@ -33,7 +33,7 @@ namespace _Scripts.Managers
         [SerializeField] private float maxRadomTimeIdleSFX = 30f;
         [SerializeField] private AudioSource enemyAttackSFX;
 
-        //Singleton.
+        // Singleton.
         private static AudioManager _instance;
 
         #endregion
@@ -76,6 +76,7 @@ namespace _Scripts.Managers
             _instance = this;
         }
 
+        
         /**
          * <summary>
          * Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
@@ -84,9 +85,7 @@ namespace _Scripts.Managers
         private void Start()
         {
             if (ambientSound)
-            {
                 ambientSound.Play();
-            }
         }
 
         #endregion

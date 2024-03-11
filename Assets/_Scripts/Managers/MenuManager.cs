@@ -42,6 +42,7 @@ namespace _Scripts.Managers
             _audioManager = AudioManager.Instance;
             _saveManager = GetComponent<SaveManager>();
         }
+        
         #endregion
 
         #region Menu Methods
@@ -56,6 +57,12 @@ namespace _Scripts.Managers
             StartCoroutine (DelayLoadGame());
         }
 
+        
+        /**
+         * <summary>
+         * Game Loading Delay.
+         * </summary>
+         */
         private IEnumerator DelayLoadGame()
         {
             _audioManager.BtnSFX.Play();
@@ -63,9 +70,10 @@ namespace _Scripts.Managers
             SceneManager.LoadScene("Map", LoadSceneMode.Single);
         }
         
+        
         /**
          * <summary>
-         * Load tuto scene.
+         * Load tutorial scene.
          * </summary>
          */
         public void LoadTuto()
@@ -73,6 +81,12 @@ namespace _Scripts.Managers
             StartCoroutine(DelayLoadTuto());
         }
 
+        
+        /**
+         * <summary>
+         * Tutorial loading delay.
+         * </summary>
+         */
         private IEnumerator DelayLoadTuto()
         {
             _audioManager.BtnSFX.Play();
@@ -80,6 +94,7 @@ namespace _Scripts.Managers
             tutoScene.SetActive(true);
             menuScene.SetActive(false);
         }
+        
         
         /**
          * <summary>
@@ -91,6 +106,12 @@ namespace _Scripts.Managers
             StartCoroutine(DelayLoadCredits());
         }
 
+        
+        /**
+         * <summary>
+         * Credits loading delay.
+         * </summary>
+         */
         private IEnumerator DelayLoadCredits()
         {
             _audioManager.BtnSFX.Play();
@@ -99,6 +120,7 @@ namespace _Scripts.Managers
             menuScene.SetActive(false);
         }
 
+        
         /**
          * <summary>
          * Load menu scene.
@@ -109,6 +131,12 @@ namespace _Scripts.Managers
             StartCoroutine(DelayLoadMenu());
         }
 
+        
+        /**
+         * <summary>
+         * Menu loading delay.
+         * </summary>
+         */
         private IEnumerator DelayLoadMenu()
         {
             _audioManager.BtnSFX.Play();
@@ -117,6 +145,7 @@ namespace _Scripts.Managers
             menuScene.SetActive(true);
         }
 
+        
         /**
          * <summary>
          * Exit the game.
@@ -130,6 +159,12 @@ namespace _Scripts.Managers
             Time.timeScale = 1f;
         }
 
+        
+        /**
+         * <summary>
+         * Delay the exit game.
+         * </summary>
+         */
         private IEnumerator DelayExitGame()
         {
             _audioManager.BtnSFX.Play();
@@ -155,6 +190,12 @@ namespace _Scripts.Managers
             _uiManager.GameIsPaused = false;
         }
 
+        
+        /**
+         * <summary>
+         * In game menu loading with delay.
+         * </summary>
+         */
         private IEnumerator DelayLoadMenuInGame()
         {
             _audioManager.BtnSFX.Play();
@@ -162,6 +203,7 @@ namespace _Scripts.Managers
             SceneManager.LoadScene("Menu", LoadSceneMode.Single);
         }
 
+        
         /**
          * <summary>
          * Save game data.
@@ -176,6 +218,12 @@ namespace _Scripts.Managers
             _uiManager.GameIsPaused = false;
         }
 
+        
+        /**
+         * <summary>
+         * In game saving with delay.
+         * </summary>
+         */
         private IEnumerator DelaySaveGame()
         {
             _audioManager.BtnSFX.Play();
@@ -183,6 +231,7 @@ namespace _Scripts.Managers
             _saveManager.SaveGameData();
         }
 
+        
         /**
          * <summary>
          * Continue to play.
@@ -198,12 +247,19 @@ namespace _Scripts.Managers
             _uiManager.GameIsPaused = false;
         }
 
+        
+        /**
+         * <summary>
+         * Continue game loading with delay.
+         * </summary>
+         */
         private IEnumerator DelayContinueGame()
         {
             yield return new WaitForSeconds(timeBeforeLoad);
             _uiManager.PauseUI.SetActive(false);
             Cursor.lockState = CursorLockMode.Locked;
         }
+        
         #endregion
     }
 }

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using _Scripts.Gameplay;
+using _Scripts.Gameplay.CharactersController.Player;
 using _Scripts.Scriptables;
 using UnityEngine;
 
@@ -65,6 +65,7 @@ namespace _Scripts.Managers
             _uiManager.OnStartDragging += HandleDragging;
             _uiManager.OnSwapItems += HandleSwapItems;
 
+            // Inventory Update Event.
             inventoryScriptable.OnInventoryUpdated += UpdateInventoryUI;
         }
 
@@ -91,9 +92,7 @@ namespace _Scripts.Managers
                     }
                 }
                 else
-                {
                     _uiManager.ManageInventory();
-                }
             }
         }
 
@@ -110,6 +109,7 @@ namespace _Scripts.Managers
         private void UpdateInventoryUI(Dictionary<int, InventoryItem> inventoryState)
         {
             _uiManager.ResetAllItems();     // Reset the inventory.
+            
             foreach (var item in inventoryState)
             {   // Apply Inventory actual content.
                 _uiManager.UpdateInventorySlotUI(item.Key, item.Value.item, item.Value.quantity);

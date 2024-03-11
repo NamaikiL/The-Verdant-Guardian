@@ -5,7 +5,7 @@ namespace _Scripts.Scriptables
     
     /**
      * <summary>
-     * The Sciptable Object for weapons.
+     * The Scriptable Object for weapons.
      * </summary>
      */
     [CreateAssetMenu(fileName = "New Weapon", menuName = "RPG/Weapon", order = 0)]

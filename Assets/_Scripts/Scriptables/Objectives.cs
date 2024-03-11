@@ -1,4 +1,4 @@
-using _Scripts.Gameplay;
+using _Scripts.Gameplay.ItemsScripts;
 using UnityEngine;
 
 namespace _Scripts.Scriptables

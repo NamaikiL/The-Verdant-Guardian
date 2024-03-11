@@ -3,6 +3,11 @@ using UnityEngine;
 namespace _Scripts.Scriptables
 {
 
+    /**
+     * <summary>
+     * Enemies SO.
+     * </summary>
+     */
     [CreateAssetMenu(fileName = "New Enemy", menuName = "RPG/Enemy", order = 0)]
     public class Enemies : ScriptableObject
     {
@@ -21,6 +26,7 @@ namespace _Scripts.Scriptables
 
         #region Properties
 
+        // Enemies Properties.
         public string EnemyName => enemyName;
         public GameObject EnemyModel => enemyModel;
         public int EnemyMaxHealth => enemyMaxHealth;

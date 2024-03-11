@@ -2,13 +2,24 @@ using UnityEngine;
 
 namespace _Scripts.Scriptables
 {
+    
+    /**
+     * <summary>
+     * Consumable Type.
+     * </summary>
+     */
     public enum ConsumableType
     {
-        health,
-        stamina
+        Health,
+        Stamina
     }
     
     
+    /**
+     * <summary>
+     * Consumables SO.
+     * </summary>
+     */
     [CreateAssetMenu(fileName = "New Consumable", menuName = "RPG/Consumable", order = 0)]
     public class Consumables : Items
     {
@@ -27,7 +38,5 @@ namespace _Scripts.Scriptables
         public ConsumableType CurrentConsumableType => consumableType;
 
         #endregion
-
-
     }
 }

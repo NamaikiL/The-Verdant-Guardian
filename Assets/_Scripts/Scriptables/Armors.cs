@@ -2,6 +2,12 @@ using UnityEngine;
 
 namespace _Scripts.Scriptables
 {
+    
+    /**
+     * <summary>
+     * Armors SO.
+     * </summary>
+     */
     [CreateAssetMenu(fileName = "New Armor", menuName = "RPG/Armor", order = 0)]
     public class Armors : Items
     {

@@ -1,9 +1,12 @@
+using _Scripts.Gameplay.CharactersController.Player;
 using UnityEngine;
 
 namespace _Scripts.Gameplay
 {
     public class ThirdPersonCameraController : MonoBehaviour
     {
+        #region Variables
+
         [Header("Player Properties")]
         [SerializeField] private Transform target;
 
@@ -44,7 +47,11 @@ namespace _Scripts.Gameplay
         
         // DynamicFOV.
         private float _targetFOV;
-        
+
+        #endregion
+
+        #region Built-In Methods
+
         /**
          * <summary>
          * Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
@@ -90,7 +97,10 @@ namespace _Scripts.Gameplay
             transform.LookAt(target);
         }
 
+        #endregion
         
+        #region Camera Modification Methods
+
         /**
          * <summary>
          * Handle the camera rotation by the inputs given by the player.
@@ -185,5 +195,7 @@ namespace _Scripts.Gameplay
             // Smoothly translate to the target FOV.
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, _targetFOV, Time.deltaTime * fovTransitionSpeed);
         }
+
+        #endregion
     }
 }

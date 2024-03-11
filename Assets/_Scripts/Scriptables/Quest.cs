@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using _Scripts.UI;
 using UnityEngine;
 
 namespace _Scripts.Scriptables
@@ -38,7 +37,6 @@ namespace _Scripts.Scriptables
             get => isActive;
             set => isActive = value;
         }
-
         public bool IsComplete
         {
             get => isComplete;

@@ -3,6 +3,12 @@ using UnityEngine;
 
 namespace _Scripts.Managers
 {
+    
+    /**
+     * <summary>
+     * Animations handler.
+     * </summary>
+     */
     public class AnimationManager : MonoBehaviour
     {
         #region Variables
@@ -137,10 +143,15 @@ namespace _Scripts.Managers
         public void UpdateDodgingAnimation(bool isDodging, float dodgingDuration)
         {
             if(isDodging) _playerAnimator.SetBool($"IsDodging", true);
-            Invoke("UpdateEndDodgingAnimation", dodgingDuration);
+            Invoke(nameof(UpdateEndDodgingAnimation), dodgingDuration);
         }
 
 
+        /**
+         * <summary>
+         * End the dodging animation after a given time.
+         * </summary>
+         */
         private void UpdateEndDodgingAnimation()
         {
             _playerAnimator.SetBool($"IsDodging", false);
@@ -185,19 +196,21 @@ namespace _Scripts.Managers
 
         /**
          * <summary>
-         * Shock Wave.
+         * Create a shock wave at the dragon pivot point and make it bigger with time.
          * </summary>
          */
         public IEnumerator ShockWave(float time, Vector3 dragonPos)
         {
+            // Getting the scale factors.
             Vector3 originalScale = new Vector3(0.1f, 3f, 0.1f);
             Vector3 targetScale = new Vector3(30f, 1f, 30f);
             float currentTime = 0f;
             
-            GameObject shockWave = Instantiate(shockWavePrefab, transform.position, Quaternion.identity);
-            shockWave.transform.position = dragonPos;
+            // Creating the dragon shockwave
+            GameObject shockWave = Instantiate(shockWavePrefab, dragonPos, Quaternion.identity);
             shockWave.transform.localScale = originalScale;
 
+            // Shockwave animation.
             while (currentTime <= time)
             {
                 shockWave.transform.localScale = Vector3.Lerp(originalScale, targetScale, currentTime / time);

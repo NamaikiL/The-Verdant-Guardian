@@ -65,6 +65,7 @@ namespace _Scripts.UI
             StartCoroutine(EffectHealthDamage(currentHealth));
         }
 
+        
         /**
          * <summary>
          * Coroutine for the visual effect on the gauge when a character loose life.

@@ -1,14 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using _Scripts.Gameplay;
+using _Scripts.Gameplay.CharactersController.Player;
 using _Scripts.Scriptables;
 using _Scripts.UI;
+using _Scripts.UI.Inventory;
 using UnityEngine;
 
 namespace _Scripts.Managers
 {
 
+    /**
+     * <summary>
+     * Config save data.
+     * </summary>
+     */
     [Serializable]
     public class ConfigData
     {
@@ -30,7 +36,13 @@ namespace _Scripts.Managers
 
         #endregion
     }
-    
+   
+   
+    /**
+     * <summary>
+     * Player save data.
+     * </summary>
+     */
     [Serializable]
     public class PlayerData
     {
@@ -110,6 +122,12 @@ namespace _Scripts.Managers
         #endregion
     }
 
+    
+    /**
+     * <summary>
+     * InventoryData save data.
+     * </summary>
+     */
     [Serializable]
     public class InventoryData
     {
@@ -151,6 +169,12 @@ namespace _Scripts.Managers
         #endregion
     }
     
+    
+    /**
+     * <summary>
+     * Quests parameters data.
+     * </summary>
+     */
     [Serializable]
     public class QuestParametersData
     {
@@ -201,6 +225,12 @@ namespace _Scripts.Managers
         #endregion
     }
     
+    
+    /**
+     * <summary>
+     * Quests save data.
+     * </summary>
+     */
     [Serializable]
     public class QuestsData
     {
@@ -218,6 +248,12 @@ namespace _Scripts.Managers
         #endregion
     }
 
+    
+    /**
+     * <summary>
+     * Objectives parameters data.
+     * </summary>
+     */
     [Serializable]
     public class ObjectiveParametersData
     {
@@ -278,6 +314,12 @@ namespace _Scripts.Managers
         #endregion
     }
 
+    
+    /**
+     * <summary>
+     * Objectives save data.
+     * </summary>
+     */
     [Serializable]
     public class ObjectivesData
     {
@@ -330,7 +372,7 @@ namespace _Scripts.Managers
         // Components.
         private InventoryManager _inventoryManager;
 
-        //Singleton.
+        // Singleton.
         private static SaveManager _instance;
 
         #endregion
@@ -367,18 +409,12 @@ namespace _Scripts.Managers
             {
                 LoadGameData();
                 if(configData.HasSaved)
-                {
                     _hasSaved = true;
-                }
                 else
-                {
                     _hasSaved = false;
-                }
             }
             else
-            {
                 _hasSaved = false;
-            }
             
             if(!_hasSaved)
             {
@@ -421,7 +457,7 @@ namespace _Scripts.Managers
         /**
          * Reset all the data of the save files.
          */
-        public void NewGameData()
+        private void NewGameData()
         {
             NewConfigData();
             NewPlayerData();
@@ -683,7 +719,7 @@ namespace _Scripts.Managers
          * Load all the game data Json Files.
          * </summary>
          */
-        public void LoadGameData()
+        private void LoadGameData()
         {
             LoadConfigData();
             LoadPlayerData();

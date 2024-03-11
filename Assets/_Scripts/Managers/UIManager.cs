@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using _Scripts.Gameplay;
+using _Scripts.Gameplay.CharactersController.Player;
 using _Scripts.Scriptables;
 using _Scripts.UI;
+using _Scripts.UI.Inventory;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -137,6 +138,7 @@ namespace _Scripts.Managers
             CalculateMapRatio();
         }
         
+        
         /**
          * <summary>
          * This function is called when the object becomes enabled and active.
@@ -155,6 +157,7 @@ namespace _Scripts.Managers
             }
         }
 
+        
         /**
          * <summary>
          * Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
@@ -166,6 +169,7 @@ namespace _Scripts.Managers
             _playerInputs = PlayerInputs.Instance;
         }
 
+        
         /**
          * <summary>
          * Update is called every frame, if the MonoBehaviour is enabled.
@@ -245,7 +249,7 @@ namespace _Scripts.Managers
          * <summary>
          * Update the size of the gauge based on the maximum stamina.
          * </summary>
-         * <param name="maxStamina">The maximum stamina disponible. </param>
+         * <param name="maxStamina">The maximum stamina possible. </param>
          */
         public void SetStaminaBarMax(float maxStamina)
         {
@@ -284,6 +288,7 @@ namespace _Scripts.Managers
             quest.transform.GetChild(1).GetComponent<TMP_Text>().text = description;
         }
 
+        
         /**
          * <summary>
          * Remove the active quest from the quest holder.
@@ -294,6 +299,7 @@ namespace _Scripts.Managers
             Destroy(panQuestHolder.transform.GetChild(0).gameObject);
         }
 
+        
         /**
          * <summary>
          * Hide or show quest panel.
@@ -316,6 +322,7 @@ namespace _Scripts.Managers
             }
         }
 
+        
         /**
          * <summary>
          * Coroutine to display a new quest after a decided time.
@@ -439,8 +446,6 @@ namespace _Scripts.Managers
         #endregion
 
         #region Inventory Item Event Methods
-
-        // EVENTS
         
         /**
          * <summary>
@@ -635,15 +640,15 @@ namespace _Scripts.Managers
                 currentTime += Time.deltaTime;
                 
                 // Fading animation.
-                if (inOut) dragonGroupUI.alpha = Mathf.Lerp(0f, 1f, currentTime / uiFadeDuraction);
-                else dragonGroupUI.alpha = Mathf.Lerp(1f, 0f, currentTime / uiFadeDuraction);
+                dragonGroupUI.alpha = inOut 
+                    ? Mathf.Lerp(0f, 1f, currentTime / uiFadeDuraction) 
+                    : Mathf.Lerp(1f, 0f, currentTime / uiFadeDuraction);
 
                 yield return null;
             }
 
             // Ensure it's fully done.
-            if (inOut) dragonGroupUI.alpha = 1f;
-            else dragonGroupUI.alpha = 0f;
+            dragonGroupUI.alpha = inOut ? 1f : 0f;
         }
 
 
@@ -687,6 +692,7 @@ namespace _Scripts.Managers
             }
         }
 
+        
         /**
          * <summary>
          * Calculate player position with referenced points.

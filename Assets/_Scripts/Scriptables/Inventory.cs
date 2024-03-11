@@ -1,11 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using _Scripts.Gameplay;
+using _Scripts.Gameplay.CharactersController.Player;
+using _Scripts.Gameplay.ItemsScripts;
 using UnityEngine;
 
 namespace _Scripts.Scriptables
 {
+    
+    /**
+     * <summary>
+     * The inventory SO.
+     * </summary>
+     */
     [CreateAssetMenu(fileName = "New Inventory", menuName = "RPG/Inventory", order = 0)]
     public class Inventory : ScriptableObject
     {
@@ -346,6 +353,7 @@ namespace _Scripts.Scriptables
 
         #region Properties
 
+        // Conditions.
         public bool IsEmpty => item == null;
 
         #endregion

@@ -1,4 +1,5 @@
 using System.Collections;
+using _Scripts.Gameplay.CharactersController.Player;
 using _Scripts.Managers;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ namespace _Scripts.Gameplay
         [SerializeField] private GameObject sleepAnimation;
 
         //Coroutine Variable.
-        private float _sleepingTime = 5f;
+        private const float _sleepingTime = 5f;
 
         // Component.
         private AudioManager _audioManager;
@@ -80,12 +81,19 @@ namespace _Scripts.Gameplay
          * <summary>
          * Effect to make the player understand he has slept.
          * </summary>
+         * <param name="playerStats">The actual player stats.</param>
          */
-        private void PlayerSleep(PlayerStats stats)
+        private void PlayerSleep(PlayerStats playerStats)
         {
             StartCoroutine(DelaySleep());
         }
 
+        
+        /**
+         * <summary>
+         * Sleep loading delay.
+         * </summary>
+         */
         private IEnumerator DelaySleep()
         {
             _audioManager.PlayerSleepSFX.Play();
